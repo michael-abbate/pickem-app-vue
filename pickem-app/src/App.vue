@@ -1,15 +1,19 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  
+  <h1>Pick Em App</h1>
+  <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
+  <ShowPicks/>
+
+  
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import ShowPicks from './components/ShowPicks.vue'
 
 export default {
-  name: 'App',
+  // name: 'Pickem-App',
   components: {
-    HelloWorld
+    ShowPicks
   }
 }
 </script>
@@ -23,4 +27,17 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+
+body {
+
+    font-family:  Helvetica, Arial, sans-serif;
+}
+
+h1 {
+    margin: 80px auto;
+    font-size: 42px;
+    text-align: center;
+    min-height: 49px;
+}
+
 </style>
