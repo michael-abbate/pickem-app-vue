@@ -1,10 +1,8 @@
 <template>
     <div id="app">
-        
         <div>
             selected picks: <strong>{{ picks }}</strong>
         </div>
-
         <table v-cloak v-for="(game,index) in games" :key = "game.gameID" :class="game.gameID+'game-table'">
             <tr :class="'away-row-'+index+'-'+game.gameID">
                 <td class = "matchup-cell">
@@ -38,9 +36,14 @@
 
 
 <script>
-import games_raw from '../gamessample.js'
 
-let games = JSON.parse(JSON.stringify(games_raw)).results;
+import axios from 'axios';
+
+// 8/30/21 to 9/6/21 below
+// FUTURE: can either use start and end date OR get all games every time and then filter accordingly based on date....
+// I think go with the latter as this is one API call with all odds already.
+let all_games_url = "http://localhost:8080/api/games.json?sport=nfl&startDate=1629763200000&endDate=1630972800000"
+// let all_games_url = "http://localhost:8080/api/odds.json?sport=nfl"
 
 export default {
     // props: {
@@ -48,7 +51,7 @@ export default {
     // },
     data() {
         return {
-            games,
+            games:null,
             picks: [],                    
             sample_spread: 7,
             sample_ou: 48.5,
@@ -59,6 +62,19 @@ export default {
                 cursor: 'pointer'
             }
         }
+    },
+    mounted() {
+        axios
+        .get(all_games_url)
+        .then(response => {
+            console.log('SUCCESS');
+            console.log(response.data.results);
+            this.games = response.data.results
+            })
+        .catch(error => {
+            console.log(error)
+            this.errored = true
+            })
     }
 }
 
