@@ -1,21 +1,21 @@
 <template>
-  
+  <nav>
+    <router-link to="/">Home</router-link> |
+    <router-link to="/about">About</router-link>
+  </nav>
   <h1>Pick Em App</h1>
-  <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
-  <ShowPicks/>
-
-  
+  <router-view/>
 </template>
 
 <script>
-import ShowPicks from './components/ShowPicks.vue'
+// import ShowPicks from './components/ShowPicks.vue'
 
-export default {
-  // name: 'Pickem-App',
-  components: {
-    ShowPicks
-  }
-}
+// export default {
+//   // name: 'Pickem-App',
+//   components: {
+//     ShowPicks
+//   }
+// }
 </script>
 
 <style>
@@ -25,8 +25,21 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
+
+nav {
+  padding: 30px;
+}
+
+nav a {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+nav a.router-link-exact-active {
+  color: #42b983;
+}
+
 
 body {
 
@@ -39,5 +52,4 @@ h1 {
     text-align: center;
     min-height: 49px;
 }
-
 </style>

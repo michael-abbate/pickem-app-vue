@@ -1,5 +1,7 @@
 <template>
-    <div id="app">
+    <!-- <router-link :to="{ name: 'SelectedPicks', params: { selectedpicks: picks } }">Go to Select</router-link> -->
+    <div id="show-picks">
+        <button @click = "selectpicks()">Select</button>
         <div>
             selected picks: <strong>{{ picks }}</strong>
         </div>
@@ -46,6 +48,14 @@ let all_games_url = "http://localhost:8080/api/games.json?sport=nfl&startDate=16
 // let all_games_url = "http://localhost:8080/api/odds.json?sport=nfl"
 
 export default {
+    name: "ShowPicks",
+    // props: [picks],
+    // props: {
+    //     picks: {
+    //         Array,
+    //         required: true
+    //     }
+    // },
     // props: {
     //     games: Map
     // },
@@ -61,6 +71,15 @@ export default {
                 textAlign:'center',
                 cursor: 'pointer'
             }
+        }
+    },
+    methods: {
+        
+        selectpicks() {
+            console.log("USERS PICKS:");
+            console.log(this.picks);
+            this.$router.push({name:"SelectedPicks"
+                              ,params: { selectedpicks: this.picks }});
         }
     },
     mounted() {
