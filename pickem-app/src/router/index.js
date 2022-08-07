@@ -25,7 +25,7 @@ const routes = [
     props: true
   },
   {
-    path: '/selected/:picks',
+    path: '/selected',
     name: 'SelectedPicks',
     component: SelectedPicks,
     props: true

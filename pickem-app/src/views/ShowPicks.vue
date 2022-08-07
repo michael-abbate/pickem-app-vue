@@ -73,13 +73,14 @@ export default {
             }
         }
     },
-    methods: {
-        
+    methods: {    
         selectpicks() {
             console.log("USERS PICKS:");
             console.log(this.picks);
             this.$router.push({name:"SelectedPicks"
-                              ,params: { selectedpicks: this.picks }});
+                              ,params: { picks: this.picks }
+                              }
+                              );
         }
     },
     mounted() {
