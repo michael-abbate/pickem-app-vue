@@ -1,39 +1,44 @@
 <template>
-    <!-- <router-link :to="{ name: 'SelectedPicks', params: { selectedpicks: picks } }">Go to Select</router-link> -->
     <div id="show-picks">
         <button @click = "selectpicks()">Select</button>
         <div>
             selected picks: <strong>{{ picks }}</strong>
         </div>
-        <table v-cloak v-for="(game,index) in games" :key = "game.gameID" :class="game.gameID+'game-table'">
-            <tr :class="'away-row-'+index+'-'+game.gameID">
-                <td class = "matchup-cell">
-                    {{ game.team1Name }}                    
-                </td>
-                <!-- need to do a check for fav/dog and o/u -->
-                <!-- hit the api to get the data then run the check mentioned above -->
-                <td class="pickem-cell">          
-                    <label :for="game.gameID+'-fav'"></label>
-                    <input v-model="picks" type="checkbox" :id="game.gameID+'-fav'" :value="game.team1Name + sample_spread">
-                    -{{ sample_spread }}
-                </td>
-                <td class="pickem-cell">
-                    o{{ sample_ou }}
-                </td>     
-            </tr>        
-            <tr :class="'home-row-'+index+'-'+game.gameID">
-                <td v-text = "game.team2Name" class = "matchup-cell">
-                </td>
-                <td class="pickem-cell">
-                    <label :for="game.gameID+'-dog'"></label>
-                    <input v-model="picks" type="checkbox" :id="game.gameID+'-dog'" :value="game.team2Name + sample_spread">
-                    +{{ sample_spread }}
-                </td>
-                <td v-text = "'u'+sample_ou" class="pickem-cell">                    
-                </td>     
-            </tr>
-            <tr><td colspan="3"><hr></td></tr>
-        </table>
+        <div v-cloak v-for="(game,index) in games" :key = "game.gameID" :class="game.gameID+'game-table'">
+            <table v-if="validGame(game.date)" :class="game.gameID+'game-table'">
+                <tr :class="'away-row-'+index+'-'+game.gameID">
+                    <td rowspan = "2">  {{ epochToDate(game.date) }}      </td>
+                    <td class = "matchup-cell">
+                        {{ game.team1Name }}                    
+                    </td>
+                    <td class="pickem-cell">          
+                        <label :for="game.gameID+'-away-label'"></label>
+                        <input v-model="picks" type="checkbox" :id="game.gameID+'-away-label'" :value="game.team1Name + favOrDog(useDraftkings(game.odds))[0]">
+                            {{ favOrDog(useDraftkings(game.odds))[0] }}
+                    </td>
+                    <td class="pickem-cell">
+                        <label :for="game.gameID+'-over-label'"></label>
+                        <input v-model="picks" type="checkbox" :id="game.gameID+'-over-label'" :value="game.team2Name + 'vs.' + game.team1Name + 'o' + useDraftkings(game.odds).overUnder">
+                            o{{ useDraftkings(game.odds).overUnder }}
+                    </td>     
+                </tr>        
+                <tr :class="'home-row-'+index+'-'+game.gameID">
+                    <td v-text = "game.team2Name" class = "matchup-cell">
+                    </td>
+                    <td class="pickem-cell">
+                        <label :for="game.gameID+'-home-label'"></label>
+                        <input v-model="picks" type="checkbox" :id="game.gameID+'-home-label'" :value="game.team2Name + favOrDog(useDraftkings(game.odds))[1]">
+                            {{ favOrDog(useDraftkings(game.odds))[1] }}
+                    </td>
+                    <td class="pickem-cell">         
+                        <label :for="game.gameID+'-under-label'"></label>
+                        <input v-model="picks" type="checkbox" :id="game.gameID+'-under-label'" :value="game.team2Name + 'vs.' + game.team1Name + 'u' + useDraftkings(game.odds).overUnder">
+                            u{{ useDraftkings(game.odds).overUnder }}         
+                    </td>     
+                </tr>
+                <tr><td colspan="4"><hr></td></tr>
+            </table>
+        </div>
     </div>
 </template>
 
@@ -42,11 +47,7 @@
 
 import axios from 'axios';
 
-// 8/30/21 to 9/6/21 below
-// FUTURE: can either use start and end date OR get all games every time and then filter accordingly based on date....
-// I think go with the latter as this is one API call with all odds already.
-let all_games_url = "http://localhost:8080/api/games.json?sport=nfl&startDate=1629763200000&endDate=1630972800000"
-// let all_games_url = "http://localhost:8080/api/odds.json?sport=nfl"
+let all_games_url = "http://localhost:8080/api/odds.json?sport=nfl"
 
 export default {
     name: "ShowPicks",
@@ -66,12 +67,54 @@ export default {
     },
     methods: {    
         selectpicks() {
+            // Sends picks to SelectedPicks page where user will then submit picks
             console.log("USERS PICKS:");
             console.log(this.picks);
             this.$router.push({name:"SelectedPicks"
                               ,params: { picks: this.picks }
                               }
                               );
+        },
+        validGame(game_date) {
+            // Checks if the game is valid to be shown
+            let today = new Date();
+            let next_mon = today.setDate(today.getDate() + (((1 + 7 - today.getDay()) % 7) || 7));
+            let now = Date.now();
+            if (now >= game_date) {
+                return false
+            }
+            else if (game_date > next_mon){
+                return false
+            }
+            else {
+                return true
+            }
+        },
+        epochToDate(game_date) {
+            // converts epoch to clean date
+            let date = new Date(game_date);
+            let iso = date.toLocaleDateString("en-US")
+            return iso
+        },
+        favOrDog(game_odds) {
+            // renders clean spread in UI depending on data passed
+            let spread = new String(game_odds.spread);
+            if (spread.includes("-")) {
+                return [spread.replace("-","+"),spread]
+            }
+            else {
+                return ["-"+spread, "+"+spread]
+            }
+        },
+        useDraftkings(game_odds_all_providers) {
+            // Loops through providers to find and return DRAFTKINGS
+            let num_prov =  game_odds_all_providers.length;
+            for (var i = 0; i < num_prov; i++) {
+                var provider = game_odds_all_providers[i].provider;
+                if (provider === "DRAFTKINGS") {
+                    return game_odds_all_providers[i]
+                }
+            }
         }
     },
     mounted() {
