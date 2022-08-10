@@ -31,7 +31,8 @@
                 </td>
                 <td v-text = "'u'+sample_ou" class="pickem-cell">                    
                 </td>     
-            </tr>             
+            </tr>
+            <tr><td colspan="3"><hr></td></tr>
         </table>
     </div>
 </template>
@@ -49,16 +50,6 @@ let all_games_url = "http://localhost:8080/api/games.json?sport=nfl&startDate=16
 
 export default {
     name: "ShowPicks",
-    // props: [picks],
-    // props: {
-    //     picks: {
-    //         Array,
-    //         required: true
-    //     }
-    // },
-    // props: {
-    //     games: Map
-    // },
     data() {
         return {
             games:null,
@@ -123,7 +114,7 @@ table {
     text-align:center;
     width: 6em;
     height:1em;
-    font-size: 1.4vw;
+    font-size: 1.1vw;
 }
 
 .pickem-cell:hover  {
