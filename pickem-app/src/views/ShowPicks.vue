@@ -1,5 +1,7 @@
 <template>
-    <div id="app">
+    <!-- <router-link :to="{ name: 'SelectedPicks', params: { selectedpicks: picks } }">Go to Select</router-link> -->
+    <div id="show-picks">
+        <button @click = "selectpicks()">Select</button>
         <div>
             selected picks: <strong>{{ picks }}</strong>
         </div>
@@ -29,7 +31,8 @@
                 </td>
                 <td v-text = "'u'+sample_ou" class="pickem-cell">                    
                 </td>     
-            </tr>             
+            </tr>
+            <tr><td colspan="3"><hr></td></tr>
         </table>
     </div>
 </template>
@@ -46,9 +49,7 @@ let all_games_url = "http://localhost:8080/api/games.json?sport=nfl&startDate=16
 // let all_games_url = "http://localhost:8080/api/odds.json?sport=nfl"
 
 export default {
-    // props: {
-    //     games: Map
-    // },
+    name: "ShowPicks",
     data() {
         return {
             games:null,
@@ -61,6 +62,16 @@ export default {
                 textAlign:'center',
                 cursor: 'pointer'
             }
+        }
+    },
+    methods: {    
+        selectpicks() {
+            console.log("USERS PICKS:");
+            console.log(this.picks);
+            this.$router.push({name:"SelectedPicks"
+                              ,params: { picks: this.picks }
+                              }
+                              );
         }
     },
     mounted() {
@@ -103,7 +114,7 @@ table {
     text-align:center;
     width: 6em;
     height:1em;
-    font-size: 1.4vw;
+    font-size: 1.1vw;
 }
 
 .pickem-cell:hover  {
