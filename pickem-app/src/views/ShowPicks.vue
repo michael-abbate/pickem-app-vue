@@ -1,44 +1,59 @@
 <template>
     <div id="show-picks">
-        <button @click = "selectpicks()">Select</button>
-        <div>
-            selected picks: <strong>{{ picks }}</strong>
+        <div id = "empty-div">
+            
         </div>
-        <div v-cloak v-for="(game,index) in games" :key = "game.gameID" :class="game.gameID+'game-table'">
-            <table v-if="validGame(game.date)" :class="game.gameID+'game-table'">
-                <tr :class="'away-row-'+index+'-'+game.gameID">
-                    <td rowspan = "2">  {{ epochToDate(game.date) }}      </td>
-                    <td class = "matchup-cell">
-                        {{ game.team1Name }}                    
-                    </td>
-                    <td class="pickem-cell">          
-                        <label :for="game.gameID+'-away-label'"></label>
-                        <input v-model="picks" type="checkbox" :id="game.gameID+'-away-label'" :value="game.team1Name + favOrDog(useDraftkings(game.odds))[0]">
-                            {{ favOrDog(useDraftkings(game.odds))[0] }}
-                    </td>
-                    <td class="pickem-cell">
-                        <label :for="game.gameID+'-over-label'"></label>
-                        <input v-model="picks" type="checkbox" :id="game.gameID+'-over-label'" :value="game.team2Name + 'vs.' + game.team1Name + 'o' + useDraftkings(game.odds).overUnder">
-                            o{{ useDraftkings(game.odds).overUnder }}
-                    </td>     
-                </tr>        
-                <tr :class="'home-row-'+index+'-'+game.gameID">
-                    <td v-text = "game.team2Name" class = "matchup-cell">
-                    </td>
-                    <td class="pickem-cell">
-                        <label :for="game.gameID+'-home-label'"></label>
-                        <input v-model="picks" type="checkbox" :id="game.gameID+'-home-label'" :value="game.team2Name + favOrDog(useDraftkings(game.odds))[1]">
-                            {{ favOrDog(useDraftkings(game.odds))[1] }}
-                    </td>
-                    <td class="pickem-cell">         
-                        <label :for="game.gameID+'-under-label'"></label>
-                        <input v-model="picks" type="checkbox" :id="game.gameID+'-under-label'" :value="game.team2Name + 'vs.' + game.team1Name + 'u' + useDraftkings(game.odds).overUnder">
-                            u{{ useDraftkings(game.odds).overUnder }}         
-                    </td>     
-                </tr>
-                <tr><td colspan="4"><hr></td></tr>
-            </table>
+        <div id="selected-picks">
+            <strong>
+            Selected Picks:             
+                <ul>
+                    <li v-for="(pick,index) in picks"
+                        :key = "index"
+                        :id="pick+'selected-pick'">
+                        {{ pick }}
+                    </li>
+                </ul>
+            </strong>
+            <button @click = "selectpicks()">Select</button>
         </div>
+        <div id="all-game-tables">
+            <div v-cloak v-for="(game,index) in games" :key = "game.gameID" :class="game.gameID+'game-table'">
+                <table v-if="validGame(game.date)" :class="game.gameID+'game-table'">
+                    <tr :class="'away-row-'+index+'-'+game.gameID">
+                        <td rowspan = "2">  {{ epochToDate(game.date) }}      </td>
+                        <td class = "matchup-cell">
+                            {{ game.team1Name }}                    
+                        </td>
+                        <td class="pickem-cell">          
+                            <label :for="game.gameID+'-away-label'"></label>
+                            <input v-model="picks" type="checkbox" :id="game.gameID+'-away-label'" :value="game.team1Name + favOrDog(useDraftkings(game.odds))[0]">
+                                {{ favOrDog(useDraftkings(game.odds))[0] }}
+                        </td>
+                        <td class="pickem-cell">
+                            <label :for="game.gameID+'-over-label'"></label>
+                            <input v-model="picks" type="checkbox" :id="game.gameID+'-over-label'" :value="game.team2Name + 'vs.' + game.team1Name + 'o' + useDraftkings(game.odds).overUnder">
+                                o{{ useDraftkings(game.odds).overUnder }}
+                        </td>     
+                    </tr>        
+                    <tr :class="'home-row-'+index+'-'+game.gameID">
+                        <td v-text = "game.team2Name" class = "matchup-cell">
+                        </td>
+                        <td class="pickem-cell">
+                            <label :for="game.gameID+'-home-label'"></label>
+                            <input v-model="picks" type="checkbox" :id="game.gameID+'-home-label'" :value="game.team2Name + favOrDog(useDraftkings(game.odds))[1]">
+                                {{ favOrDog(useDraftkings(game.odds))[1] }}
+                        </td>
+                        <td class="pickem-cell">         
+                            <label :for="game.gameID+'-under-label'"></label>
+                            <input v-model="picks" type="checkbox" :id="game.gameID+'-under-label'" :value="game.team2Name + 'vs.' + game.team1Name + 'u' + useDraftkings(game.odds).overUnder">
+                                u{{ useDraftkings(game.odds).overUnder }}         
+                        </td>     
+                    </tr>
+                    <tr><td colspan="4"><hr></td></tr>
+                </table>
+            </div>
+        </div>
+        
     </div>
 </template>
 
@@ -77,18 +92,22 @@ export default {
         },
         validGame(game_date) {
             // Checks if the game is valid to be shown
-            let today = new Date();
-            let next_mon = today.setDate(today.getDate() + (((1 + 7 - today.getDay()) % 7) || 7));
-            let now = Date.now();
-            if (now >= game_date) {
-                return false
-            }
-            else if (game_date > next_mon){
-                return false
-            }
-            else {
-                return true
-            }
+            // let today = new Date();
+            // let next_mon = today.setDate(today.getDate() + (((1 + 7 - today.getDay()) % 7) || 7));
+            // let now = Date.now();
+            // if (now >= game_date) {
+            //     return false
+            // }
+            // else if (game_date > next_mon){
+            //     return false
+            // }
+            // else {
+            //     return true
+            // }
+            
+            // FCT COMMENTED OUT FOR PRESEASON
+            console.log(game_date);
+            return true
         },
         epochToDate(game_date) {
             // converts epoch to clean date
@@ -118,12 +137,14 @@ export default {
         }
     },
     mounted() {
+        console.log('got to mount.')
         axios
         .get(all_games_url)
         .then(response => {
             console.log('SUCCESS');
-            console.log(response.data.results);
-            this.games = response.data.results
+            // Only send next 20 games. No need to send more
+            console.log(response.data.results.slice(0,20));
+            this.games = response.data.results.slice(0,20)
             })
         .catch(error => {
             console.log(error)
@@ -135,6 +156,7 @@ export default {
 </script>
 
 <style scoped>
+
 
 table {
     margin: 0 auto;
@@ -164,5 +186,32 @@ table {
     background-color: dodgerblue;
     color:white;
     cursor:pointer;
+}
+
+#all-game-tables {
+    margin:0 auto;
+    float:left;
+    width:33%
+}
+
+#empty-div{
+    width:33%;
+    height:10000px;
+    float:left;
+}
+
+#selected-picks {
+    float:right;
+    position: sticky;
+    top:0;
+    right:0;
+    z-index:10;
+    border: 1px solid black;
+     /* padding:15px; */
+    /* margin-top:10px;
+    margin-left:50px;
+    margin-right:50px;
+    margin-bottom:50px;  */
+    width:33%;
 }
 </style>
