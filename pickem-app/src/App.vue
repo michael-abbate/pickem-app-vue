@@ -1,4 +1,5 @@
 <template>
+<div class="vl"></div>
   <nav>
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link>
@@ -8,6 +9,10 @@
 </template>
 
 <script>
+//TODO: Send a payload JSON with game ID and other info as pick, including a clean pick name
+//TODO: clean up selected picks box 
+//TODO; start to save submissions
+
 // import ShowPicks from './components/ShowPicks.vue'
 
 // export default {
@@ -19,6 +24,15 @@
 </script>
 
 <style>
+.vl {
+  border-left: 3px solid red;
+  height: 2500px;
+  position: absolute;
+  left: 50%;
+  margin-left: -3px;
+  top: 0;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

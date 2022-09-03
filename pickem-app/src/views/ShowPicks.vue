@@ -1,58 +1,63 @@
 <template>
     <div id="show-picks">
-     
-        <div id="selected-picks">
-            <strong>
-            Selected Picks:
-                <ul>
-                    <li v-for="(pick,index) in picks"
-                        :key = "index"
-                        :id="pick+'selected-pick'">
-                        {{ pick }}
-                    </li>
-                </ul>
-            </strong>
+        <div class="grid-cell">
             
-            <button @click = "selectpicks()">Select</button>
         </div>
-        <div id="all-game-tables">
-            <div v-cloak v-for="(game,index) in games" :key = "game.gameID" :class="game.gameID+'game-table'">
-                <table v-if="validGame(game.date)" :class="game.gameID+'game-table'">
-                    <tr :class="'away-row-'+index+'-'+game.gameID">
-                        <td rowspan = "2">  {{ epochToDate(game.date) }}      </td>
-                        <td class = "matchup-cell">
-                            {{ game.team1Name }}                    
-                        </td>
-                        <td class="pickem-cell">          
-                            <label :for="game.gameID+'-away-label'"></label>
-                            <input v-model="picks" type="checkbox" :id="game.gameID+'-away-label'" :value="game.team1Name + favOrDog(useDraftkings(game.odds))[0]">
-                                {{ favOrDog(useDraftkings(game.odds))[0] }}
-                        </td>
-                        <td class="pickem-cell">
-                            <label :for="game.gameID+'-over-label'"></label>
-                            <input v-model="picks" type="checkbox" :id="game.gameID+'-over-label'" :value="game.team2Name + 'vs.' + game.team1Name + 'o' + useDraftkings(game.odds).overUnder">
-                                o{{ useDraftkings(game.odds).overUnder }}
-                        </td>     
-                    </tr>        
-                    <tr :class="'home-row-'+index+'-'+game.gameID">
-                        <td v-text = "game.team2Name" class = "matchup-cell">
-                        </td>
-                        <td class="pickem-cell">
-                            <label :for="game.gameID+'-home-label'"></label>
-                            <input v-model="picks" type="checkbox" :id="game.gameID+'-home-label'" :value="game.team2Name + favOrDog(useDraftkings(game.odds))[1]">
-                                {{ favOrDog(useDraftkings(game.odds))[1] }}
-                        </td>
-                        <td class="pickem-cell">         
-                            <label :for="game.gameID+'-under-label'"></label>
-                            <input v-model="picks" type="checkbox" :id="game.gameID+'-under-label'" :value="game.team2Name + 'vs.' + game.team1Name + 'u' + useDraftkings(game.odds).overUnder">
-                                u{{ useDraftkings(game.odds).overUnder }}         
-                        </td>     
-                    </tr>
-                    <tr><td colspan="4"><hr></td></tr>
-                </table>
+        <div class="grid-cell">
+            <div id="all-game-tables">
+                <div v-cloak v-for="(game,index) in games" :key = "game.gameID" :class="game.gameID+'game-table'">
+                    <table v-if="validGame(game.date)" :class="game.gameID+'game-table'">
+                        <tr :class="'away-row-'+index+'-'+game.gameID">
+                            <td rowspan = "2">  {{ epochToDate(game.date) }}      </td>
+                            <td class = "matchup-cell">
+                                {{ game.team1Name }}                    
+                            </td>
+                            <td class="pickem-cell">          
+                                <label :for="game.gameID+'-away-label'"></label>
+                                <input v-model="picks" type="checkbox" :id="game.gameID+'-away-label'" :value="game.team1Name + favOrDog(useDraftkings(game.odds))[0]">
+                                    {{ favOrDog(useDraftkings(game.odds))[0] }}
+                            </td>
+                            <td class="pickem-cell">
+                                <label :for="game.gameID+'-over-label'"></label>
+                                <input v-model="picks" type="checkbox" :id="game.gameID+'-over-label'" :value="game.team2Name + 'vs.' + game.team1Name + 'o' + useDraftkings(game.odds).overUnder">
+                                    o{{ useDraftkings(game.odds).overUnder }}
+                            </td>     
+                        </tr>        
+                        <tr :class="'home-row-'+index+'-'+game.gameID">
+                            <td v-text = "game.team2Name" class = "matchup-cell">
+                            </td>
+                            <td class="pickem-cell">
+                                <label :for="game.gameID+'-home-label'"></label>
+                                <input v-model="picks" type="checkbox" :id="game.gameID+'-home-label'" :value="game.team2Name + favOrDog(useDraftkings(game.odds))[1]">
+                                    {{ favOrDog(useDraftkings(game.odds))[1] }}
+                            </td>
+                            <td class="pickem-cell">         
+                                <label :for="game.gameID+'-under-label'"></label>
+                                <input v-model="picks" type="checkbox" :id="game.gameID+'-under-label'" :value="game.team2Name + 'vs.' + game.team1Name + 'u' + useDraftkings(game.odds).overUnder">
+                                    u{{ useDraftkings(game.odds).overUnder }}         
+                            </td>     
+                        </tr>
+                        <tr><td colspan="4"><hr></td></tr>
+                    </table>
+                </div>
             </div>
         </div>
-        
+        <div class="grid-cell" id="selected-picks-wrapper">
+            <div id="selected-picks">
+                <strong>
+                Selected Picks:
+                    <ul>
+                        <li v-for="(pick,index) in picks"
+                            :key = "index"
+                            :id="pick+'selected-pick'">
+                            {{ pick }}
+                        </li>
+                    </ul>
+                </strong>
+                
+                <button @click = "selectpicks()">Select</button>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -156,6 +161,13 @@ export default {
 
 <style scoped>
 
+#show-picks {
+    display:grid;
+    /* grid-template-columns: auto auto auto; */
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows:auto;
+
+}
 
 table {
     margin: 0 auto;
@@ -173,7 +185,6 @@ table {
 }
 .pickem-cell {
     padding: 15px;
-    /* border:solid 1px dodgerblue; */
     background: dodgerblue;
     color: white;
     margin: 0 auto;
@@ -190,35 +201,21 @@ table {
     cursor:pointer;
 }
 
-#all-game-tables {
-    margin:0 auto;
-    position: relative;
-    /* float:left; */
-    /* width:50% */
-}
-
-/* #empty-div{
-    width:33%;
-    height:10000px;
-    float:left;
-} */
 
 #selected-picks {
     /* float:right; */
     color:#fff;
-    position: fixed;
-    top:10;
-    right:0;
-    z-index:10;
+    
+    /* position: fixed; */
+    /* top:10; */
+    /* right:0; */
+    /* z-index:10; */
     /* border: 1px solid black; */
     background-color: dodgerblue;
     border-radius: 8px;
-    padding:1vw;
-    /* margin-top:10px;
-    margin-left:50px;
-    
-    margin-bottom:50px;  */
-    /* width:15%; */
-    margin-right:7vw;
+    padding:.8vw;
+    margin:0 auto;
+    width:50%;
+    /* margin-right:7vw; */
 }
 </style>

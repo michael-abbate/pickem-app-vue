@@ -44,7 +44,15 @@ table {
     margin: 0 auto;
     font-size: 2vw;
     border-collapse:separate; 
-    border-spacing:.5em!important;
-    color:#fff
+    border-spacing:1em!important;
+    color:#fff;
+    text-align: left;
+}
+select {
+    height:1.75em;
+    width:10em;
+    font-size: 1.5vw;
+    border-radius:15px;
+    /* padding: 5px; */
 }
 </style>
