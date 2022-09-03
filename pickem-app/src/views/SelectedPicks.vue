@@ -42,8 +42,9 @@ export default {
 <style scoped>
 table {
     margin: 0 auto;
-    font-size:  1.1vw;
+    font-size: 2vw;
     border-collapse:separate; 
     border-spacing:.5em!important;
+    color:#fff
 }
 </style>

@@ -28,12 +28,12 @@
 }
 
 nav {
-  padding: 30px;
+  padding-top: 30px;
 }
 
 nav a {
   font-weight: bold;
-  color: #2c3e50;
+  color: #fff;
 }
 
 nav a.router-link-exact-active {
@@ -42,14 +42,16 @@ nav a.router-link-exact-active {
 
 
 body {
-
     font-family:  Helvetica, Arial, sans-serif;
+    background-color: #1f1f1f;
+    color:white;
 }
 
 h1 {
-    margin: 80px auto;
+    margin: 40px auto;
     font-size: 42px;
     text-align: center;
     min-height: 49px;
+    color:#fff;
 }
 </style>

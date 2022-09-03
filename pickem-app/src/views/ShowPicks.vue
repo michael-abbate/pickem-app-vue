@@ -161,29 +161,32 @@ table {
     margin: 0 auto;
     border-collapse:separate; 
     border-spacing:.5em!important;
+    color:white;
+    font-size: 1.4vw;
+
     
 }
 .matchup-cell {
     padding-right:.5em;
     width: 5em;
+    color:white;
 }
 .pickem-cell {
     padding: 15px;
-    border:solid 2px dodgerblue;
-    background: white;
-    color: dodgerblue;
+    /* border:solid 1px dodgerblue; */
+    background: dodgerblue;
+    color: white;
     margin: 0 auto;
     cursor: pointer;
     border-radius:5px;
     text-align:center;
     width: 6em;
     height:1em;
-    font-size: 1.1vw;
 }
 
 .pickem-cell:hover  {
-    background-color: dodgerblue;
-    color:white;
+    background-color: white;
+    color:dodgerblue;
     cursor:pointer;
 }
 
@@ -210,12 +213,12 @@ table {
     /* border: 1px solid black; */
     background-color: dodgerblue;
     border-radius: 8px;
-     padding:1vw;
+    padding:1vw;
     /* margin-top:10px;
     margin-left:50px;
     
     margin-bottom:50px;  */
     /* width:15%; */
-    margin-right:3vw;
+    margin-right:7vw;
 }
 </style>
