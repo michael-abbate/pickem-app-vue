@@ -1,11 +1,9 @@
 <template>
     <div id="show-picks">
-        <div id = "empty-div">
-            
-        </div>
+     
         <div id="selected-picks">
             <strong>
-            Selected Picks:             
+            Selected Picks:
                 <ul>
                     <li v-for="(pick,index) in picks"
                         :key = "index"
@@ -14,6 +12,7 @@
                     </li>
                 </ul>
             </strong>
+            
             <button @click = "selectpicks()">Select</button>
         </div>
         <div id="all-game-tables">
@@ -190,28 +189,33 @@ table {
 
 #all-game-tables {
     margin:0 auto;
-    float:left;
-    width:33%
+    position: relative;
+    /* float:left; */
+    /* width:50% */
 }
 
-#empty-div{
+/* #empty-div{
     width:33%;
     height:10000px;
     float:left;
-}
+} */
 
 #selected-picks {
-    float:right;
-    position: sticky;
-    top:0;
+    /* float:right; */
+    color:#fff;
+    position: fixed;
+    top:10;
     right:0;
     z-index:10;
-    border: 1px solid black;
-     /* padding:15px; */
+    /* border: 1px solid black; */
+    background-color: dodgerblue;
+    border-radius: 8px;
+     padding:1vw;
     /* margin-top:10px;
     margin-left:50px;
-    margin-right:50px;
+    
     margin-bottom:50px;  */
-    width:33%;
+    /* width:15%; */
+    margin-right:3vw;
 }
 </style>
