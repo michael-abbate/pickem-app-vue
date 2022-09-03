@@ -48,11 +48,30 @@ table {
     color:#fff;
     text-align: left;
 }
+/* 
 select {
     height:1.75em;
     width:10em;
     font-size: 1.5vw;
     border-radius:15px;
     /* padding: 5px; */
+/* }
+*/
+
+select {
+    background-color: #fff;
+    font-size: 1vw;
+    border-radius: 8px;
+    border:1px white;
+    color:#1f1f1f;
+    height:3vw;
+    width:10vw;
+}
+
+select:hover {
+    cursor: pointer;
+    background-color: #1f1f1f;
+    font-weight:bold;
+    color:#fff;
 }
 </style>

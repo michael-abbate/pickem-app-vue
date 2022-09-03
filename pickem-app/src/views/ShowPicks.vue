@@ -57,7 +57,7 @@
                     </ul>
                 </strong>
                 
-                <button @click = "selectpicks()">Select</button>
+                <button @click = "selectpicks()">SELECT</button>
             </div>
         </div>
     </div>
@@ -202,13 +202,14 @@ table {
     background-color: white;
     color:dodgerblue;
     cursor:pointer;
+    font-weight: bold;
 }
 
 
 #selected-picks {
     /* float:right; */
     color:#fff;
-    
+    font-size:1.5vw;
     /* position: fixed; */
     /* top:10; */
     /* right:0; */
@@ -220,5 +221,29 @@ table {
     margin:0 auto;
     width:50%;
     /* margin-right:7vw; */
+}
+
+ul, li {
+    list-style: none;
+    text-decoration-style: None;
+    text-align: left;
+    overflow-wrap: break-word;
+}
+
+button {
+    background-color: #1f1f1f;
+    border-radius: 8px;
+    font-size: 1vw;
+    border:none;
+    color:#fff;
+    height:2vw;
+    width:6vw;
+}
+
+button:hover {
+    cursor: pointer;
+    background-color: #fff;
+    font-weight:bold;
+    color:#1f1f1f;
 }
 </style>
