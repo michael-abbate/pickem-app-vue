@@ -8,7 +8,9 @@
                 <div v-cloak v-for="(game,index) in games" :key = "game.gameID" :class="game.gameID+'game-table'">
                     <table v-if="validGame(game.date)" :class="game.gameID+'game-table'">
                         <tr :class="'away-row-'+index+'-'+game.gameID">
-                            <td rowspan = "2">  {{ epochToDate(game.date) }}      </td>
+                            <td rowspan = "2" class="date-cell">  
+                                {{ epochToDate(game.date) }}      
+                            </td>
                             <td class = "matchup-cell">
                                 {{ game.team1Name }}                    
                             </td>
@@ -178,21 +180,22 @@ table {
 
     
 }
-.matchup-cell {
-    padding-right:.5em;
+.matchup-cell, .date-cell {
+    /* padding-right:.5em; */
     width: 5em;
+    text-align:left;
     color:white;
 }
 .pickem-cell {
-    padding: 15px;
+    text-align: center;
     background: dodgerblue;
     color: white;
     margin: 0 auto;
     cursor: pointer;
     border-radius:5px;
     text-align:center;
-    width: 6em;
-    height:1em;
+    width: 6.5em;
+    height:2.5em;
 }
 
 .pickem-cell:hover  {

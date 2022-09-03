@@ -62,10 +62,10 @@ body {
 }
 
 h1 {
-    margin: 40px auto;
-    font-size: 42px;
+    margin: 30px auto;
+    font-size: 3vw;
     text-align: center;
-    min-height: 49px;
+    /* min-height: 49px; */
     color:#fff;
 }
 </style>
