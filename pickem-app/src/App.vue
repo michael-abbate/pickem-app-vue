@@ -9,10 +9,18 @@
 </template>
 
 <script>
+// Frontend
+//TODO: remove checkboxes, on click of pick anywhere in the box it selects it
 //TODO: Send a payload JSON with game ID and other info as pick, including a clean pick name
-//TODO: clean up selected picks box 
-//TODO; start to save submissions
+//TODO: start to save submissions
+//TODO: Mobile --> if mobile, adjust showpicks component to 75%/25% split and get rid of empty div.
 
+// Backend
+//TODO: set up data structure for user's submitted picks, user's info, groups
+//TODO: submit actual picks to database (or to email or gsheet for now)
+//TODO: Update proxy for API in prod env.
+
+// *********************************************************************************
 // import ShowPicks from './components/ShowPicks.vue'
 
 // export default {
@@ -38,7 +46,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  /* color: #2c3e50; */
 }
 
 nav {
