@@ -19,6 +19,7 @@
 //TODO: set up data structure for user's submitted picks, user's info, groups
 //TODO: submit actual picks to database (or to email or gsheet for now)
 //TODO: Update proxy for API in prod env.
+//TODO: use v-model in selectedpicks submission
 
 // *********************************************************************************
 // import ShowPicks from './components/ShowPicks.vue'
