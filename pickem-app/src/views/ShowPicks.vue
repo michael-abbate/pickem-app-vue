@@ -14,30 +14,34 @@
                             <td class = "matchup-cell">
                                 {{ game.team1Name }}                    
                             </td>
-                            <td class="pickem-cell">          
-                                <label :for="game.gameID+'-away-label'"></label>
-                                <input v-model="picks" type="checkbox" :id="game.gameID+'-away-label'" :value="game.team1Name + favOrDog(useDraftkings(game.odds))[0]">
-                                    {{ favOrDog(useDraftkings(game.odds))[0] }}
-                            </td>
-                            <td class="pickem-cell">
-                                <label :for="game.gameID+'-over-label'"></label>
-                                <input v-model="picks" type="checkbox" :id="game.gameID+'-over-label'" :value="game.team2Name + 'vs.' + game.team1Name + 'o' + useDraftkings(game.odds).overUnder">
-                                    o{{ useDraftkings(game.odds).overUnder }}
-                            </td>     
+                            <label :for="game.gameID+'-away-label'">
+                                <td class="pickem-cell">                                              
+                                        <input v-model="picks" type="checkbox" :id="game.gameID+'-away-label'" :value="game.team1Name + favOrDog(useDraftkings(game.odds))[0]">
+                                            {{ favOrDog(useDraftkings(game.odds))[0] }}                                    
+                                </td>
+                            </label>
+                            <label :for="game.gameID+'-over-label'">
+                                <td class="pickem-cell">
+                                        <input v-model="picks" type="checkbox" :id="game.gameID+'-over-label'" :value="game.team2Name + 'vs.' + game.team1Name + 'o' + useDraftkings(game.odds).overUnder">
+                                            o{{ useDraftkings(game.odds).overUnder }}
+                                </td>     
+                            </label>
                         </tr>        
                         <tr :class="'home-row-'+index+'-'+game.gameID">
                             <td v-text = "game.team2Name" class = "matchup-cell">
                             </td>
-                            <td class="pickem-cell">
-                                <label :for="game.gameID+'-home-label'"></label>
-                                <input v-model="picks" type="checkbox" :id="game.gameID+'-home-label'" :value="game.team2Name + favOrDog(useDraftkings(game.odds))[1]">
-                                    {{ favOrDog(useDraftkings(game.odds))[1] }}
-                            </td>
-                            <td class="pickem-cell">         
-                                <label :for="game.gameID+'-under-label'"></label>
-                                <input v-model="picks" type="checkbox" :id="game.gameID+'-under-label'" :value="game.team2Name + 'vs.' + game.team1Name + 'u' + useDraftkings(game.odds).overUnder">
-                                    u{{ useDraftkings(game.odds).overUnder }}         
-                            </td>     
+                            <label :for="game.gameID+'-home-label'">
+                                <td class="pickem-cell">
+                                        <input v-model="picks" type="checkbox" :id="game.gameID+'-home-label'" :value="game.team2Name + favOrDog(useDraftkings(game.odds))[1]">
+                                            {{ favOrDog(useDraftkings(game.odds))[1] }}
+                                </td>
+                            </label>
+                            <label :for="game.gameID+'-under-label'">
+                                <td class="pickem-cell">         
+                                        <input v-model="picks" type="checkbox" :id="game.gameID+'-under-label'" :value="game.team2Name + 'vs.' + game.team1Name + 'u' + useDraftkings(game.odds).overUnder">
+                                            u{{ useDraftkings(game.odds).overUnder }} 
+                                </td>     
+                            </label>        
                         </tr>
                         <tr><td colspan="4"><hr></td></tr>
                     </table>
@@ -69,6 +73,7 @@
 import axios from 'axios';
 
 let all_games_url = "http://localhost:8080/api/odds.json?sport=nfl"
+// let all_games_url = "http://192.168.68.104/api/odds.json?sport=nfl"
 
 export default {
     name: "ShowPicks",
@@ -98,22 +103,22 @@ export default {
         },
         validGame(game_date) {
             // Checks if the game is valid to be shown
-            // let today = new Date();
-            // let next_mon = today.setDate(today.getDate() + (((1 + 7 - today.getDay()) % 7) || 7));
-            // let now = Date.now();
-            // if (now >= game_date) {
-            //     return false
-            // }
-            // else if (game_date > next_mon){
-            //     return false
-            // }
-            // else {
-            //     return true
-            // }
+            let today = new Date();
+            let next_mon = today.setDate(today.getDate() + (((1 + 7 - today.getDay()) % 7) || 7));
+            let now = Date.now();
+            if (now >= game_date) {
+                return false
+            }
+            else if (game_date > next_mon){
+                return false
+            }
+            else {
+                return true
+            }
             
             // FCT COMMENTED OUT FOR PRESEASON
-            console.log(game_date);
-            return true
+            // console.log(game_date);
+            // return true
         },
         epochToDate(game_date) {
             // converts epoch to clean date
@@ -176,35 +181,51 @@ table {
     border-collapse:separate; 
     border-spacing:.5em!important;
     color:white;
-    font-size: 1.4vw;
+    /* font-size: 1.2vw; */
+    font-size:1vw;
 
-    
 }
 .matchup-cell, .date-cell {
     /* padding-right:.5em; */
-    width: 5em;
+    width: 6.5vw;
     text-align:left;
     color:white;
 }
-.pickem-cell {
-    text-align: center;
+
+label {
+    display:table-cell;
     background: dodgerblue;
     color: white;
     margin: 0 auto;
     cursor: pointer;
     border-radius:5px;
-    text-align:center;
-    width: 6.5em;
-    height:2.5em;
+    border:none;
+    width: 7vw !important;
+    height: 2vw !important;
+    align-items: middle;
+    vertical-align: middle;
+}
+label input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
 }
 
-.pickem-cell:hover  {
+label:hover {
+    cursor: pointer;
     background-color: white;
     color:dodgerblue;
     cursor:pointer;
     font-weight: bold;
 }
 
+ .pickem-cell {
+   text-align: center;
+   width: 7vw !important;
+   height: 2vw !important;
+} 
 
 #selected-picks {
     /* float:right; */
