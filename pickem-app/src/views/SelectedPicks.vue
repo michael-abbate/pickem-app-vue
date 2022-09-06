@@ -62,7 +62,7 @@ select {
     background-color: #fff;
     font-size: 1vw;
     border-radius: 8px;
-    border:1px white;
+    border-color:white;
     color:#1f1f1f;
     height:3vw;
     width:10vw;
@@ -71,6 +71,7 @@ select {
 select:hover {
     cursor: pointer;
     background-color: #1f1f1f;
+    border-color:white;
     font-weight:bold;
     color:#fff;
 }
