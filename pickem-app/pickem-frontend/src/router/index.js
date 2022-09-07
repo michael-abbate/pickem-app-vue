@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'pickem-frontend/node_modules/vue-router'
+import { createRouter, createWebHistory } from '../../node_modules/vue-router'
 import ShowPicks from '../views/ShowPicks.vue'
 import SelectedPicks from '../views/SelectedPicks.vue'
 

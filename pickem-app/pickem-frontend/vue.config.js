@@ -1,4 +1,4 @@
-const { defineConfig } = require('pickem-frontend/node_modules/@vue/cli-service')
+const { defineConfig } = require('./node_modules/@vue/cli-service')
 module.exports = defineConfig({
   transpileDependencies: true,
   devServer: {
