@@ -73,9 +73,10 @@
 import axios from 'axios';
 
 const port = process.env.PORT || 8080;
-let all_games_url = "api/odds.json?sport=nfl"
-if (port != 8080){
-    all_games_url = "https://areyouwatchingthis.com/api/odds.json?sport=nfl"
+console.log(`running on port ${port}`);
+let all_games_url = "api/odds.json?sport=nfl";
+if (port != 8080) {
+    all_games_url = "https://areyouwatchingthis.com/api/odds.json?sport=nfl";
 }
 
 
