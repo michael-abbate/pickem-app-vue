@@ -1,4 +1,4 @@
-import { createApp } from 'vue'
+import { createApp } from 'pickem-frontend/node_modules/vue'
 import App from './App.vue'
 import router from './router'
 

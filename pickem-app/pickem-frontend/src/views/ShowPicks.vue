@@ -72,7 +72,7 @@
 
 import axios from 'axios';
 
-let all_games_url = "http://localhost:8080/api/odds.json?sport=nfl"
+let all_games_url = "/api/odds.json?sport=nfl"
 // let all_games_url = "http://192.168.68.104/api/odds.json?sport=nfl"
 
 export default {
@@ -221,7 +221,7 @@ label:hover {
     font-weight: bold;
 }
 
- .pickem-cell {
+.pickem-cell {
    text-align: center;
    width: 7vw !important;
    height: 2vw !important;
