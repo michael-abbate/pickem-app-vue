@@ -72,10 +72,9 @@
 
 import axios from 'axios';
 
-const port = process.env.PORT || 8080;
-console.log(`running on port ${port}`);
+let env = process.env.APP_ENV || 'dev';
 let all_games_url = "api/odds.json?sport=nfl";
-if (port != 8080) {
+if (env != "prod") {
     all_games_url = "https://areyouwatchingthis.com/api/odds.json?sport=nfl";
 }
 
