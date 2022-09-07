@@ -72,7 +72,8 @@
 
 import axios from 'axios';
 
-let env = process.env.APP_ENV || 'dev';
+// let env = process.env.APP_ENV || 'dev';
+let env = 'prod';
 console.log(`APP_ENV: ${env}`)
 let all_games_url = "api/odds.json?sport=nfl";
 if (env === "prod") {
