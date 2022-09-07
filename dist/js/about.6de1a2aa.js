@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkpickem_app"]=self["webpackChunkpickem_app"]||[]).push([[443],{7381:function(n,a,e){e.r(a),e.d(a,{default:function(){return f}});var u=e(3396);const t={class:"about"},c=(0,u._)("h1",null,"This is an about page",-1),r=[c];function s(n,a){return(0,u.wg)(),(0,u.iD)("div",t,r)}var i=e(89);const p={},o=(0,i.Z)(p,[["render",s]]);var f=o}}]);
+//# sourceMappingURL=about.6de1a2aa.js.map
