@@ -80,6 +80,7 @@ if (env === "prod") {
     all_games_url = "https://areyouwatchingthis.com/api/odds.json?sport=nfl";
 }
 
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 
 // let all_games_url = "http://192.168.68.104/api/odds.json?sport=nfl"
 
