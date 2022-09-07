@@ -1,5 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import history from 'connect-history-api-fallback';
 
 const port = process.env.PORT || 8000
 const app = express();
