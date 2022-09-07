@@ -76,7 +76,7 @@ let env = process.env.APP_ENV || 'dev';
 console.log(`APP_ENV: ${env}`)
 let all_games_url = "api/odds.json?sport=nfl";
 if (env != "prod") {
-    all_games_url = "https://migs-pickem.herokuapp.com/https://areyouwatchingthis.com/api/odds.json?sport=nfl";
+    all_games_url = "https://areyouwatchingthis.com/api/odds.json?sport=nfl";
 }
 
 
