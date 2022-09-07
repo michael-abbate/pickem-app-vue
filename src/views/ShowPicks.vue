@@ -80,7 +80,7 @@ if (env === "prod") {
     all_games_url = "https://areyouwatchingthis.com/api/odds.json?sport=nfl";
 }
 
-axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+// axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 
 // let all_games_url = "http://192.168.68.104/api/odds.json?sport=nfl"
 
@@ -100,12 +100,15 @@ export default {
             }
         }
     },
-    async created() {
+    created() {
+
+    axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+
     //     const result = await axios.get("https://localhost:8080/api/odds.json?sport=nfl");
     //     const games = result;
     //     this.games = games;
     // },
-    await axios.get(all_games_url)
+    axios.get(all_games_url)
     .then(response => {
         console.log('SUCCESSFULLY HIT API');
         // Only send next 20 games. No need to send more
