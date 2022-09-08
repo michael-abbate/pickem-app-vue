@@ -21,6 +21,9 @@
 //TODO: Update proxy for API in prod env.
 //TODO: use v-model in selectedpicks submission
 
+
+//BOTH
+// need different build scripts for front and backend!
 // *********************************************************************************
 // import ShowPicks from './components/ShowPicks.vue'
 

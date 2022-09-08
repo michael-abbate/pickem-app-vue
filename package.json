@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "babel server.js --out-dir ./build",
     "lint": "vue-cli-service lint",
-    "start": "node server.js",
+    "start": "node ./build/server.js",
     "dev": "npx nodemon --exec npx babel-node server.js"
   },
   "dependencies": {

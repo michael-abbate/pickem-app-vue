@@ -18,6 +18,7 @@ app.use((req, res, next) => {
   });
   
 app.get('/showpicks', (req, res) => {
+console.log("requesting odds from express server side.")
 request(
     { url: 'https://areyouwatchingthis.com/api/odds.json?sport=nfl' },
     (error, response, body) => {
