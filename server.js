@@ -1,12 +1,16 @@
 // import axios from 'axios';
+import history from 'connect-history-api-fallback';
+import path from 'path';
 const express = require('express');
 const request = require('request'); 
 
-const port = process.env.PORT || 8081;
+const port = process.env.PORT || 8000;
 const app = express();
 
-app.use(express.static(__dirname + "/dist/"));
+// app.use(express.static(__dirname + "/dist/"));
+app.use(express.static(path.resolve(__dirname,'dist/')))
 app.use(express.json());
+app.use(history());
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -20,15 +24,19 @@ request(
     if (error || response.statusCode !== 200) {
         return res.status(500).json({ type: 'error', message: err.message });
     }
-    return res.json(JSON.parse(body));
+    res.json(JSON.parse(body));
     }
 )
 });
 
 
-app.get(/.*/, function(req,res) {
-    res.sendFile(__dirname + "/dist/index.html");
-});
+// app.get(/.*/, function(req,res) {
+//     res.sendFile(__dirname + "/dist/index.html");
+// });
+
+app.get('*', (req, res)=> {
+    res.sendFile(path.join(__dirname,"dist/index.html"));
+})
 
 // ounted() {
 //     console.log('got to mount.')
@@ -69,5 +77,5 @@ app.get(/.*/, function(req,res) {
 // console.log('Server started...');
 
 app.listen(port, () => {
-    console.log('Hello! Pickem-app server is running.');
+    console.log(`Hello! Pickem-app server is running on port ${port}.`);
 });

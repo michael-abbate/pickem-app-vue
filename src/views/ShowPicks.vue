@@ -103,6 +103,7 @@ export default {
     async created() {
         // const result = await axios.get("/api/odds.json?sport=nfl");
         const result = await axios.get("/showpicks");
+        // const result = await axios.get("http://localhost:8000/showpicks");
         const games = result.data.results.slice(0,20);
         console.log('Here are the games!');
         console.log(games);
