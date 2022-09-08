@@ -1,10 +1,30 @@
 // import axios from 'axios';
 const express = require('express');
+const request = require('request'); 
 
 const port = process.env.PORT || 8080;
 const app = express();
 
 app.use(express.static(__dirname + "/dist/"));
+app.use(express.json());
+
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    next();
+  });
+  
+app.get('/showpicks', (req, res) => {
+request(
+    { url: 'https://areyouwatchingthis.com/api/odds.json?sport=nfl' },
+    (error, response, body) => {
+    if (error || response.statusCode !== 200) {
+        return res.status(500).json({ type: 'error', message: err.message });
+    }
+    res.json(JSON.parse(body));
+    }
+)
+});
+
 
 app.get(/.*/, function(req,res) {
     res.sendFile(__dirname + "/dist/index.html");
