@@ -101,8 +101,11 @@ export default {
         }
     },
     async created() {
-        const result = await axios.get("/api/odds.json?sport=nfl");
+        // const result = await axios.get("/api/odds.json?sport=nfl");
+        const result = await axios.get("/showpicks");
         const games = result.data.results.slice(0,20);
+        console.log('Here are the games!');
+        console.log(games);
         this.games = games;
     },
     //CORRECT ****************************

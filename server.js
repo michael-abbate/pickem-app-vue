@@ -2,7 +2,7 @@
 const express = require('express');
 const request = require('request'); 
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 8081;
 const app = express();
 
 app.use(express.static(__dirname + "/dist/"));
@@ -20,7 +20,7 @@ request(
     if (error || response.statusCode !== 200) {
         return res.status(500).json({ type: 'error', message: err.message });
     }
-    res.json(JSON.parse(body));
+    return res.json(JSON.parse(body));
     }
 )
 });
