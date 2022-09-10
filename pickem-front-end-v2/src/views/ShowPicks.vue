@@ -1,7 +1,6 @@
 <template>
     <div id="show-picks">
         <div class="grid-cell">
-            {{ picks }}
         </div>
         <div class="grid-cell">
             <div id="all-game-tables">

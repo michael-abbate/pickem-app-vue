@@ -1,6 +1,5 @@
 <template>
     <div class = "selected-picks-container">
-        {{ picks }}
         <table class="select-picks-table">
             <tr v-for="(type,i) in types_of_picks" :key="i" :class="type+'-row'">
                 <td>
