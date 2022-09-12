@@ -1,8 +1,8 @@
 <template>
     <div id="show-picks">
-        <div class="grid-cell">
+        <div class="grid-cell-1">
         </div>
-        <div class="grid-cell">
+        <div class="grid-cell-2">
             <div id="all-game-tables">
                 <div v-cloak v-for="(game,index) in games" :key = "game.gameID" :class="game.gameID+'game-table'">
                     <table v-if="validGame(game.date)" :class="game.gameID+'game-table'">
@@ -16,13 +16,13 @@
                             <label :for="game.gameID+'-away-label'">
                                 <td class="pickem-cell">                                              
                                         <input v-model="picks" type="checkbox" :id="game.gameID+'-away-label'" :value="game.team1Name + favOrDog(useDraftkings(game.odds))[0]">
-                                            {{ favOrDog(useDraftkings(game.odds))[0] }}                                    
+                                        <span>{{ favOrDog(useDraftkings(game.odds))[0] }}</span>
                                 </td>
                             </label>
                             <label :for="game.gameID+'-over-label'">
                                 <td class="pickem-cell">
                                         <input v-model="picks" type="checkbox" :id="game.gameID+'-over-label'" :value="game.team2Name + 'vs.' + game.team1Name + 'o' + useDraftkings(game.odds).overUnder">
-                                            o{{ useDraftkings(game.odds).overUnder }}
+                                            <span>o{{ useDraftkings(game.odds).overUnder }}</span>
                                 </td>     
                             </label>
                         </tr>        
@@ -32,13 +32,13 @@
                             <label :for="game.gameID+'-home-label'">
                                 <td class="pickem-cell">
                                         <input v-model="picks" type="checkbox" :id="game.gameID+'-home-label'" :value="game.team2Name + favOrDog(useDraftkings(game.odds))[1]">
-                                            {{ favOrDog(useDraftkings(game.odds))[1] }}
+                                            <span>{{ favOrDog(useDraftkings(game.odds))[1] }}</span>
                                 </td>
                             </label>
                             <label :for="game.gameID+'-under-label'">
                                 <td class="pickem-cell">         
                                         <input v-model="picks" type="checkbox" :id="game.gameID+'-under-label'" :value="game.team2Name + 'vs.' + game.team1Name + 'u' + useDraftkings(game.odds).overUnder">
-                                            u{{ useDraftkings(game.odds).overUnder }} 
+                                        <span>u{{ useDraftkings(game.odds).overUnder }}</span>
                                 </td>     
                             </label>        
                         </tr>
@@ -47,7 +47,7 @@
                 </div>
             </div>
         </div>
-        <div class="grid-cell" id="selected-picks-wrapper">
+        <div class="grid-cell-3" id="selected-picks-wrapper">
             <div id="selected-picks">
                 <strong>
                 Selected Picks:
@@ -63,6 +63,11 @@
                 <button v-on:click="selectPicks">SELECT</button>
             </div>
         </div>
+        
+    </div>
+    <div class="mobile-submit-button">          
+        <p class="countpicks"><strong> Brother, these are locks.</strong></p>
+        <p class = "actual-select-button"><button v-on:click="selectPicks">SELECT</button></p>
     </div>
 </template>
 
@@ -171,8 +176,9 @@ export default {
         epochToDate(game_date) {
             // converts epoch to clean date
             let date = new Date(game_date);
-            let iso = date.toLocaleDateString("en-US")
-            return iso
+            // let iso = date.toLocaleDateString("en-US")
+            let iso = date.toLocaleString("en-US", {timeZone: "America/New_York",timeStyle:"short", dateStyle: "short"});
+            return iso.replace(",","")+" ET"
         },
         favOrDog(game_odds) {
             // renders clean spread in UI depending on data passed
@@ -195,125 +201,234 @@ export default {
             }
         }
     }
-    // ,
-    // mounted() {
-    //     console.log('got to mount.')
-    //     axios
-    //     .get(all_games_url)
-    //     .then(response => {
-    //         console.log('SUCCESS');
-    //         // Only send next 20 games. No need to send more
-    //         console.log(response.data.results.slice(0,20));
-    //         this.games = response.data.results.slice(0,20)
-    //         })
-    //     .catch(error => {
-    //         console.log(error)
-    //         this.errored = true
-    //         })
-    // }
 }
 
 </script>
 
 <style scoped>
 
-#show-picks {
-    display:grid;
-    /* grid-template-columns: auto auto auto; */
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    grid-template-rows:auto;
+@media (pointer:fine) {
+    .mobile-submit-button {
+        display: none;
+    }
+    #show-picks {
+        display:grid;
+        /* grid-template-columns: auto auto auto; */
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-rows:auto;
+        justify-content:center;
 
+    }
+    table {
+        
+        border-collapse:separate; 
+        border-spacing:.25em!important;
+        color:white;
+        font-size:1vw;
+    }
+
+    .date-cell {
+        /* padding-right:.5em; */
+        width: 8.5vw;
+        font-size:.9vw;
+        text-align:left;
+        color:white;
+    }
+    .matchup-cell{
+        /* padding-right:.5em; */
+        width: 6.5vw;
+        text-align:left;
+        color:white;
+    }
+
+    span {
+        display:table-cell;
+        background-color: dodgerblue;
+        color: white;
+        margin: 0 auto;
+        cursor: pointer;
+        border: 2px solid dodgerblue !important;
+        border-radius:5px;
+        border:none;
+        width: 7vw !important;
+        height: 3vw !important;
+        align-items: middle;
+        vertical-align: middle;
+    }
+
+    label input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+    }
+
+    input:checked + span {
+        background-color:white;
+        color:dodgerblue;
+        border: 2px solid dodgerblue;
+        font-weight:bold;
+    }
+
+    span:hover {
+        cursor: pointer;
+        background-color: white;
+        border: 2px solid dodgerblue;
+        color:dodgerblue;
+        cursor:pointer;
+        font-weight: bold;
+    }
+
+    .pickem-cell {
+        text-align: center;
+        width: 7vw !important;
+        height: 2vw !important;
+    } 
+
+    #selected-picks {
+        /* float:right; */
+        color:#fff;
+        font-size:1.1vw;
+        /* position: fixed; */
+        /* top:10; */
+        /* right:0; */
+        /* z-index:10; */
+        /* border: 1px solid black; */
+        background-color: dodgerblue;
+        border-radius: 8px;
+        padding:.8vw;
+        margin:0 auto;
+        width:50%;
+        /* margin-right:7vw; */
+    }
+
+    ul, li {
+        list-style: none;
+        text-decoration-style: None;
+        text-align: left;
+        overflow-wrap: break-word;
+    }
+
+    button {
+        background-color: #1f1f1f;
+        border-radius: 8px;
+        font-size: 1vw;
+        border:none;
+        color:#fff;
+        height:2vw;
+        width:6vw;
+    }
+
+    button:hover {
+        cursor: pointer;
+        background-color: #fff;
+        font-weight:bold;
+        color:#1f1f1f;
+    }
 }
 
-table {
-    margin: 0 auto;
-    border-collapse:separate; 
-    border-spacing:.5em!important;
-    color:white;
-    /* font-size: 1.2vw; */
-    font-size:1vw;
+@media (pointer:coarse) {
+    #show-picks {
+        display:grid;
+        grid-template-columns: auto;
+        grid-template-rows: auto;
+        justify-content:center;
+        padding-bottom:50px;
+    }
 
-}
-.matchup-cell, .date-cell {
-    /* padding-right:.5em; */
-    width: 6.5vw;
-    text-align:left;
-    color:white;
-}
+    .mobile-submit-button {
+        position: -webkit-fixed; /* Safari */
+        position: fixed;
+        bottom: 0;
+        background-color:#303030;
+        height:20vw;
+        display:flex;
+        z-index:100;
+        width:100%;
+        align-items:center;
+    }
+    .countpicks {
+        float:left;
+        width:50%;
+    }
+    .actual-select-button {
+        float:right;
+        width:50%;
+        text-align:right;
 
-label {
-    display:table-cell;
-    background: dodgerblue;
-    color: white;
-    margin: 0 auto;
-    cursor: pointer;
-    border-radius:5px;
-    border:none;
-    width: 7vw !important;
-    height: 2vw !important;
-    align-items: middle;
-    vertical-align: middle;
-}
-label input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-    height: 0;
-    width: 0;
-}
+    }
+    .mobile-submit-button button{        
+        background-color: dodgerblue;
+        border-radius: 6px;
+        width:20vw;
+        height:10vw;
+        border:none;
+        color:#fff;
+        margin:10px; 
+        font-weight:bold;
+    }
 
-label:hover {
-    cursor: pointer;
-    background-color: white;
-    color:dodgerblue;
-    cursor:pointer;
-    font-weight: bold;
-}
+    .grid-cell-2 {
+        margin:5vw;
+    }
+    .grid-cell-1, .grid-cell-3 {
+        display:None;
+    }
 
- .pickem-cell {
-   text-align: center;
-   width: 7vw !important;
-   height: 2vw !important;
-} 
+    table {        
+        border-collapse:separate; 
+        border-spacing:.15em!important;
+        color:white;
+        font-size:3.5vw;
+    }
+    .date-cell {
+        width: 23vw;
+        font-size:2.5vw;
+        text-align:left;
+        color:white;
+    }
+    .pickem-cell {
+        text-align: center;
+        width: 18vw !important;
+        height: 6vw !important;
+    } 
 
-#selected-picks {
-    /* float:right; */
-    color:#fff;
-    font-size:1.5vw;
-    /* position: fixed; */
-    /* top:10; */
-    /* right:0; */
-    /* z-index:10; */
-    /* border: 1px solid black; */
-    background-color: dodgerblue;
-    border-radius: 8px;
-    padding:.8vw;
-    margin:0 auto;
-    width:50%;
-    /* margin-right:7vw; */
-}
+    .matchup-cell{
+        /* padding-right:.5em; */
+        width: 20vw;
+        font-size:3.25vw;
+        text-align:left;
+        color:white;
+    }
 
-ul, li {
-    list-style: none;
-    text-decoration-style: None;
-    text-align: left;
-    overflow-wrap: break-word;
-}
+    span {
+        display:table-cell;
+        background-color: dodgerblue;
+        color: white;
+        margin: 0 auto;
+        border: 2px solid dodgerblue !important;
+        border-radius:5px;
+        border:none;
+        width: 23vw !important;
+        height: 8vw !important;
+        align-items: middle;
+        vertical-align: middle;
+    }
 
-button {
-    background-color: #1f1f1f;
-    border-radius: 8px;
-    font-size: 1vw;
-    border:none;
-    color:#fff;
-    height:2vw;
-    width:6vw;
-}
+    label input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+    }
 
-button:hover {
-    cursor: pointer;
-    background-color: #fff;
-    font-weight:bold;
-    color:#1f1f1f;
+    input:checked + span {
+        background-color:white;
+        color:dodgerblue;
+        border: 2px solid dodgerblue;
+        font-weight:bold;
+    }
 }
 </style>
