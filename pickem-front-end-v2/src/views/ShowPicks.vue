@@ -157,12 +157,12 @@ export default {
         validGame(game_date) {
             // Checks if the game is valid to be shown
             let today = new Date();
-            let next_mon = today.setDate(today.getDate() + (((1 + 7 - today.getDay()) % 7) || 7));
+            let next_tues = today.setDate(today.getDate() + (((2 + 7 - today.getDay()) % 7) || 7));
             let now = Date.now();
             if (now >= game_date) {
                 return false
             }
-            else if (game_date > next_mon){
+            else if (game_date > next_tues){
                 return false
             }
             else {
@@ -177,8 +177,10 @@ export default {
             // converts epoch to clean date
             let date = new Date(game_date);
             // let iso = date.toLocaleDateString("en-US")
-            let iso = date.toLocaleString("en-US", {timeZone: "America/New_York",timeStyle:"short", dateStyle: "short"});
-            return iso.replace(",","")+" ET"
+            // let iso = date.toLocaleString("en-US", {timeZone: "America/New_York",timeStyle:"short", dateStyle: "short"});
+            let iso = date.toLocaleString("en-US", {timeStyle:"short", dateStyle: "short"});
+
+            return iso.replace(",","")
         },
         favOrDog(game_odds) {
             // renders clean spread in UI depending on data passed
