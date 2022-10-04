@@ -17,6 +17,7 @@
 //TODO: add counter to selectpicks widget in ShowPicks
 
 // Backend
+//TODO: create new page, set up like submitted picks page then grade them live.
 //TODO: set up data structure for user's submitted picks, user's info, groups
 //TODO: submit actual picks to database (or to email or gsheet for now)
 //TODO: Update proxy for API in prod env.
