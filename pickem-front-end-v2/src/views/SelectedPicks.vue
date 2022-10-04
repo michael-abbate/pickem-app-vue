@@ -6,7 +6,7 @@
                     {{ type }}
                 </td>
                 <td>
-                    <select>
+                    <select v-model="form.">
                         <option value="" disabled selected>Select {{ type }}</option>
                         <option v-for="(pick,index) in picks"
                             :key = "index"
@@ -32,6 +32,14 @@ export default {
     name: 'SelectedPicks',
     data() {
        return {
+           submitpicks: [],
+           picks_form: {
+            favorite,
+            underdog,
+            over,
+            under,
+            lock
+           },
            types_of_picks: ['Favorite','Underdog','Over','Under','LOCK']
        } 
     }
