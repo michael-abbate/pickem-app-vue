@@ -1,17 +1,18 @@
 <template>
     <div class = "selected-picks-container">
         <table class="select-picks-table">
-            <tr v-for="(type,i) in types_of_picks" :key="i" :class="type+'-row'">
+            <tr v-for="(type) in Object.keys(picks_form)" :key="type" :class="type+'-row'">
                 <td>
                     {{ type }}
                 </td>
                 <td>
-                    <select v-model="form.">
+                    <select v-model="picks_form[type]">
                         <option value="" disabled selected>Select {{ type }}</option>
                         <option v-for="(pick,index) in picks"
                             :key = "index"
-                            :id="pick+'submitted-picks'">
-                            {{ pick }}
+                            :id="pick+'submitted-picks'"
+                            :value ="pick">
+                            {{ pick.render_value }}
                         </option>
                     </select>
                 </td>
@@ -34,13 +35,12 @@ export default {
        return {
            submitpicks: [],
            picks_form: {
-            favorite,
-            underdog,
-            over,
-            under,
-            lock
-           },
-           types_of_picks: ['Favorite','Underdog','Over','Under','LOCK']
+            Favorite: '',
+            Underdog: '',
+            Over: '',
+            Under: '',
+            LOCK: ''
+           }
        } 
     }
      , computed: {

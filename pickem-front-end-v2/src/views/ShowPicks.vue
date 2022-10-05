@@ -15,14 +15,14 @@
                             </td>
                             <label :for="game.gameID+'-away-label'">
                                 <td class="pickem-cell">                                              
-                                        <input v-model="picks" type="checkbox" :id="game.gameID+'-away-label'" :value="game.team1Name + favOrDog(useDraftkings(game.odds))[0]">
-                                        <span>{{ favOrDog(useDraftkings(game.odds))[0] }}</span>
+                                        <input v-model="picks" type="checkbox" :id="game.gameID+'-away-label'" :value="jsonPick(game,'away')">
+                                        <span>{{ jsonPick(game,'away').spread }}</span>
                                 </td>
                             </label>
                             <label :for="game.gameID+'-over-label'">
                                 <td class="pickem-cell">
-                                        <input v-model="picks" type="checkbox" :id="game.gameID+'-over-label'" :value="game.team2Name + 'vs.' + game.team1Name + 'o' + useDraftkings(game.odds).overUnder">
-                                            <span>o{{ useDraftkings(game.odds).overUnder }}</span>
+                                        <input v-model="picks" type="checkbox" :id="game.gameID+'-over-label'" :value="jsonPick(game, 'over')">
+                                            <span>o{{ jsonPick(game, 'over').overUnder }}</span>
                                 </td>     
                             </label>
                         </tr>        
@@ -31,14 +31,14 @@
                             </td>
                             <label :for="game.gameID+'-home-label'">
                                 <td class="pickem-cell">
-                                        <input v-model="picks" type="checkbox" :id="game.gameID+'-home-label'" :value="game.team2Name + favOrDog(useDraftkings(game.odds))[1]">
-                                            <span>{{ favOrDog(useDraftkings(game.odds))[1] }}</span>
+                                        <input v-model="picks" type="checkbox" :id="game.gameID+'-home-label'" :value="jsonPick(game, 'home')">
+                                            <span>{{ jsonPick(game, 'home').spread }}</span>
                                 </td>
                             </label>
                             <label :for="game.gameID+'-under-label'">
                                 <td class="pickem-cell">         
-                                        <input v-model="picks" type="checkbox" :id="game.gameID+'-under-label'" :value="game.team2Name + 'vs.' + game.team1Name + 'u' + useDraftkings(game.odds).overUnder">
-                                        <span>u{{ useDraftkings(game.odds).overUnder }}</span>
+                                        <input v-model="picks" type="checkbox" :id="game.gameID+'-under-label'" :value="jsonPick(game, 'under')">
+                                        <span>u{{ jsonPick(game, 'under').overUnder }}</span>
                                 </td>     
                             </label>        
                         </tr>
@@ -60,7 +60,7 @@
                         <li v-for="(pick,index) in picks"
                             :key = "index"
                             :id="pick+'selected-pick'">
-                            {{ pick }}
+                            {{ pick.render_value }}
                         </li>
                     </ul>
                 </strong>
@@ -138,45 +138,21 @@ export default {
             this.games = sample_odds_json.results.slice(0,16);
             console.log(sample_odds_json.results.slice(0,16));
         }
-    }
-    ,
+    },
     methods: {    
-         selectPicks() {
-             console.log(`selectPicks: ${this.picks}`)
-             this.$store.commit('SELECT_PICKS', {
-                 picks: this.picks,
-             });
-            this.$router.push('/selected');
-        //  },
+        selectPicks() {            
+            // moves selected picks to next page for final submission
+            if (this.picks.length>=5) {
+                console.log(`selectPicks: ${this.picks}`)
+                this.$store.commit('SELECT_PICKS', {
+                    picks: this.picks,
+                    });
+                this.$router.push('/selected');
+            }
+            else {
+                alert('Please review picks!');
+            }
         
-        //  goToSelected() {
-            
-         
-            // console.log("USERS PICKS:");
-            // console.log(this.picks);
-            // console.log("movinig picks to select page...");
-            // alert('selected');
-            // let formattedpicks = JSON.stringify(this.picks);
-            // axios.post('/api/selected',  {picks: this.picks});
-            // this.$router.push({name: 'SelectedPicks', params : {picks: this.picks}});
-            
-            // Sends picks to SelectedPicks page where user will then submit picks
-
-
-            // axios.post("/api/selected", {picks: this.picks})
-            // .then(response => 
-            // console.log(`the data ${response.data}`)
-            // // this.picks = response.data.picks
-            // );
-
-
-
-            this.$router.push('/selected');
-
-            // this.$router.push({name:"SelectedPicks"
-            //                   ,state: { picks: this.picks }
-            //                   }
-            //                   );
         },
         validGame(game_date) {
             // Checks if the game is valid to be shown
@@ -230,7 +206,30 @@ export default {
                     return game_odds_all_providers[i]
                 }
             }
+        },
+        jsonPick(game, label) {
+            let dk_odds = this.useDraftkings(game.odds);
+            let game_id = game.gameID;
+            let team1_name = game.team1Name;
+            let team2_name = game.team2Name;
+            let away_sp = this.favOrDog(dk_odds)[0];
+            let home_sp = this.favOrDog(dk_odds)[1];
+            let over_under = dk_odds.overUnder;
+
+            if (label === 'away') {
+                return {"render_value": team1_name + " " + away_sp, "gameID":game_id, "team1Name": team1_name, "team2Name":team2_name, "spread": away_sp, "team_selected": "team1" }
+            }
+            else if (label === 'home') {
+                return {"render_value": team2_name + " " + home_sp, "gameID":game_id, "team1Name": team1_name, "team2Name":team2_name, "spread": home_sp, "team_selected": "team2"}
+            }
+            else if (label === 'over') {
+                return {"render_value": team1_name + " vs. " + team2_name + " o" + over_under, "gameID":game_id, "team1Name": team1_name, "team2Name":team2_name, "overUnder": over_under}
+            }
+            else if (label === 'under') {
+                return {"render_value": team1_name + " vs. " + team2_name + " u" + over_under, "gameID":game_id, "team1Name": team1_name, "team2Name":team2_name, "overUnder": over_under}
+            }
         }
+
     }
 }
 
