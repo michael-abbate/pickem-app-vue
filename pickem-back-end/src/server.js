@@ -14,6 +14,12 @@ app.use((req, res, next) => {
     next();
   });
 
+const db = require("./models");
+db.sequelize.sync();
+// db.sequelize.sync({ force: true }).then(() => {
+//     console.log("Drop and re-sync db.");
+//   });
+
 
 app.get('/hello', (req, res) => {
     res.send('Hello!');
