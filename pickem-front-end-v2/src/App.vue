@@ -1,7 +1,7 @@
 <template>
   <nav>
     <router-link to="/">Home</router-link> |
-    <router-link to="/">Current Picks</router-link> |
+    <router-link to="/nflteams">NFL Teams</router-link> |
     <router-link to="/">Leaderboard</router-link> |
     <router-link to="/about">About</router-link>
   </nav>

@@ -31,10 +31,22 @@ exports.create = (req, res) => {
     });
 };  
 
-// // Retrieve all Tutorials from the database.
-// exports.findAll = (req, res) => {
-  
-// };
+ // Retrieve all NFL Teams from the database.
+exports.findAll = (req, res) => {
+  const nflteam = req.query.nflteam;
+  var condition = nflteam ? { nflteam: { [Op.iLike]: `%${nflteam}%` } } : null;
+
+  NFLTeams.findAll({ where: condition })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving NFL teams."
+      });
+    });
+};
 
 // // Find a single Tutorial with an id
 // exports.findOne = (req, res) => {

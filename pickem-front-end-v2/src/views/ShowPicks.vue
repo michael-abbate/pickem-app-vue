@@ -87,7 +87,7 @@ import sample_odds_json from '../sample_odds_results.json';
 let env = process.env.APP_ENV || 'dev';
 // let env = 'prod';
 
-console.log(`APP_ENV: ${env}`)
+console.log(`Front-end APP_ENV: ${env}`)
 
 // if (env === "dev") {
 //     const sample_odds_json = require('../sample_odds_results.json')

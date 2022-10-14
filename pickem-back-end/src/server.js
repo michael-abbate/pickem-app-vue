@@ -3,12 +3,23 @@ import path from 'path';
 import history from 'connect-history-api-fallback';
 import request from 'request';
 
+// Import SQL endpoints
+const NFLTeamsController = require('./controllers/NFLTeamsController')
+
+
 const port = process.env.PORT || 8000;
 const app = express();
 
 app.use(express.static(path.resolve(__dirname,'../dist'), { maxAge: '1y', etag: false}))
 app.use(express.json());
-app.use(history());
+let env = process.env.APP_ENV || 'dev';
+// let env = 'prod';
+console.log(`Back-end APP_ENV: ${env}`)
+if (env==='prod') {
+    console.log('using connect-history-api-fallback')
+    app.use(history());
+}
+
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     next();
@@ -22,6 +33,7 @@ db.sequelize.sync();
 
 
 app.get('/hello', (req, res) => {
+    console.log('saying hello!');
     res.send('Hello!');
 });
 
@@ -35,14 +47,10 @@ app.get('/api/showpicks', (req, res) => {
             return res.status(500).json({ type: 'error', message: err.message });
         }
         res.json(JSON.parse(body));
+        // res.send(JSON.parse(body));
         }
     )
 });
-
-// app.get('/api/selected', (req, res) => {
-//     const { picks } = req.body;
-//     res.status(200).json(picks);
-// });
 
 app.post('/api/selected', (req, res) => {
     const { picks } = req.body;
@@ -58,6 +66,7 @@ app.post('/api/selected', (req, res) => {
     // res.send();/
 });
 
+app.get('/api/nflteams', NFLTeamsController.findAll);
 
 app.get('*', (req, res)=> {
     res.sendFile(path.join(__dirname,"../dist/index.html"));
