@@ -1,6 +1,7 @@
 .DS_Store
 node_modules
 /dist
+config
 
 # local env files
 .env.local
@@ -20,3 +21,10 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Other Files
+teams.csv
+sample_results.json
+sample_odds_results.json
+instructions.txt
+config

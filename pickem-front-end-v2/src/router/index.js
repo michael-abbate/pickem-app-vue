@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import ShowPicks from '../views/ShowPicks.vue'
 import SelectedPicks from '../views/SelectedPicks.vue'
+import NFLTeams from '../components/NFLTeams.vue'
+
 
 const routes = [
   {
@@ -28,6 +30,12 @@ const routes = [
     path: '/selected',
     name: 'SelectedPicks',
     component: SelectedPicks,
+    props: true
+  },
+  {
+    path: '/nflteams',
+    name: 'NFLTeams',
+    component: NFLTeams,
     props: true
   }
   
