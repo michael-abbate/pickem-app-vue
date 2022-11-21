@@ -81,13 +81,13 @@
 
 import axios from 'axios';
 import store from '../store';
-import sample_odds_json from '../sample_odds_results.json';
+// import sample_odds_json from '../sample_odds_results.json';
 
 
-let env = process.env.APP_ENV || 'dev';
+// let env = process.env.APP_ENV || 'dev';
 // let env = 'prod';
 
-console.log(`Front-end APP_ENV: ${env}`)
+// console.log(`Front-end APP_ENV: ${env}`)
 
 // if (env === "dev") {
 //     const sample_odds_json = require('../sample_odds_results.json')
@@ -104,11 +104,12 @@ console.log(`Front-end APP_ENV: ${env}`)
 
 export default {
     store,
-    games_json: sample_odds_json, 
+    // games_json: sample_odds_json, 
     name: "ShowPicks",
     data() {
         return {            
             games:null,
+            env:null,
             picks: [],       
             // picks: {'picks': []},             
             sample_spread: 7,
@@ -124,20 +125,25 @@ export default {
     async created() {
 
         // const result = await axios.get("/api/odds/.json?sport=nfl");
-        if (env === "prod") {
-            const result = await axios.get("/api/showpicks");
-            // const result = await axios.get("http://localhost:8000/showpicks");
-            const games = result.data.results.slice(0,20);
-            console.log('Here are the games!');
-            console.log(games);
-            this.games = games;
-        }
-        else {
-            console.log('Returning dev games...');
+        // if (env === "prod") {
+        console.log('about to hit axios');
 
-            this.games = sample_odds_json.results.slice(0,16);
-            console.log(sample_odds_json.results.slice(0,16));
-        }
+        const result = await axios.get("/api/showpicks");
+        console.log('hit axios');
+        // const result = await axios.get("http://localhost:8000/showpicks");
+        // TODO: Add result.data.env check
+        const games = result.data.results.slice(0,20);
+        console.log('Here are the games!');
+        console.log(games);
+        this.games = games;
+        this.env = result.data.env;
+        // }
+        // else {
+            // console.log('Returning dev games...');
+
+            // this.games = sample_odds_json.results.slice(0,16);
+            // console.log(sample_odds_json.results.slice(0,16));
+        // }
     },
     methods: {    
         selectPicks() {            
@@ -156,7 +162,7 @@ export default {
         },
         validGame(game_date) {
             // Checks if the game is valid to be shown
-            if (env === 'prod') {
+            if (this.env === 'prod') {            
                 let today = new Date();
                 let next_tues = today.setDate(today.getDate() + (((2 + 7 - today.getDay()) % 7) || 7));
                 let now = Date.now();

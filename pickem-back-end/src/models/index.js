@@ -1,9 +1,9 @@
 // const config = require("../config/config");
 // require('dotenv').config({path: __dirname + '/.env'})
+require('dotenv').config()
 
-if (process.env.APP_ENV !== 'dev') {
-  require('dotenv').config()
-}
+// if (process.env.APP_ENV !== 'dev') {
+// }
 
 let env = process.env.APP_ENV;
 // let env = 'prod';

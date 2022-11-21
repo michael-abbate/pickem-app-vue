@@ -26,6 +26,5 @@ pnpm-debug.log*
 # Other Files
 teams.csv
 sample_results.json
-sample_odds_results.json
 instructions.txt
 config
