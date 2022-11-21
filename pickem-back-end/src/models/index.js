@@ -14,7 +14,7 @@ const Sequelize = require("sequelize");
 
 
 if (env === 'prod') {
-  db_url = process.env.DATABASE_URL;
+  const db_url = process.env.DATABASE_URL;
 
   var sequelize = new Sequelize(
     db_url,
