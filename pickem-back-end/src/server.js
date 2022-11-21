@@ -2,11 +2,10 @@ import express from 'express';
 import path from 'path';
 import history from 'connect-history-api-fallback';
 import request from 'request';
+const sample_odds_json = require('../sample_odds_results.json');
 
 // Import SQL endpoints
 const NFLTeamsController = require('./controllers/NFLTeamsController')
-
-const sample_odds_json = require('/Users/mabbate/michael-abbate/pickem-app-vue/sample_odds_results.json');
 
 const port = process.env.PORT || 8000;
 const app = express();
@@ -20,11 +19,7 @@ if (env==='prod') {
     console.log('using connect-history-api-fallback')
     app.use(history());
 }
-else {
-    console.log("Using DEV games.")
-    const sample_odds_json = require('/Users/mabbate/michael-abbate/pickem-app-vue/sample_odds_results.json');
-    // console.log(`here is ${JSON.parse(sample_odds_json.results)}`);
-}
+
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
