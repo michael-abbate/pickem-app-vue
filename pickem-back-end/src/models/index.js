@@ -1,13 +1,17 @@
 // const config = require("../config/config");
 // require('dotenv').config({path: __dirname + '/.env'})
-require('dotenv').config()
+
+if (process.env.APP_ENV !== 'dev') {
+  require('dotenv').config()
+}
+
+let env = process.env.APP_ENV;
+// let env = 'prod';
+console.log(`APP_ENV: ${env}`) 
 
 const Sequelize = require("sequelize");
 
 
-let env = process.env.APP_ENV || 'dev';
-// let env = 'prod';
-console.log(`APP_ENV: ${env}`) 
 
 if (env === 'prod') {
   db_url = process.env.DATABASE_URL;
