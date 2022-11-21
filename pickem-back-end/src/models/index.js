@@ -1,4 +1,6 @@
-const config = require("../config/config");
+// const config = require("../config/config");
+// require('dotenv').config({path: __dirname + '/.env'})
+require('dotenv').config()
 
 const Sequelize = require("sequelize");
 
@@ -26,16 +28,21 @@ if (env === 'prod') {
 else {
   console.log("Connecting to local database...")
   var sequelize = new Sequelize(
-    config.db.database,
-    config.db.user,
-    config.db.password, 
+    // config.db.database,
+    // config.db.user,
+    // config.db.password, 
+    process.env.LOCAL_DB,
+    process.env.LOCAL_USER,
+    process.env.LOCAL_PWD,
     {
-      host: config.db.host,
+      // host: config.db.host,
+      host: process.env.LOCAL_HOST,
       dialect: 'postgres',
       protocol: 'postgres'
     }
   );
   console.log("Connected to local database!")
+  console.log(process.env.LOCAL_USER)
 
 }
 
