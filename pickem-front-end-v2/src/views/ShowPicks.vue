@@ -3,12 +3,12 @@
         <div class="grid-cell-1">
         </div>
         <div class="grid-cell-2">
-            <div id="all-game-tables">
+            <div v-if = "Object.keys(games).length > 0" id="all-game-tables">                
                 <div v-cloak v-for="(game,index) in games" :key = "game.gameID" :class="game.gameID+'game-table'">
                     <table v-if="validGame(game.date)" :class="game.gameID+'game-table'">
                         <tr :class="'away-row-'+index+'-'+game.gameID">
                             <td rowspan = "2" class="date-cell">  
-                                {{ epochToDate(game.date) }}      
+                                {{ epochToDate(game.date) }}                                  
                             </td>
                             <td class = "matchup-cell">
                                 {{ game.team1Name }}                    
@@ -43,13 +43,13 @@
                             </label>        
                         </tr>
                         <tr><td colspan="4"><hr></td></tr>
-                    </table>
-                    <div v-else>
-                        <h2 v-if = "index === 0">
-                            No games to display!
-                        </h2>
-                    </div>
-                </div>
+                    </table>                    
+                </div>                
+            </div>
+            <div v-else id="all-game-tables">                
+                <h2 v-if = "Object.keys(games).length === 0">
+                    No games to display!
+                </h2>                    
             </div>
         </div>
         <div class="grid-cell-3" id="selected-picks-wrapper">
@@ -110,6 +110,7 @@ export default {
         return {            
             games:null,
             env:null,
+            use_live_lines: null,
             picks: [],       
             // picks: {'picks': []},             
             sample_spread: 7,
@@ -137,6 +138,9 @@ export default {
         console.log(games);
         this.games = games;
         this.env = result.data.env;
+        this.use_live_lines = result.data.use_live_lines;
+        console.log(`Front-end ENV fetched from back-end env: ${this.env}`);
+        console.log(`Using live lines: ${this.use_live_lines}`);
         // }
         // else {
             // console.log('Returning dev games...');
@@ -162,11 +166,11 @@ export default {
         },
         validGame(game_date) {
             // Checks if the game is valid to be shown
-            if (this.env === 'prod') {            
+            if (this.env === 'prod' || this.use_live_lines === true) {            
                 let today = new Date();
                 let next_tues = today.setDate(today.getDate() + (((2 + 7 - today.getDay()) % 7) || 7));
                 let now = Date.now();
-                if (now >= game_date) {
+                if (now > game_date) {
                     return false
                 }
                 else if (game_date > next_tues){
