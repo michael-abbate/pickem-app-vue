@@ -13,6 +13,7 @@ const app = express();
 app.use(express.static(path.resolve(__dirname,'../dist'), { maxAge: '1y', etag: false}))
 app.use(express.json());
 let env = process.env.APP_ENV;
+let livelines = process.env.LIVE_LINES;
 // let env = 'prod';
 console.log(`Back-end APP_ENV: ${env}`)
 if (env==='prod') {
@@ -40,7 +41,7 @@ app.get('/hello', (req, res) => {
 
 
 app.get('/api/showpicks', (req, res) => {
-    if (env==='prod') {
+    if (env==='prod' || livelines === 'prod') {
         console.log("requesting odds from express server side.")
         request(
             { url: 'https://areyouwatchingthis.com/api/odds.json?sport=nfl' },
@@ -49,7 +50,8 @@ app.get('/api/showpicks', (req, res) => {
                 return res.status(500).json({ type: 'error', message: err.message });
             }
             let res_json = JSON.parse(body);
-            res_json['APP_ENV'] = env;
+            res_json['env'] = env;
+            res_json['use_live_lines'] = true
             res.json(res_json);
             // res.send(JSON.parse(body));
             }
@@ -61,7 +63,8 @@ app.get('/api/showpicks', (req, res) => {
         // res_json = JSON.parse(sample_odds_json.results.slice(0,16))
         // let res_json = JSON.parse(sample_odds_json);
         let res_json = sample_odds_json;
-        res_json['APP_ENV'] = env;
+        res_json['env'] = env;
+        res_json['use_live_lines'] = true
         res.json(res_json);
         // console.log(sample_odds_json.results.slice(0,16));
         // console.log(res_json);
