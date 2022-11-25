@@ -1,6 +1,10 @@
 // const config = require("../config/config");
 // require('dotenv').config({path: __dirname + '/.env'})
 require('dotenv').config()
+const fs = require('fs')
+const path = require('path')
+const Sequelize = require("sequelize");
+const db = {};
 
 // if (process.env.APP_ENV !== 'dev') {
 // }
@@ -8,8 +12,6 @@ require('dotenv').config()
 let env = process.env.APP_ENV;
 // let env = 'prod';
 console.log(`APP_ENV: ${env}`) 
-
-const Sequelize = require("sequelize");
 
 
 
@@ -50,13 +52,25 @@ else {
 
 }
 
-const db = {};
+
+
+
+// ADD SQL TABLES HERE
+// db.nfl_teams = require("./nflteams.model.js")(sequelize, Sequelize);
+// db.users = require("./users.model.js")(sequelize,Sequelize);
+fs
+  .readdirSync(__dirname)
+  .filter((file) =>
+    file !== 'index.js'
+  )
+  .forEach((file) => {
+    const model = require(path.join(__dirname, file))(sequelize, Sequelize)
+    db[model.name] = model
+  })
+
 
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
-
-// ADD SQL TABLES HERE
-db.nfl_teams = require("./nflteams.model.js")(sequelize, Sequelize);
 
 module.exports = db;
 
