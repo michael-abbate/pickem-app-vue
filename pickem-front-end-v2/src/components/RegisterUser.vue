@@ -121,6 +121,8 @@ export default {
 ul {
     display: inline-block;
     width:25%;
+    margin:0px;
+    padding:0px;
 }
 
 .registration-label-input {
