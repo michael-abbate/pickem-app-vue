@@ -1,5 +1,5 @@
 <template>
-    <div id="show-picks">
+    <div id="nfl-teams">
         <!-- <div v-cloak v-for="team in nflteams" :key = "team.team_id"> -->
         <table class="nfl-teams">
             <th>
