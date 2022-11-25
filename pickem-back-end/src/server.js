@@ -39,6 +39,12 @@ app.get('/hello', (req, res) => {
     res.send('Hello!');
 });
 
+app.post('/api/register', (req, res) => {
+    res.send({
+        message: `Successfully registered ${req.body.email}!`
+    });
+});
+
 
 app.get('/api/showpicks', (req, res) => {
     if (env==='prod' || livelines === 'prod') {
