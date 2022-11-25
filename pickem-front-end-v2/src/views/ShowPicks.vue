@@ -259,6 +259,12 @@ export default {
         justify-content:center;
 
     }
+
+    .grid-cell-2{
+        overflow:auto;
+        height:90vh;
+    }
+
     table {
         
         border-collapse:separate; 

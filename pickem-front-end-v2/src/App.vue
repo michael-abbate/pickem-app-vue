@@ -1,12 +1,20 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/nflteams">NFL Teams</router-link> |
-    <router-link to="/">Leaderboard</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <h1>Pick Em App</h1>
-  <router-view/>
+  <div class = "app-header">
+      <div class = "app-header-logo">
+        <h1><nav><router-link to="/">Migs' Pick 'Em</router-link></nav></h1>
+      </div>
+      <div class = "app-header-nav">
+        <nav>
+          <router-link to="/">Games</router-link> |
+          <router-link to="/nflteams">NFL Teams</router-link> |
+          <router-link to="/">Leaderboard</router-link> |
+          <router-link to="/about">About</router-link>
+        </nav>
+      </div>
+  </div>
+  <div class="router-view-div">
+    <router-view/>
+  </div>
 </template>
 
 <script>
@@ -59,11 +67,36 @@ body, html{
     /* color: #2c3e50; */
   }
 
-  nav {
-    padding-top: 30px;
+  .app-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    width: 100%;
+    height: 60px;
+    background-color: #1b1d21;
+  }
+
+  .app-header-logo{
+    display:flex;
+    vertical-align: middle;
+    align-items: center;
+    float:left;
+    height:100%;
+    padding-left:10px;
+  }
+
+  .app-header-nav{
+    display:flex;
+    vertical-align: middle;
+    align-items: center;
+    float:right;
+    height:100%;
+    padding-right:10px;
   }
 
   nav a {
+    text-decoration: none;
     font-weight: bold;
     color: #fff;
   }
@@ -72,18 +105,19 @@ body, html{
     color: #42b983;
   }
 
+  .router-view-div {
+    padding-top:75px;
+  }
 
   body {
       font-family:  Helvetica, Arial, sans-serif;
-      background-color: #1f1f1f;
+      background-color: #131619;
       color:white;
   }
 
   h1 {
-      margin: 30px auto;
-      font-size: 3vw;
-      text-align: center;
-      /* min-height: 49px; */
+      font-size: 1.6vw;
+      font-style:italic;
       color:#fff;
   }
 }
@@ -123,7 +157,7 @@ body, html{
 
   body {
       font-family:  Helvetica, Arial, sans-serif;
-      background-color: #1f1f1f;
+      background-color: #131619;
       color:white;
   }
 
