@@ -1,38 +1,71 @@
 <template>
     <div>
         <h2>Register</h2>
-        <input
-            type="text"
-            name="firstname"
-            v-model="firstname"
-            placeholder="First Name" />
-        <br>
-        <input
-            type="text"
-            name="lastname"
-            v-model="lastname"
-            placeholder="Last Name" />
-        <br>
-        <input
-            type="text"
-            name="username"
-            v-model="username"
-            placeholder="Username" />
-        <br>
-        <input
-            type="email"
-            name="email"
-            v-model="email"
-            placeholder="Email" />
-        <br>
-        <input
-            type="password"
-            name="password"
-            v-model="password"
-            placeholder="Password" />
-        <br>
-        <button
-            @click="register">Register</button>
+        <div class = "registration-container">
+            <ul>
+                <li>
+                    <div class = "registration-label-input">
+                        <label>First Name</label>
+                        <br>
+                        <input
+                            type="text"
+                            name="firstname"
+                            v-model="firstname"
+                            placeholder="First Name" />
+                    </div>
+                </li>
+                <li>
+                    <div class = "registration-label-input">
+                        <label>Last Name</label>  
+                        <br>
+                        <input
+                            type="text"
+                            name="lastname"
+                            v-model="lastname"
+                            placeholder="Last Name" />
+                    </div>
+                </li>
+                <li>
+                    <div class = "registration-label-input">
+                        <label>User Name</label>
+                        <br>
+                        <input
+                            type="text"
+                            name="username"
+                            v-model="username"
+                            placeholder="Username" />
+                    </div>
+                </li>
+                <li>
+                    <div class = "registration-label-input">
+                        <label>Email</label>
+                        <br>
+                        <input
+                            type="email"
+                            name="email"
+                            v-model="email"
+                            placeholder="Email" />
+                    </div>
+                </li>
+                <li>
+                    <div class = "registration-label-input">
+                        <label>Password</label>
+                        <br>
+                        <input
+                            type="password"
+                            name="password"
+                            v-model="password"
+                            placeholder="Password" />
+                    </div>
+                </li>
+                
+                <div v-if="error" class="error" v-html="error" />
+                <div v-if="success && !error" class="success" v-html="success" />
+                <br>
+                <button
+                    @click="register">Register</button>
+            </ul>
+        </div>
     </div>
 </template>
 
@@ -48,18 +81,28 @@ export default {
             lastname:'',
             username:'',
             email:'',
-            password:''         
+            password:'',
+            error: null,
+            success: null
         }
     },
     methods: {        
         async register() {
-            await AuthenticationService.register({
-                firstname: this.firstname,
-                lastname: this.lastname, 
-                username: this.username,
-                email: this.email, 
-                password: this.password
-            });      
+            this.error = null;
+            try {                
+                await AuthenticationService.register({
+                    firstname: this.firstname,
+                    lastname: this.lastname, 
+                    username: this.username,
+                    email: this.email, 
+                    password: this.password
+                });
+                this.success = 'Successfully registered!'; 
+                //TODO add redirect out of registration page     
+            } catch(error) {
+                this.error = error.response.data.error
+            }
+
         }
     }
 }
@@ -69,5 +112,64 @@ export default {
 </script>
 
 <style scoped>
+.registration-container {
+    /* width:33%; */
+    text-align: center;
+    /* align-items:center;
+    display:flex; */
+}
+ul {
+    display: inline-block;
+    width:25%;
+}
+
+.registration-label-input {
+    text-align:left;
+}
+
+label {
+    font-size:12px;
+}
+li {
+    padding-top:10px;
+    list-style: none;
+    display:block;
+}
+
+input {
+    font-size:14px;
+    width:100%;
+    height:48px;
+    padding:7px 8px;
+    box-sizing: border-box;
+    border: 1px solid #c5c5c5;
+}
+.error {
+    padding-top:10px;
+    color:red;
+}
+.success {
+    padding-top:10px;
+    color:green;
+}
+
+button {
+    font-weight: bold;
+    background-color: dodgerblue;
+    border-radius: 5px;
+    font-size: 1vw;
+    border:none;
+    color:#fff;
+    height:48px;
+    width:100%;
+}
+
+button:hover {
+    cursor: pointer;
+    background-color: #fff;
+    font-weight:bold;
+    color:#1f1f1f;
+}
+
 
 </style>
