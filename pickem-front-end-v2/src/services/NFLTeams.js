@@ -1,8 +1,9 @@
-import Api from '@/services/Api'
+// import Api from '@/services/Api'
+import axios from 'axios'
 
 export default {
     nflteams () {
-        return Api.get('/api/nflteams')
+        return axios.get('/api/nflteams')
     }
 }
 
