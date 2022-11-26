@@ -7,7 +7,7 @@ import Vuex from 'vuex';
 createApp(App).use(Vuex);
 
 export default new Vuex.Store({
-    // strict: true,
+    strict: process.env.APP_ENV !== 'prod',
     state: {
         token: null,
         user: null,
