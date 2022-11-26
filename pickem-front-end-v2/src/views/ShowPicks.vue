@@ -80,7 +80,9 @@
 <script>
 
 import axios from 'axios';
-import store from '../store';
+// import store from '../store';
+import store from '@/store/store'
+
 // import sample_odds_json from '../sample_odds_results.json';
 
 
@@ -259,6 +261,12 @@ export default {
         justify-content:center;
 
     }
+
+    .grid-cell-2{
+        overflow:auto;
+        height:90vh;
+    }
+
     table {
         
         border-collapse:separate; 
