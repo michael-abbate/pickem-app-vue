@@ -18,10 +18,6 @@ module.exports = {
                 new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})')
             ).required()
         })
-        console.log("policy going")
-        console.log("policy going")
-        console.log("policy going")
-        console.log("policy going")
 
         const {error, value} = schema.validate(req.body)
         

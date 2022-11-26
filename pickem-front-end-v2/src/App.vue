@@ -5,19 +5,23 @@
       </div>
       <div class = "app-header-nav">
         <nav>
-          <router-link to="/">Games</router-link> |
-          <router-link to="/nflteams">NFL Teams</router-link> |
-          <router-link to="/">Leaderboard</router-link> |
-          <router-link to="/about">About</router-link>
+          <router-link v-if="$store.state.isUserLoggedIn" to="/">Games</router-link>
+          <router-link v-if="$store.state.isUserLoggedIn" to="/nflteams">NFL Teams</router-link>
+          <router-link v-if="$store.state.isUserLoggedIn" to="/">Leaderboard</router-link>
+          <router-link v-if="$store.state.isUserLoggedIn" to="/about">About</router-link>
           
-          <button v-if="!$store.state.isUserLoggedIn" @click="navigateTo({name: 'LoginUser'})">Login</button>
+          <button v-if="!$store.state.isUserLoggedIn" @click="navigateTo({name: 'LoginUser'})" class = "navbar-but">Login</button>
           <button v-if="!$store.state.isUserLoggedIn" @click="navigateTo({name: 'RegisterUser'})">Sign Up</button>
+
+          <button v-if="$store.state.isUserLoggedIn" @click=logout>Log Out</button>
+
 
         </nav>
 
       </div>
   </div>
   <div class="router-view-div">
+    <h3 v-if="$store.state.isUserLoggedIn">Welcome {{ $store.state.user.firstname }}!</h3>
     <router-view/>
   </div>
 </template>
@@ -45,6 +49,14 @@ export default {
   methods: {
     navigateTo (route) {
       this.$router.push(route)
+    },
+    logout () {
+      this.$store.dispatch('setToken', null)
+      this.$store.dispatch('setUser', null)
+      // redirect to homepage
+      this.$router.push({
+        name: 'LoginUser'
+      })
     }
   }
 }
@@ -104,11 +116,12 @@ body, html{
   nav a {
     text-decoration: none;
     font-weight: bold;
-    color: #fff;
-  }
-
-  nav a.router-link-exact-active {
-    color: #42b983;
+    background-color: #1b1d21;
+    font-size: 1vw;
+    border:none;
+    color:#fff;
+    height:25px;
+    margin:3px;
   }
 
   .router-view-div {
@@ -126,6 +139,26 @@ body, html{
       font-style:italic;
       color:#fff;
   }
+
+  button {
+    font-weight: bold;
+    background-color: #1b1d21;
+    font-size: 1vw;
+    border:none;
+    color:#fff;
+    height:25px;
+    margin:3px;
+    /* width:20%; */
+}
+
+button:hover {
+    cursor: pointer;
+    /* background-color: #fff; */
+    font-weight:bold;
+    /* color:#1f1f1f; */
+}
+
+
 }
 @media (pointer:coarse) {
   .vl {

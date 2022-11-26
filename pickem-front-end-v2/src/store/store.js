@@ -1,12 +1,13 @@
 import App from '../App.vue'
 import { createApp } from 'vue'
-
 import Vuex from 'vuex';
+// import createPersistedState from 'vuex-persistedstate'
+// import Cookies from "js-cookie";
 
 createApp(App).use(Vuex);
 
 export default new Vuex.Store({
-    strict: true,
+    // strict: true,
     state: {
         token: null,
         user: null,
@@ -39,4 +40,11 @@ export default new Vuex.Store({
             commit('setUser', user)
         }       
     }
+    // ,
+    // plugins: [
+    //     createPersistedState({
+    //       getState: (key) => Cookies.getJSON(key),
+    //       setState: (key, state) => Cookies.set(key, state, { expires: 3, secure: true })
+    //     })
+    //   ]
 });

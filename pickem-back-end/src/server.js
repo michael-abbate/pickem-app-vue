@@ -24,7 +24,6 @@ if (env==='prod') {
     app.use(history());
 }
 
-
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     next();
