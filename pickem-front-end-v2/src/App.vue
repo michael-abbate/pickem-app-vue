@@ -9,7 +9,12 @@
           <router-link to="/nflteams">NFL Teams</router-link> |
           <router-link to="/">Leaderboard</router-link> |
           <router-link to="/about">About</router-link>
+          
+          <button v-if="!$store.state.isUserLoggedIn" @click="navigateTo({name: 'LoginUser'})">Login</button>
+          <button v-if="!$store.state.isUserLoggedIn" @click="navigateTo({name: 'RegisterUser'})">Sign Up</button>
+
         </nav>
+
       </div>
   </div>
   <div class="router-view-div">
@@ -36,12 +41,13 @@
 // *********************************************************************************
 // import ShowPicks from './components/ShowPicks.vue'
 
-// export default {
-//   // name: 'Pickem-App',
-//   components: {
-//     ShowPicks
-//   }
-// }
+export default {
+  methods: {
+    navigateTo (route) {
+      this.$router.push(route)
+    }
+  }
+}
 </script>
 
 <style>

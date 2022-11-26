@@ -2,6 +2,8 @@ import express from 'express';
 import path from 'path';
 import history from 'connect-history-api-fallback';
 require('dotenv').config()
+const sample_odds_json = require('../sample_odds_results.json');
+
 
 // Import SQL endpoints
 
@@ -36,7 +38,7 @@ db.sequelize.sync();
 // });
 
 
-require('./routes')(app, env, livelines)
+require('./routes')(app, env, livelines, sample_odds_json);
 
 
 app.listen(port, () => {

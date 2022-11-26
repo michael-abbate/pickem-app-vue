@@ -1,12 +1,11 @@
 import request from 'request';
 
-const sample_odds_json = require('../sample_odds_results.json');
 const NFLTeamsController = require('./controllers/NFLTeamsController')
 const AuthenticationController = require('./controllers/AuthenticationController')
 const AuthenticationControllerPolicy = require('./policies/AuthenticationControllerPolicy')
 
 
-module.exports = (app, env, livelines) => {
+module.exports = (app, env, livelines, sample_odds_json) => {
     // App Routes
     app.get('/hello', (req, res) => {
         console.log('saying hello!');
@@ -16,6 +15,9 @@ module.exports = (app, env, livelines) => {
     app.post('/api/register',
         AuthenticationControllerPolicy.register,
         AuthenticationController.register);
+    
+    app.post('/api/login',
+        AuthenticationController.login);
 
     app.get('/api/nflteams', 
         NFLTeamsController.findAll);
@@ -46,7 +48,7 @@ module.exports = (app, env, livelines) => {
             // let res_json = JSON.parse(sample_odds_json);
             let res_json = sample_odds_json;
             res_json['env'] = env;
-            res_json['use_live_lines'] = true
+            res_json['use_live_lines'] = false
             res.json(res_json);
             // console.log(sample_odds_json.results.slice(0,16));
             // console.log(res_json);

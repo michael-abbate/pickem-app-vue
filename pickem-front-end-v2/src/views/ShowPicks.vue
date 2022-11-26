@@ -80,7 +80,9 @@
 <script>
 
 import axios from 'axios';
-import store from '../store';
+// import store from '../store';
+import store from '@/store/store'
+
 // import sample_odds_json from '../sample_odds_results.json';
 
 

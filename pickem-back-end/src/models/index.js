@@ -57,7 +57,7 @@ else {
 
 // ADD SQL TABLES HERE
 // db.nfl_teams = require("./nflteams.model.js")(sequelize, Sequelize);
-// db.users = require("./users.model.js")(sequelize,Sequelize);
+// db.user = require("./user.model.js")(sequelize,Sequelize);
 fs
   .readdirSync(__dirname)
   .filter((file) =>

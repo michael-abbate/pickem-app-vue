@@ -3,6 +3,7 @@ import ShowPicks from '../views/ShowPicks.vue'
 import SelectedPicks from '../views/SelectedPicks.vue'
 import NFLTeams from '../components/NFLTeams.vue'
 import RegisterUser from '@/components/RegisterUser.vue'
+import LoginUser from '@/components/LoginUser.vue'
 
 
 const routes = [
@@ -18,6 +19,12 @@ const routes = [
     path: '/register',
     name: 'RegisterUser',
     component: RegisterUser
+    
+  },
+  {
+    path: '/login',
+    name: 'LoginUser',
+    component: LoginUser
     
   },
   // '/' denotes it will be the homepage

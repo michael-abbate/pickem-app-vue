@@ -2,69 +2,72 @@
     <div>
         <h2>Register</h2>
         <div class = "registration-container">
-            <ul>
-                <li>
-                    <div class = "registration-label-input">
-                        <label>First Name</label>
-                        <br>
-                        <input
-                            type="text"
-                            name="firstname"
-                            v-model="firstname"
-                            placeholder="First Name" />
-                    </div>
-                </li>
-                <li>
-                    <div class = "registration-label-input">
-                        <label>Last Name</label>  
-                        <br>
-                        <input
-                            type="text"
-                            name="lastname"
-                            v-model="lastname"
-                            placeholder="Last Name" />
-                    </div>
-                </li>
-                <li>
-                    <div class = "registration-label-input">
-                        <label>User Name</label>
-                        <br>
-                        <input
-                            type="text"
-                            name="username"
-                            v-model="username"
-                            placeholder="Username" />
-                    </div>
-                </li>
-                <li>
-                    <div class = "registration-label-input">
-                        <label>Email</label>
-                        <br>
-                        <input
-                            type="email"
-                            name="email"
-                            v-model="email"
-                            placeholder="Email" />
-                    </div>
-                </li>
-                <li>
-                    <div class = "registration-label-input">
-                        <label>Password</label>
-                        <br>
-                        <input
-                            type="password"
-                            name="password"
-                            v-model="password"
-                            placeholder="Password" />
-                    </div>
-                </li>
-                
-                <div v-if="error" class="error" v-html="error" />
-                <div v-if="success && !error" class="success" v-html="success" />
-                <br>
-                <button
-                    @click="register">Register</button>
-            </ul>
+            <form name = "registration-form" autocomplete="off">
+                <ul>
+                    <li>
+                        <div class = "registration-label-input">
+                            <label>First Name</label>
+                            <br>
+                            <input
+                                type="text"
+                                name="firstname"
+                                v-model="firstname"
+                                placeholder="First Name" />
+                        </div>
+                    </li>
+                    <li>
+                        <div class = "registration-label-input">
+                            <label>Last Name</label>  
+                            <br>
+                            <input
+                                type="text"
+                                name="lastname"
+                                v-model="lastname"
+                                placeholder="Last Name" />
+                        </div>
+                    </li>
+                    <li>
+                        <div class = "registration-label-input">
+                            <label>User Name</label>
+                            <br>
+                            <input
+                                type="text"
+                                name="username"
+                                v-model="username"
+                                placeholder="Username" />
+                        </div>
+                    </li>
+                    <li>
+                        <div class = "registration-label-input">
+                            <label>Email</label>
+                            <br>
+                            <input
+                                type="email"
+                                name="email"
+                                v-model="email"
+                                placeholder="Email" />
+                        </div>
+                    </li>
+                    <li>
+                        <div class = "registration-label-input">
+                            <label>Password</label>
+                            <br>
+                            <input
+                                type="password"
+                                name="password"
+                                v-model="password"
+                                placeholder="Password"
+                                autocomplete="new-password" />
+                        </div>
+                    </li>
+                    
+                    <div v-if="error" class="error" v-html="error" />
+                    <div v-if="success && !error" class="success" v-html="success" />
+                    <br>
+                    <button
+                        @click="register">Register</button>
+                </ul>
+            </form>
         </div>
     </div>
 </template>
@@ -90,13 +93,15 @@ export default {
         async register() {
             this.error = null;
             try {                
-                await AuthenticationService.register({
+                const response = await AuthenticationService.register({
                     firstname: this.firstname,
                     lastname: this.lastname, 
                     username: this.username,
                     email: this.email, 
                     password: this.password
                 });
+                this.$store.dispatch('setToken', response.data.token)
+                this.$store.dispatch('setUser', response.data.user)
                 this.success = 'Successfully registered!'; 
                 //TODO add redirect out of registration page     
             } catch(error) {
