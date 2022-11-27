@@ -56,17 +56,17 @@ else {
 
 
 // ADD SQL TABLES HERE
-// db.nfl_teams = require("./nflteams.model.js")(sequelize, Sequelize);
-// db.user = require("./user.model.js")(sequelize,Sequelize);
-fs
-  .readdirSync(__dirname)
-  .filter((file) =>
-    file !== 'index.js'
-  )
-  .forEach((file) => {
-    const model = require(path.join(__dirname, file))(sequelize, Sequelize)
-    db[model.name] = model
-  })
+db.nfl_teams = require("./nflteams.model.js")(sequelize, Sequelize);
+db.user = require("./user.model.js")(sequelize,Sequelize);
+// fs
+//   .readdirSync(__dirname)
+//   .filter((file) =>
+//     file !== 'index.js'
+//   )
+//   .forEach((file) => {
+//     const model = require(path.join(__dirname, file))(sequelize, Sequelize)
+//     db[model.name] = model
+//   })
 
 
 db.Sequelize = Sequelize;
