@@ -100,14 +100,14 @@ export default {
                     email: this.email, 
                     password: this.password
                 });
+                this.$store.dispatch('setToken', response.data.token)
+                this.$store.dispatch('setUser', response.data.user)
                 console.log('Pushing to show picks....')
                 this.$router.push({
                     name: 'ShowPicks'
                 })
                 console.log('should be at show picks....')
                 console.log(`Registered user: ${this.username}`)
-                this.$store.dispatch('setToken', response.data.token)
-                this.$store.dispatch('setUser', response.data.user)
                 
 
             } catch(error) {
