@@ -1,4 +1,6 @@
-const {User} = require('../models')
+// const {PickemUser} = require('../models')
+const db = require("../models");
+const PickemUser = db.pickemuser;
 const jwt = require('jsonwebtoken')
 
 function jwtSignUser (user) {
@@ -14,7 +16,7 @@ module.exports = {
     async register (req, res) {
         try {
             // const user = await User.create(req.body);
-            const user = await User.create({
+            const user = await PickemUser.create({
                 firstname: req.body.firstname,
                 lastname: req.body.lastname,
                 username: req.body.username,
@@ -39,7 +41,7 @@ module.exports = {
     async login (req, res) {
         try {
             const {email, password} = req.body
-            const user = await User.findOne({
+            const user = await PickemUser.findOne({
                 where: {
                     email: email
                 }
