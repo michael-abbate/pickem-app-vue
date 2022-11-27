@@ -123,31 +123,16 @@ module.exports = {
                 })
             }
             const userJson = user.toJSON()
-            const accessToken = generateAccessToken(userJson)
-            const ONE_WEEK = 60*60*24*7
-            const refreshToken = jwt.sign({user: user.email}, process.env.JWT_REFRESH_SECRET, {
-                expiresIn: ONE_WEEK
-            })
-            const response = {
+            res.send({
                 user: userJson,
-                token: accessToken,
-                refresh_token: refreshToken
-            }
-            res.cookie('token', refreshToken, { httpOnly: true, 
-                sameSite: 'None', secure: true, 
-                maxAge: 24 * 60 * 60 * 1000 });
-            
-            res.send(response);
-            
+                token: jwtSignUser(userJson)
+            });
         } catch(err) {
             console.log('catching the error')
             // username email already exists
             return res.status(500).send({
                 error: 'An error has occured trying to log in.'
-            });
-            // console.log('caught the error')
-            // return;
-
+            });            
         }
     }
 }
