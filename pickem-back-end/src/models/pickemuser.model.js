@@ -18,7 +18,7 @@ function hashPassword (user, options) {
 }
 
 module.exports = (sequelize, Sequelize) => {
-    const PickemUser = sequelize.define('PickemUser', {
+    const PickemUser = sequelize.define('pickemuser', {
         firstname: {
             type: Sequelize.STRING
         },

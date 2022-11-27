@@ -32,7 +32,7 @@ module.exports = {
             console.log("error:");
             console.log(err);
             // username email already exists
-            res.status(400).send({
+            return res.status(400).send({
                 error: 'This username or email account is already in use.'
             });
         }
@@ -47,7 +47,7 @@ module.exports = {
                 }
             })
             if (!user) {
-                res.status(403).send({
+                return res.status(403).send({
                     error: 'The email or password information was incorrect.'
                 })
             }
@@ -56,7 +56,7 @@ module.exports = {
             const isPasswordValid = await user.comparePassword(password)
 
             if (!isPasswordValid) {
-                res.status(403).send({
+                return res.status(403).send({
                     error: 'The email or password information was incorrect.'
                 })
             }
@@ -66,10 +66,14 @@ module.exports = {
                 token: jwtSignUser(userJson)
             });
         } catch(err) {
+            console.log('catching the error')
             // username email already exists
-            res.status(500).send({
+            return res.status(500).send({
                 error: 'An error has occured trying to log in.'
             });
+            console.log('caught the error')
+            return;
+
         }
     }
 }
