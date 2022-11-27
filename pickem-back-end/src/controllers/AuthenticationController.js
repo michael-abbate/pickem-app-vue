@@ -125,7 +125,7 @@ module.exports = {
             const userJson = user.toJSON()
             res.send({
                 user: userJson,
-                token: jwtSignUser(userJson)
+                token: generateAccessToken(userJson)
             });
         } catch(err) {
             console.log('catching the error')
