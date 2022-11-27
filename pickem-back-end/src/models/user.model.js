@@ -2,11 +2,13 @@ const Promise = require('bluebird')
 const bcrypt = Promise.promisifyAll(require('bcrypt-nodejs'))
 
 function hashPassword (user, options) {
+
+    console.log("salting password")
     const SALT_FACTOR = 8;
     if (!user.changed('password')) {
         return;
     }
-
+    console.log("password salted!")
     return bcrypt
         .genSaltAsync(SALT_FACTOR)
         .then(salt => bcrypt.hashAsync(user.password, salt, null))
