@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import history from 'connect-history-api-fallback';
+const cookieparser = require('cookie-parser');
 require('dotenv').config()
 const sample_odds_json = require('../sample_odds_results.json');
 
@@ -16,6 +17,7 @@ const app = express();
 
 app.use(express.static(path.resolve(__dirname,'../dist'), { maxAge: '1y', etag: false}))
 app.use(express.json());
+app.use(cookieparser());
 
 // let env = 'prod';
 console.log(`Back-end APP_ENV: ${env}`)

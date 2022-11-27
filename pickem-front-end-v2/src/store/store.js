@@ -1,7 +1,7 @@
 import App from '../App.vue'
 import { createApp } from 'vue'
 import Vuex from 'vuex';
-// import createPersistedState from 'vuex-persistedstate'
+import createPersistedState from 'vuex-persistedstate'
 // import Cookies from "js-cookie";
 
 createApp(App).use(Vuex);
@@ -18,6 +18,8 @@ export default new Vuex.Store({
     mutations: {
         setToken (state, token) {
             state.token = token
+            // console.log("Store cookie:")
+            // console.log(Cookies.get('token'));
             if (token) {
                 state.isUserLoggedIn = true
             } else {
@@ -40,11 +42,8 @@ export default new Vuex.Store({
             commit('setUser', user)
         }       
     }
-    // ,
-    // plugins: [
-    //     createPersistedState({
-    //       getState: (key) => Cookies.getJSON(key),
-    //       setState: (key, state) => Cookies.set(key, state, { expires: 3, secure: true })
-    //     })
-    //   ]
+    ,
+    plugins: [
+        createPersistedState()
+      ]
 });

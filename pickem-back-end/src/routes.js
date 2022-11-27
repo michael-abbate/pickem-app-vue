@@ -18,7 +18,16 @@ module.exports = (app, env, livelines, sample_odds_json) => {
         AuthenticationControllerPolicy.register,
         AuthenticationController.register);
     
+    
+    // app.post('/api/refresh', 
+    //     AuthenticationController.cookieJwtAuth);
+
+
+    // app.post('token/refresh', 
+    //         AuthenticationController.refreshAppToken);
+
     app.post('/api/login',
+        // AuthenticationController.authenticateToken,
         AuthenticationController.login);
 
     app.get('/api/nflteams', 

@@ -92,21 +92,18 @@ export default {
             console.log('hit register button')
             this.error = null;
             try {       
-                console.log(`Attempting to register user: ${this.username}`)         
-                const response = await AuthenticationService.register({
+                console.log(`Attempting to register user: ${this.username}`)
+                // Update: no longer log in user after registering them      
+                await AuthenticationService.register({
                     firstname: this.firstname,
                     lastname: this.lastname, 
                     username: this.username,
                     email: this.email, 
                     password: this.password
                 });
-                this.$store.dispatch('setToken', response.data.token)
-                this.$store.dispatch('setUser', response.data.user)
-                console.log('Pushing to show picks....')
                 this.$router.push({
-                    name: 'ShowPicks'
+                    name: 'LoginUser'
                 })
-                console.log('should be at show picks....')
                 console.log(`Registered user: ${this.username}`)
                 
 
