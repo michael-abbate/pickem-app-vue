@@ -112,7 +112,10 @@ export default {
 
             } catch(error) {
                 console.log(`Failed to register user: ${this.username}`)
+                console.log("error:");
+                console.log(error);
                 this.error = error.response.data.error
+
             }
 
         }

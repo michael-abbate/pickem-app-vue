@@ -2,6 +2,8 @@ const {User} = require('../models')
 const jwt = require('jsonwebtoken')
 
 function jwtSignUser (user) {
+    console.log('Secret:');
+    console.log(process.env.JWT_SECRET);
     const ONE_WEEK = 60*60*24*7
     return jwt.sign({user:user.email}, process.env.JWT_SECRET, {
         expiresIn: ONE_WEEK
