@@ -4,6 +4,7 @@ import SelectedPicks from '../views/SelectedPicks.vue'
 import NFLTeams from '../components/NFLTeams.vue'
 import RegisterUser from '@/components/RegisterUser.vue'
 import LoginUser from '@/components/LoginUser.vue'
+import UserLeaderboard from '@/components/UserLeaderboard.vue'
 
 
 const routes = [
@@ -25,6 +26,12 @@ const routes = [
     path: '/login',
     name: 'LoginUser',
     component: LoginUser
+    
+  },
+  {
+    path: '/leaderboard',
+    name: 'UserLeaderboard',
+    component: UserLeaderboard
     
   },
   // '/' denotes it will be the homepage

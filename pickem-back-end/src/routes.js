@@ -4,6 +4,7 @@ import path from 'path';
 const NFLTeamsController = require('./controllers/NFLTeamsController')
 const AuthenticationController = require('./controllers/AuthenticationController')
 const AuthenticationControllerPolicy = require('./policies/AuthenticationControllerPolicy')
+const LeaderboardController = require('./controllers/LeaderboardController')
 
 
 module.exports = (app, env, livelines, sample_odds_json) => {
@@ -23,6 +24,8 @@ module.exports = (app, env, livelines, sample_odds_json) => {
     app.get('/api/nflteams', 
         NFLTeamsController.findAll);
 
+    app.get('/api/leaderboard', 
+        LeaderboardController.findAll);
 
     app.get('/api/showpicks', (req, res) => {
         console.log(livelines);
