@@ -136,7 +136,8 @@ module.exports = {
             res.cookie('token', refreshToken, { httpOnly: true, 
                 sameSite: 'None', secure: true, 
                 maxAge: 24 * 60 * 60 * 1000 });
-            return res.send(response);
+            
+            res.send(response);
             
         } catch(err) {
             console.log('catching the error')
