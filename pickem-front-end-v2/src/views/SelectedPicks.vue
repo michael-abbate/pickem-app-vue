@@ -15,14 +15,17 @@
                             {{ pick.render_value }}
                         </option>
                     </select>
+                    
                 </td>
             </tr>
         </table>
+        <button @click="submitPicks">Submit</button>
     </div>
 </template>
 
 <script>
 // import store from '../store';
+import PicksService from '@/services/PicksService';
 
 // import axios from 'axios';
 // import { defineComponent } from '@vue/composition-api'
@@ -39,9 +42,41 @@ export default {
             Underdog: '',
             Over: '',
             Under: '',
-            LOCK: ''
+            Lock: ''
            }
        } 
+    },
+    methods: {        
+        async submitPicks() {
+            console.log("submit button")
+            try {       
+                console.log(`Attempting to submit picks for user: ${this.$store.state.user.username}`)
+                // Update: no longer log in user after registering them      
+                await PicksService.submitPicks({
+                    nfl_week: "nfl week testing",
+                    username: this.$store.state.user.username,
+                    favorite: this.picks_form.Favorite.render_value,
+                    underdog: this.picks_form.Underdog.render_value,
+                    over: this.picks_form.Over.render_value,
+                    under: this.picks_form.Under.render_value,
+                    lock: this.picks_form.Lock.render_value,
+                    pick_json: JSON.stringify(this.picks_form)
+                });
+                // this.$router.push({
+                //     name: 'GroupPicks'
+                // })
+                console.log(`Submitted picks for user: ${this.$store.state.user.username}`)
+                
+
+            } catch(error) {
+                console.log(`Failed to submit picks for user: ${this.$store.state.user.username}`)
+                console.log("error:");
+                console.error(error);
+                this.error = error.response.data.error
+
+            }
+
+        }
     }
      , computed: {
          picks() {

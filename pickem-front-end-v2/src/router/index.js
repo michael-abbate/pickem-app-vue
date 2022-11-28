@@ -5,6 +5,7 @@ import NFLTeams from '../components/NFLTeams.vue'
 import RegisterUser from '@/components/RegisterUser.vue'
 import LoginUser from '@/components/LoginUser.vue'
 import UserLeaderboard from '@/components/UserLeaderboard.vue'
+import GroupPicks from '@/components/GroupPicks.vue'
 
 
 const routes = [
@@ -33,6 +34,12 @@ const routes = [
     name: 'UserLeaderboard',
     component: UserLeaderboard
     
+  }
+  ,
+  {
+    path: '/group/picks',
+    name: 'GroupPicks',
+    component: GroupPicks
   },
   // '/' denotes it will be the homepage
   {

@@ -5,6 +5,7 @@ const NFLTeamsController = require('./controllers/NFLTeamsController')
 const AuthenticationController = require('./controllers/AuthenticationController')
 const AuthenticationControllerPolicy = require('./policies/AuthenticationControllerPolicy')
 const LeaderboardController = require('./controllers/LeaderboardController')
+const PicksController = require('./controllers/PicksController')
 
 
 module.exports = (app, env, livelines, sample_odds_json) => {
@@ -35,6 +36,9 @@ module.exports = (app, env, livelines, sample_odds_json) => {
 
     app.get('/api/leaderboard', 
         LeaderboardController.findAll);
+
+    app.get('/api/group/picks', 
+        PicksController.findAll);
 
     app.get('/api/showpicks', (req, res) => {
         console.log(livelines);
@@ -81,6 +85,9 @@ module.exports = (app, env, livelines, sample_odds_json) => {
         // sendreq.body or picks?????
         // res.send();/
     });
+
+    app.post('/api/selected/submit', 
+        PicksController.create);
 
 
     app.get('*', (req, res)=> {
