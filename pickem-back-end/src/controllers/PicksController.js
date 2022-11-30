@@ -12,7 +12,6 @@ exports.create = (req, res) => {
       });
       return;
     }
-    
 
     // Create picks JSON
     const group_pick = {
@@ -24,20 +23,7 @@ exports.create = (req, res) => {
       under: req.body.under,
       lock: req.body.lock
       };
-    // console.log(group_pick);
-        // TODO: perform logic to make sure user hasn't already submitted a pick for this week!
-
-    // Save Tutorial in the database
-    // GroupPicks.create(group_pick)
-    //   .then(data => {
-    //     res.send(data);
-    //   })
-    //   .catch(err => {
-    //     res.status(500).send({
-    //       message:
-    //         err.message || "Some error occurred while submitting your picks."
-    //     });
-    // });
+    
     GroupPicks.findOrCreate({
       where: {username: req.body.username, nfl_week: req.body.nfl_week},
       defaults: group_pick
