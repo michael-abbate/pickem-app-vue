@@ -19,6 +19,8 @@
                 </td>
             </tr>
         </table>
+        <div class = "message">{{ msg }}</div>
+        <br>
         <button @click="submitPicks">Submit</button>
     </div>
 </template>
@@ -36,14 +38,15 @@ export default {
     name: 'SelectedPicks',
     data() {
        return {
-           submitpicks: [],
-           picks_form: {
+            msg: '',
+            submitpicks: [],
+            picks_form: {
             Favorite: '',
             Underdog: '',
             Over: '',
             Under: '',
             Lock: ''
-           }
+            }
        } 
     },
     methods: {        
@@ -52,37 +55,35 @@ export default {
             try {       
                 console.log(`Attempting to submit picks for user: ${this.$store.state.user.username}`)
                 // Update: no longer log in user after registering them      
-                await PicksService.submitPicks({
+                const response = await PicksService.submitPicks({
                     nfl_week: "nfl week testing",
                     username: this.$store.state.user.username,
-                    favorite: this.picks_form.Favorite.render_value,
-                    underdog: this.picks_form.Underdog.render_value,
-                    over: this.picks_form.Over.render_value,
-                    under: this.picks_form.Under.render_value,
-                    lock: this.picks_form.Lock.render_value,
-                    pick_json: JSON.stringify(this.picks_form)
+                    favorite: JSON.stringify(this.picks_form.Favorite),
+                    underdog: JSON.stringify(this.picks_form.Underdog),
+                    over: JSON.stringify(this.picks_form.Over),
+                    under: JSON.stringify(this.picks_form.Under),
+                    lock: JSON.stringify(this.picks_form.Lock)                    
                 });
-                // this.$router.push({
-                //     name: 'GroupPicks'
-                // })
+ 
                 console.log(`Submitted picks for user: ${this.$store.state.user.username}`)
-                
+                this.msg = response.data.message
+                // Wait 4 seconds then redirect to GroupPicks
+                setTimeout(() => this.$router.push({ name:'GroupPicks' }), 3000);
 
             } catch(error) {
-                console.log(`Failed to submit picks for user: ${this.$store.state.user.username}`)
-                console.log("error:");
-                console.error(error);
-                this.error = error.response.data.error
-
+                console.log(`Failed to submit picks for user: ${this.$store.state.user.username}`)                
+                this.msg = error.response.data.message
             }
 
         }
     }
-     , computed: {
+    , computed: {
+        // Passes values from showpicks to selectedpicks page
          picks() {
              return this.$store.state.picks.picks;
          }
      }
+
 };
 </script>
 
@@ -104,6 +105,11 @@ select {
     /* padding: 5px; */
 /* }
 */
+
+.message {
+    font-size:1vw;
+    font-weight:bold;
+}
 
 select {
     background-color: #fff;
