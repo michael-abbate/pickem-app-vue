@@ -13,7 +13,7 @@
                     Favorite
                 </td>
                 <td>
-                    {{ pick.favorite }}
+                    {{ parsePick(pick.favorite).render_value }}
                 </td>
             </tr>
             <tr>
@@ -24,7 +24,7 @@
                     Underdog
                 </td>
                 <td>
-                    {{ pick.underdog }}
+                    {{ parsePick(pick.underdog).render_value }}
                 </td>
             </tr>
             <tr>
@@ -35,7 +35,7 @@
                     Over
                 </td>
                 <td>
-                    {{ pick.over }}
+                    {{ parsePick(pick.over).render_value }}
                 </td>
             </tr>
             <tr>
@@ -46,7 +46,7 @@
                     Under
                 </td>
                 <td>
-                    {{ pick.under }}
+                    {{ parsePick(pick.under).render_value }}
                 </td>
             </tr>
             <tr>
@@ -57,7 +57,7 @@
                     Lock
                 </td>
                 <td>
-                    {{ pick.lock }}
+                    {{ parsePick(pick.lock).render_value }}
                 </td>
             </tr>
             
@@ -84,10 +84,15 @@ export default {
         try {       
             const result = await PicksService.getGroupPicks();
             const picks = result.data;
-            this.picks = picks;                                
+            this.picks = picks;
 
         } catch(error) {
             this.error = error.response.data.error
+        }
+    },
+    methods: {    
+        parsePick(pick) {                    
+            return JSON.parse(pick)        
         }
     }
 }
