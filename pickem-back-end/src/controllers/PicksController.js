@@ -13,31 +13,51 @@ exports.create = (req, res) => {
       return;
     }
     
-    // TODO: perform logic to make sure user hasn't already submitted a pick for this week!
 
     // Create picks JSON
     const group_pick = {
-      nfl_week: req.body.nfl_week,
-      username: req.body.username,
+      // nfl_week: req.body.nfl_week,
+      // username: req.body.username,
       favorite: req.body.favorite,
       underdog: req.body.underdog,
       over: req.body.over,
       under: req.body.under,
-      lock: req.body.lock,
-      pick_json: req.body.pick_json
-    };
-    console.log(group_pick);
+      lock: req.body.lock
+      };
+    // console.log(group_pick);
+        // TODO: perform logic to make sure user hasn't already submitted a pick for this week!
+
     // Save Tutorial in the database
-    GroupPicks.create(group_pick)
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while submitting your picks."
-        });
-    });
+    // GroupPicks.create(group_pick)
+    //   .then(data => {
+    //     res.send(data);
+    //   })
+    //   .catch(err => {
+    //     res.status(500).send({
+    //       message:
+    //         err.message || "Some error occurred while submitting your picks."
+    //     });
+    // });
+    GroupPicks.findOrCreate({
+      where: {username: req.body.username, nfl_week: req.body.nfl_week},
+      defaults: group_pick
+    }).then(([pickRow, isCreated]) => {
+      // console.log('Created:', isCreated)
+      // console.log(pickRow)
+      if(isCreated){
+          // pick submitted
+          res.send({
+            message: "Picks submitted successfully!"
+          })
+        }
+      else {        
+          console.log('Pick already submitted for this week!')
+          res.status(403).send({
+            message: 'Picks already submitted for this week!'
+          })
+      } 
+      });
+    
 };  
 
  // Retrieve all NFL Teams from the database.
