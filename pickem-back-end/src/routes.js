@@ -38,7 +38,10 @@ module.exports = (app, env, livelines, sample_odds_json) => {
         LeaderboardController.findAll);
 
     app.get('/api/group/picks', 
-        PicksController.findAll);
+        PicksController.findWeeksPicks);
+
+    app.get('/api/nflweeks', 
+        PicksController.findDistinctWeeks);
 
     app.get('/api/showpicks', (req, res) => {
         console.log(livelines);

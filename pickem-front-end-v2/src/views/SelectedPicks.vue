@@ -1,5 +1,8 @@
 <template>
     <div class = "selected-picks-container">
+        <h2>
+            {{ nflweek }} Selections
+        </h2>
         <table class="select-picks-table">
             <tr v-for="(type) in Object.keys(picks_form)" :key="type" :class="type+'-row'">
                 <td>
@@ -21,7 +24,7 @@
         </table>
         <div class = "message">{{ msg }}</div>
         <br>
-        <button @click="submitPicks">Submit</button>
+        <button @click="submitPicks(nflweek)"></button>
     </div>
 </template>
 
@@ -37,7 +40,7 @@ import PicksService from '@/services/PicksService';
 export default {
     name: 'SelectedPicks',
     data() {
-       return {
+       return {            
             msg: '',
             submitpicks: [],
             picks_form: {
@@ -50,13 +53,14 @@ export default {
        } 
     },
     methods: {        
-        async submitPicks() {
+        async submitPicks(nflweek) {
             console.log("submit button")
             try {       
+                console.log(`${nflweek} PICK FOR USER: ${this.$store.state.user.username}`)
                 console.log(`Attempting to submit picks for user: ${this.$store.state.user.username}`)
-                // Update: no longer log in user after registering them      
+                
                 const response = await PicksService.submitPicks({
-                    nfl_week: "nfl week testing",
+                    nflweek: nflweek,
                     username: this.$store.state.user.username,
                     favorite: JSON.stringify(this.picks_form.Favorite),
                     underdog: JSON.stringify(this.picks_form.Underdog),
@@ -81,6 +85,9 @@ export default {
         // Passes values from showpicks to selectedpicks page
          picks() {
              return this.$store.state.picks.picks;
+         },
+         nflweek() {
+            return this.$store.state.picks.nflweek;
          }
      }
 
@@ -127,5 +134,28 @@ select:hover {
     border-color:white;
     font-weight:bold;
     color:#fff;
+}
+
+button {
+    background-color: dodgerblue;
+    border-radius: 8px;
+    font-size: 1.25vw;
+    border:none;
+    color:#fff;
+    height:3vw;
+    width:9vw;
+}
+
+button:hover {
+    cursor: pointer;
+    background-color: #fff;
+    font-weight:bold;
+    color:#1f1f1f;
+}
+button::after {
+    content: "Submit";
+}
+button:hover::after {
+content: "LOCK 'EM IN!";
 }
 </style>
