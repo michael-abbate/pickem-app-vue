@@ -5,6 +5,7 @@
       </div>
       <div class = "app-header-nav">
         <nav>
+          <a v-if="$store.state.isUserLoggedIn">Hi, {{ $store.state.user.firstname }}</a>
           <router-link v-if="$store.state.isUserLoggedIn" to="/">Games</router-link>
           <router-link v-if="$store.state.isUserLoggedIn" to="/nflteams">NFL Teams</router-link>
           <router-link v-if="$store.state.isUserLoggedIn" to="/group/picks">Group Picks</router-link>
@@ -22,7 +23,6 @@
       </div>
   </div>
   <div class="router-view-div">
-    <h3 v-if="$store.state.isUserLoggedIn">Welcome {{ $store.state.user.firstname }}!</h3>
     <router-view/>
   </div>
 </template>
@@ -122,7 +122,10 @@ body, html{
     border:none;
     color:#fff;
     height:25px;
-    margin:3px;
+    margin:13px;
+  }
+  nav a:hover {
+    color:dodgerblue;
   }
 
   .router-view-div {
@@ -153,10 +156,9 @@ body, html{
 }
 
 button:hover {
-    cursor: pointer;
-    /* background-color: #fff; */
+    cursor: pointer;    
     font-weight:bold;
-    /* color:#1f1f1f; */
+    color:dodgerblue;
 }
 
 
