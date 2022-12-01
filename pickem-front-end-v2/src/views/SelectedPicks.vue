@@ -15,14 +15,19 @@
                             {{ pick.render_value }}
                         </option>
                     </select>
+                    
                 </td>
             </tr>
         </table>
+        <div class = "message">{{ msg }}</div>
+        <br>
+        <button @click="submitPicks">Submit</button>
     </div>
 </template>
 
 <script>
 // import store from '../store';
+import PicksService from '@/services/PicksService';
 
 // import axios from 'axios';
 // import { defineComponent } from '@vue/composition-api'
@@ -33,21 +38,52 @@ export default {
     name: 'SelectedPicks',
     data() {
        return {
-           submitpicks: [],
-           picks_form: {
+            msg: '',
+            submitpicks: [],
+            picks_form: {
             Favorite: '',
             Underdog: '',
             Over: '',
             Under: '',
-            LOCK: ''
-           }
+            Lock: ''
+            }
        } 
+    },
+    methods: {        
+        async submitPicks() {
+            console.log("submit button")
+            try {       
+                console.log(`Attempting to submit picks for user: ${this.$store.state.user.username}`)
+                // Update: no longer log in user after registering them      
+                const response = await PicksService.submitPicks({
+                    nfl_week: "nfl week testing",
+                    username: this.$store.state.user.username,
+                    favorite: JSON.stringify(this.picks_form.Favorite),
+                    underdog: JSON.stringify(this.picks_form.Underdog),
+                    over: JSON.stringify(this.picks_form.Over),
+                    under: JSON.stringify(this.picks_form.Under),
+                    lock: JSON.stringify(this.picks_form.Lock)                    
+                });
+ 
+                console.log(`Submitted picks for user: ${this.$store.state.user.username}`)
+                this.msg = response.data.message
+                // Wait 4 seconds then redirect to GroupPicks
+                setTimeout(() => this.$router.push({ name:'GroupPicks' }), 3000);
+
+            } catch(error) {
+                console.log(`Failed to submit picks for user: ${this.$store.state.user.username}`)                
+                this.msg = error.response.data.message
+            }
+
+        }
     }
-     , computed: {
+    , computed: {
+        // Passes values from showpicks to selectedpicks page
          picks() {
              return this.$store.state.picks.picks;
          }
      }
+
 };
 </script>
 
@@ -69,6 +105,11 @@ select {
     /* padding: 5px; */
 /* }
 */
+
+.message {
+    font-size:1vw;
+    font-weight:bold;
+}
 
 select {
     background-color: #fff;

@@ -7,6 +7,7 @@
         <nav>
           <router-link v-if="$store.state.isUserLoggedIn" to="/">Games</router-link>
           <router-link v-if="$store.state.isUserLoggedIn" to="/nflteams">NFL Teams</router-link>
+          <router-link v-if="$store.state.isUserLoggedIn" to="/group/picks">Group Picks</router-link>
           <router-link v-if="$store.state.isUserLoggedIn" to="/leaderboard">Leaderboard</router-link>
           <router-link v-if="$store.state.isUserLoggedIn" to="/about">About</router-link>
           
