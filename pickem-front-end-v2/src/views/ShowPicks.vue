@@ -3,9 +3,12 @@
         <div class="grid-cell-1">
         </div>
         <div class="grid-cell-2">
+            <h2>
+                {{ nflweek }} Games
+            </h2>
             <div v-if = "Object.keys(games).length > 0" id="all-game-tables">                
                 <div v-cloak v-for="(game,index) in games" :key = "game.gameID" :class="game.gameID+'game-table'">
-                    <table v-if="validGame(game.date)" :class="game.gameID+'game-table'">
+                    <table v-if="validGame(game.date)" :class="game.gameID+'game-table'">                    
                         <tr :class="'away-row-'+index+'-'+game.gameID">
                             <td rowspan = "2" class="date-cell">  
                                 {{ epochToDate(game.date) }}                                  
@@ -109,7 +112,8 @@ export default {
     // games_json: sample_odds_json, 
     name: "ShowPicks",
     data() {
-        return {            
+        return {  
+            nflweek: '',          
             games:null,
             env:null,
             use_live_lines: null,
@@ -139,6 +143,7 @@ export default {
         console.log('Here are the games!');
         console.log(games);
         this.games = games;
+        this.nflweek = games[0].round;
         this.env = result.data.env;
         this.use_live_lines = result.data.use_live_lines;
         console.log(`Front-end ENV fetched from back-end env: ${this.env}`);
@@ -158,6 +163,7 @@ export default {
                 console.log(`selectPicks: ${this.picks}`)
                 this.$store.commit('SELECT_PICKS', {
                     picks: this.picks,
+                    nflweek: this.nflweek
                     });
                 this.$router.push('/selected');
             }
@@ -227,18 +233,19 @@ export default {
             let away_sp = this.favOrDog(dk_odds)[0];
             let home_sp = this.favOrDog(dk_odds)[1];
             let over_under = dk_odds.overUnder;
+            let nflweek = game.round;
 
             if (label === 'away') {
-                return {"render_value": team1_name + " " + away_sp, "gameID":game_id, "team1Name": team1_name, "team2Name":team2_name, "spread": away_sp, "team_selected": "team1" }
+                return {"render_value": team1_name + " " + away_sp, "gameID":game_id, "team1Name": team1_name, "team2Name":team2_name, "spread": away_sp, "team_selected": "team1", "week": nflweek }
             }
             else if (label === 'home') {
-                return {"render_value": team2_name + " " + home_sp, "gameID":game_id, "team1Name": team1_name, "team2Name":team2_name, "spread": home_sp, "team_selected": "team2"}
+                return {"render_value": team2_name + " " + home_sp, "gameID":game_id, "team1Name": team1_name, "team2Name":team2_name, "spread": home_sp, "team_selected": "team2", "week": nflweek}
             }
             else if (label === 'over') {
-                return {"render_value": team1_name + " vs. " + team2_name + " o" + over_under, "gameID":game_id, "team1Name": team1_name, "team2Name":team2_name, "overUnder": over_under}
+                return {"render_value": team1_name + " vs. " + team2_name + " o" + over_under, "gameID":game_id, "team1Name": team1_name, "team2Name":team2_name, "overUnder": over_under, "week": nflweek}
             }
             else if (label === 'under') {
-                return {"render_value": team1_name + " vs. " + team2_name + " u" + over_under, "gameID":game_id, "team1Name": team1_name, "team2Name":team2_name, "overUnder": over_under}
+                return {"render_value": team1_name + " vs. " + team2_name + " u" + over_under, "gameID":game_id, "team1Name": team1_name, "team2Name":team2_name, "overUnder": over_under, "week": nflweek}
             }
         }
 
