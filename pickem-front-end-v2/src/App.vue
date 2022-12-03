@@ -153,13 +153,13 @@ body, html{
     height:25px;
     margin:3px;
     /* width:20%; */
-}
+  }
 
-button:hover {
-    cursor: pointer;    
-    font-weight:bold;
-    color:dodgerblue;
-}
+  button:hover {
+      cursor: pointer;    
+      font-weight:bold;
+      color:dodgerblue;
+  }
 
 
 }
@@ -189,11 +189,13 @@ button:hover {
 
   nav a {
     color: #fff;
+    text-decoration: none;
   }
   
 
   nav a.router-link-exact-active {
-    color: #42b983;
+    font-weight: bold;
+    text-decoration: none;
   }
 
 

@@ -4,7 +4,7 @@
             <h2>
                 {{ nflweek }} Picks
             </h2>
-            <select>
+            <select v-model="nflweek" @change = "getWeeksPicks(nflweek)">
                 <option v-for="(distinct_nflweek) in distinct_nflweeks" :key="distinct_nflweek">
                     {{ distinct_nflweek.nfl_week }}
                 </option>
@@ -95,6 +95,7 @@ export default {
         try {       
             const weeksresult = await PicksService.getDistinctWeeks();
             this.distinct_nflweeks = weeksresult.data;
+            // var nflweek_json = {nflweek: false}
             const picksresult = await PicksService.getGroupPicks();
             const picks = picksresult.data;
             this.picks = picks;
@@ -108,6 +109,24 @@ export default {
         parsePick(pick) {                    
             return JSON.parse(pick)        
         }
+        ,
+        getWeeksPicks(nflweek) {
+            console.log("getWeeksPicks fct")
+            try {                       
+                var nflweek_json = {nflweek: nflweek}
+                PicksService.postGroupPicks(nflweek_json)
+                    .then((picksresult) => {
+                        var picks = picksresult.data;
+                        this.picks = picks;                        
+                    }).catch(err => {                        
+                        console.log("Some error occurred while retrieving group picks.")
+                        this.error = err.response.data.error
+                    });
+            } catch(error) {
+                this.error = error.response.data.error
+            }
+        }
+        
     }
 }
 
@@ -138,6 +157,22 @@ td {
     padding:10px;
     font-weight: bold;
     text-align:left;
+}
+select {
+    background-color: #fff;
+    font-weight: bold;
+    font-size: 1vw;
+    border-radius: 8px;
+    border-color:white;
+    color:#1f1f1f;
+    height:2vw;
+    width:10vw;
+    text-align: center;
+    margin-bottom:10px;
+}
+
+select:hover {
+    cursor: pointer;
 }
 
 </style>

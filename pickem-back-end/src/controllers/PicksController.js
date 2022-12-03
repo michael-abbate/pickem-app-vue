@@ -48,34 +48,56 @@ exports.create = (req, res) => {
 
  // Retrieve all Users' Picks from the database.
 exports.findWeeksPicks = (req, res) => {
-  // console.log(req.body)
-  GroupPicks.findAll({
-    attributes: [
-        [db.Sequelize.fn('max', db.Sequelize.col('createdAt')), 'max'], 'nfl_week'
-    ],
-    group: ['nfl_week']
-  }).then((mostRecentCreationDate) => {
-    if (mostRecentCreationDate) {
+  // console.log(req)
+  if (!req.body.nflweek) {
+    console.log('inside no nfl week part')
+    GroupPicks.findAll({
+      attributes: [
+          [db.Sequelize.fn('max', db.Sequelize.col('createdAt')), 'max'], 'nfl_week'
+      ],
+      group: ['nfl_week']
+    }).then((mostRecentCreationDate) => {
+      if (mostRecentCreationDate) {
 
-      var nflweek = mostRecentCreationDate[0].dataValues.nfl_week
-      console.log(`Gathering picks for ${nflweek} games...`)
-      var condition = nflweek ? { nfl_week: { [Op.iLike]: `%${nflweek}%` } } : null;
+        var nflweek = mostRecentCreationDate[0].dataValues.nfl_week
+        console.log(`Gathering picks for ${nflweek} games...`)
+        var condition = nflweek ? { nfl_week: { [Op.iLike]: `%${nflweek}%` } } : null;
 
-      GroupPicks.findAll({ where: condition })
-        .then(data => {
-          res.send(data);
-        })
-        .catch(err => {
-          res.status(500).send({
-            message:
-              err.message || "Some error occurred while retrieving group picks."
+        GroupPicks.findAll({ where: condition })
+          .then(data => {
+            res.send(data);
+          })
+          .catch(err => {
+            res.status(500).send({
+              message:
+                err.message || "Some error occurred while retrieving group picks."
+            });
           });
-        });
     }
     else {
       console.log("No WEEK found in DB!")
     }
   });
+  }
+  else {
+    console.log('inside other part')
+    var nflweek = req.body.nflweek
+    console.log(`Gathering picks for ${nflweek} games...`)
+    var condition = nflweek ? { nfl_week: { [Op.iLike]: `%${nflweek}%` } } : null;
+
+    GroupPicks.findAll({ where: condition })
+      .then(data => {
+        res.send(data);
+      })
+      .catch(err => {
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while retrieving group picks."
+        });
+      });
+
+  }
+
 }
 
 exports.findDistinctWeeks = (req, res) => {

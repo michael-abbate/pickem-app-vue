@@ -8,6 +8,9 @@ export default {
     getGroupPicks () {
         return axios.get('/api/group/picks')
     },
+    postGroupPicks (nflweek) {
+        return axios.post('/api/group/picks', nflweek)
+    },
     getDistinctWeeks() {
         return axios.get('/api/nflweeks')
     }
