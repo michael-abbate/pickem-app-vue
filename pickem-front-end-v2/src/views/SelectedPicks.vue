@@ -5,9 +5,9 @@
         </h2>
         <table class="select-picks-table">
             <tr v-for="(type) in Object.keys(picks_form)" :key="type" :class="type+'-row'">
-                <td>
+                <!-- <td>
                     {{ type }}
-                </td>
+                </td> -->
                 <td>
                     <select v-model="picks_form[type]">
                         <option value="" disabled selected>Select {{ type }}</option>
@@ -113,49 +113,95 @@ select {
 /* }
 */
 
-.message {
-    font-size:1vw;
-    font-weight:bold;
-}
+@media (pointer:fine) {
+    .message {
+        font-size:1vw;
+        font-weight:bold;
+    }
 
-select {
-    background-color: #fff;
-    font-size: 1vw;
-    border-radius: 8px;
-    border-color:white;
-    color:#1f1f1f;
-    height:3vw;
-    width:10vw;
-}
+    select {
+        background-color: #fff;
+        font-size: 1vw;
+        border-radius: 8px;
+        border-color:white;
+        color:#1f1f1f;
+        height:3vw;
+        width:10vw;
+    }
 
-select:hover {
-    cursor: pointer;
-    background-color: #1f1f1f;
-    border-color:white;
-    font-weight:bold;
-    color:#fff;
-}
+    select:hover {
+        cursor: pointer;
+        background-color: #1f1f1f;
+        border-color:white;
+        font-weight:bold;
+        color:#fff;
+    }
 
-button {
-    background-color: dodgerblue;
-    border-radius: 8px;
-    font-size: 1.25vw;
-    border:none;
-    color:#fff;
-    height:3vw;
-    width:9vw;
-}
+    button {
+        background-color: dodgerblue;
+        border-radius: 8px;
+        font-size: 1.25vw;
+        border:none;
+        color:#fff;
+        height:3vw;
+        width:9vw;
+    }
 
-button:hover {
-    cursor: pointer;
-    background-color: #fff;
-    font-weight:bold;
-    color:#1f1f1f;
+    button:hover {
+        cursor: pointer;
+        background-color: #fff;
+        font-weight:bold;
+        color:#1f1f1f;
+    }
+    button::after {
+        content: "Submit";
+    }
+    button:hover::after {
+    content: "LOCK 'EM IN!";
+    }
 }
-button::after {
+@media (pointer:coarse) {
+    .message {
+        font-size:1vw;
+        font-weight:bold;
+    }
+    td {
+        font-size:5vw;
+    }
+    select {
+        background-color: #fff;
+        font-size: 4vw;
+        border-radius: 8px;
+        border-color:white;
+        color:#1f1f1f;
+        height:11vw;
+        width:40vw;
+    }
+
+    select:hover {
+        cursor: pointer;
+        background-color: #1f1f1f;
+        border-color:white;
+        font-weight:bold;
+        color:#fff;
+    }
+
+    button {
+        background-color: dodgerblue;
+        border-radius: 8px;
+        font-size: 5vw;
+        border:none;
+        color:#fff;
+        height:12vw;
+        width:26vw;
+    }
+
+    button::after {
     content: "Submit";
+    font-weight:bold;
+    }
+
+
 }
-button:hover::after {
-content: "LOCK 'EM IN!";
-}
+
 </style>
