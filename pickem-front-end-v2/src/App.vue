@@ -1,26 +1,43 @@
 <template>
   <div class = "app-header">
-      <div class = "app-header-logo">
+    <div class = "app-header-logo">
         <h1><nav><router-link to="/">Migs' Pick 'Em</router-link></nav></h1>
-      </div>
-      <div class = "app-header-nav">
-        <nav>
+    </div>
+    <Slide disableOutsideClick :closeOnNavigation="true">
+      
           <a v-if="$store.state.isUserLoggedIn">Hi, {{ $store.state.user.firstname }}</a>
           <router-link v-if="$store.state.isUserLoggedIn" to="/">Games</router-link>
-          <router-link v-if="$store.state.isUserLoggedIn" to="/nflteams">NFL Teams</router-link>
+          <!-- <router-link v-if="$store.state.isUserLoggedIn" to="/nflteams">NFL Teams</router-link> -->
           <router-link v-if="$store.state.isUserLoggedIn" to="/group/picks">Group Picks</router-link>
           <router-link v-if="$store.state.isUserLoggedIn" to="/leaderboard">Leaderboard</router-link>
-          <router-link v-if="$store.state.isUserLoggedIn" to="/about">About</router-link>
+          <!-- <router-link v-if="$store.state.isUserLoggedIn" to="/about">About</router-link> -->
           
-          <button v-if="!$store.state.isUserLoggedIn" @click="navigateTo({name: 'LoginUser'})" class = "navbar-but">Login</button>
-          <button v-if="!$store.state.isUserLoggedIn" @click="navigateTo({name: 'RegisterUser'})">Sign Up</button>
+          <router-link v-if="!$store.state.isUserLoggedIn" to="/login">Login</router-link>
+          <router-link v-if="!$store.state.isUserLoggedIn" to="/register">Sign Up</router-link>
 
-          <button v-if="$store.state.isUserLoggedIn" @click=logout>Log Out</button>
+          <router-link v-if="$store.state.isUserLoggedIn" to="/login">Log Out</router-link>
+
+        
+    </Slide>
+      
+    <div class = "app-header-nav">
+      <nav>
+        <a v-if="$store.state.isUserLoggedIn">Hi, {{ $store.state.user.firstname }}</a>
+        <router-link v-if="$store.state.isUserLoggedIn" to="/">Games</router-link>
+        <!-- <router-link v-if="$store.state.isUserLoggedIn" to="/nflteams">NFL Teams</router-link> -->
+        <router-link v-if="$store.state.isUserLoggedIn" to="/group/picks">Group Picks</router-link>
+        <router-link v-if="$store.state.isUserLoggedIn" to="/leaderboard">Leaderboard</router-link>
+        <!-- <router-link v-if="$store.state.isUserLoggedIn" to="/about">About</router-link> -->
+        
+        <button v-if="!$store.state.isUserLoggedIn" @click="navigateTo({name: 'LoginUser'})" class = "navbar-but">Login</button>
+        <button v-if="!$store.state.isUserLoggedIn" @click="navigateTo({name: 'RegisterUser'})">Sign Up</button>
+
+        <button v-if="$store.state.isUserLoggedIn" @click=logout>Log Out</button>
 
 
-        </nav>
+      </nav>
 
-      </div>
+    </div>
   </div>
   <div class="router-view-div">
     <router-view/>
@@ -45,8 +62,12 @@
 
 // *********************************************************************************
 // import ShowPicks from './components/ShowPicks.vue'
+import { Slide } from 'vue3-burger-menu'
 
 export default {
+  components: {
+        Slide
+    },
   methods: {
     navigateTo (route) {
       this.$router.push(route)
@@ -69,6 +90,9 @@ body, html{
   padding:0;
 }
 @media (pointer:fine) {
+  .bm-burger-button {
+    display:none;
+  }
   .vl {
     border-left: 3px solid red;
     height: 2500px;
@@ -164,6 +188,26 @@ body, html{
 
 }
 @media (pointer:coarse) {
+  .bm-burger-button {
+      position: fixed;
+      width: 36px;
+      height: 30px;
+      left: 18px;
+      top: 16px;
+      cursor: pointer;
+    }
+  .bm-burger-bars {
+      background-color: #303030;
+    }
+  .line-style {
+      position: absolute;
+      height: 20%;
+      left: 0;
+      right: 0;
+    }
+  .bm-menu {
+    background-color: #303030;
+  }
   .vl {
     border-left: 3px solid red;
     height: 2500px;
@@ -180,7 +224,20 @@ body, html{
     text-align: center;
     /* color: #2c3e50; */
   }
-
+  .app-header-nav {
+    display:none
+  }
+  
+  nav a {
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 3vw;
+    border:none;
+    color:#fff;
+    height:25px;
+    margin:13px;
+  }
+/*   
   nav {
     display:flex;
     justify-content: left;
@@ -196,23 +253,18 @@ body, html{
   nav a.router-link-exact-active {
     font-weight: bold;
     text-decoration: none;
-  }
+  } */
 
 
   body {
       font-family:  Helvetica, Arial, sans-serif;
-      background-color: #131619;
+      background-color: #131619 !important;
       color:white;
   }
 
   h1 {
-    justify-content:right;
-      font-size: 4vw;
-      font-style:italic;
-      text-align: right;
-      /* min-height: 49px; */
-      color:#fff;
-      padding-right:8px;
+    
+    margin:0px;
   }
 
 }
