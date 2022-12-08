@@ -124,65 +124,124 @@ export default {
 </script>
 
 <style scoped>
-.registration-container {
-    /* width:33%; */
-    text-align: center;
-    /* align-items:center;
-    display:flex; */
-}
-ul {
-    display: inline-block;
-    width:25%;
-    margin:0px;
-    padding:0px;
+@media (pointer:fine) {
+    .registration-container {
+        /* width:33%; */
+        text-align: center;
+        /* align-items:center;
+        display:flex; */
+    }
+    ul {
+        display: inline-block;
+        width:25%;
+        margin:0px;
+        padding:0px;
+    }
+
+    .registration-label-input {
+        text-align:left;
+    }
+
+    label {
+        font-size:12px;
+    }
+    li {
+        padding-top:10px;
+        list-style: none;
+        display:block;
+    }
+
+    input {
+        font-size:14px;
+        width:100%;
+        height:48px;
+        padding:7px 8px;
+        box-sizing: border-box;
+        border: 1px solid #c5c5c5;
+    }
+    .error {
+        padding-top:10px;
+        color:red;
+    }
+    .success {
+        padding-top:10px;
+        color:green;
+    }
+
+    button {
+        font-weight: bold;
+        background-color: dodgerblue;
+        border-radius: 5px;
+        font-size: 1vw;
+        border:none;
+        color:#fff;
+        height:48px;
+        width:100%;
+    }
+
+    button:hover {
+        cursor: pointer;
+        background-color: #fff;
+        font-weight:bold;
+        color:#1f1f1f;
+    }
 }
 
-.registration-label-input {
-    text-align:left;
-}
+@media (pointer:coarse) {
+    .registration-container {
+        /* width:33%; */
+        text-align: center;
+        /* align-items:center;
+        display:flex; */
+    }
+    ul {
+        display: inline-block;
+        width:50%;
+        margin:0px;
+        padding:0px;
+    }
 
-label {
-    font-size:12px;
-}
-li {
-    padding-top:10px;
-    list-style: none;
-    display:block;
-}
+    .registration-label-input {
+        text-align:left;
+    }
 
-input {
-    font-size:14px;
-    width:100%;
-    height:48px;
-    padding:7px 8px;
-    box-sizing: border-box;
-    border: 1px solid #c5c5c5;
-}
-.error {
-    padding-top:10px;
-    color:red;
-}
-.success {
-    padding-top:10px;
-    color:green;
-}
+    label {
+        font-size:12px;
+    }
+    li {
+        padding-top:10px;
+        list-style: none;
+        display:block;
+    }
 
-button {
-    font-weight: bold;
-    background-color: dodgerblue;
-    border-radius: 5px;
-    font-size: 1vw;
-    border:none;
-    color:#fff;
-    height:48px;
-    width:100%;
-}
+    input {
+        font-size:14px;
+        width:100%;
+        height:48px;
+        padding:7px 8px;
+        box-sizing: border-box;
+        border: 1px solid #c5c5c5;
+    }
+    .error {
+        padding-top:10px;
+        color:red;
+    }
+    .success {
+        padding-top:10px;
+        color:green;
+    }
 
-button:hover {
-    cursor: pointer;
-    background-color: #fff;
-    font-weight:bold;
-    color:#1f1f1f;
+    button {
+        font-weight: bold;
+        background-color: dodgerblue;
+        border-radius: 5px;
+        font-size: 5vw;
+        border:none;
+        color:#fff;
+        height:48px;
+        width:100%;
+    }
+
 }
 
 

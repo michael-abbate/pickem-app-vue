@@ -3,8 +3,7 @@
     <div class = "app-header-logo">
         <h1><nav><router-link to="/">Migs' Pick 'Em</router-link></nav></h1>
     </div>
-    <Slide disableOutsideClick :closeOnNavigation="true">
-      
+    <Slide noOverlay :closeOnNavigation="true">          
           <a v-if="$store.state.isUserLoggedIn">Hi, {{ $store.state.user.firstname }}</a>
           <router-link v-if="$store.state.isUserLoggedIn" to="/">Games</router-link>
           <!-- <router-link v-if="$store.state.isUserLoggedIn" to="/nflteams">NFL Teams</router-link> -->
@@ -14,8 +13,8 @@
           
           <router-link v-if="!$store.state.isUserLoggedIn" to="/login">Login</router-link>
           <router-link v-if="!$store.state.isUserLoggedIn" to="/register">Sign Up</router-link>
-
-          <router-link v-if="$store.state.isUserLoggedIn" to="/login">Log Out</router-link>
+          
+          <a v-if="$store.state.isUserLoggedIn" @click=logout>Log Out</a>
 
         
     </Slide>

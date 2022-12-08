@@ -12,7 +12,7 @@
             <div class = "pick-tables-wrapper">
                 <table v-for="pick in picks" :key = "pick.username" class="pick-table">
                     <tr class = "username-row-header">
-                        <th colspan = "3">{{ pick.username }}</th>
+                        <th colspan = "3" :style="checkForJonny(pick.username)">{{ pick.username }}</th>
                     </tr>
                     <tr>
                         <td>
@@ -88,7 +88,8 @@ export default {
             nflweek: '',  
             distinct_nflweeks: [],          
             picks: [],     
-            error: null  
+            error: null,
+            color:'white'
         }
     },
     async created() {
@@ -125,6 +126,19 @@ export default {
             } catch(error) {
                 this.error = error.response.data.error
             }
+        }
+        , checkForJonny(username) {
+            let color = '';
+            if (username === "Breakfastbuffet") {
+                color = '#F9629F';
+            }
+            else if (username === 'cornsoupyellow') {
+                color = '#512888'
+            }
+            else {
+                color='white';
+            }
+            return { color };
         }
         
     }
