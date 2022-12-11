@@ -71,7 +71,7 @@ export default {
  
                 console.log(`Submitted picks for user: ${this.$store.state.user.username}`)
                 this.msg = response.data.message
-                // Wait 4 seconds then redirect to GroupPicks
+                // Wait 3 seconds then redirect to GroupPicks
                 setTimeout(() => this.$router.push({ name:'GroupPicks' }), 3000);
 
             } catch(error) {
@@ -162,7 +162,7 @@ select {
 }
 @media (pointer:coarse) {
     .message {
-        font-size:1vw;
+        font-size:3vw;
         font-weight:bold;
     }
     td {

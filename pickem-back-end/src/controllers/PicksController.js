@@ -55,10 +55,13 @@ exports.findWeeksPicks = (req, res) => {
       attributes: [
           [db.Sequelize.fn('max', db.Sequelize.col('createdAt')), 'max'], 'nfl_week'
       ],
-      group: ['nfl_week']
+      group: ['nfl_week'],
+      order: [
+        ['max', 'DESC'] //sequelize renames the col max instead of createdAt, so have to order by "max"
+      ]
     }).then((mostRecentCreationDate) => {
       if (mostRecentCreationDate) {
-
+        console.log(mostRecentCreationDate)
         var nflweek = mostRecentCreationDate[0].dataValues.nfl_week
         console.log(`Gathering picks for ${nflweek} games...`)
         var condition = nflweek ? { nfl_week: { [Op.iLike]: `%${nflweek}%` } } : null;
