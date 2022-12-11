@@ -1,5 +1,6 @@
 <template>
     <div id="user-leaderboard">
+        <h2>Users</h2>
         <!-- <div v-cloak v-for="team in nflteams" :key = "team.team_id"> -->
         <table class="leaderboard">
             <th>
@@ -65,9 +66,7 @@ export default {
 
 <style scoped>
 
-#user-leaderboard {
-    display:flex;
-    justify-content:center;
+table {
+    margin: 0 auto;
 }
-
 </style>
