@@ -11,7 +11,7 @@
                 <td>
                     <select v-model="picks_form[type]">
                         <option value="" disabled selected>Select {{ type }}</option>
-                        <option v-for="(pick,index) in picks"
+                        <option v-for="(pick,index) in getValidPicks(picks, type)"
                             :key = "index"
                             :id="pick+'submitted-picks'"
                             :value ="pick">
@@ -42,14 +42,14 @@ export default {
     data() {
        return {            
             msg: '',
-            submitpicks: [],
             picks_form: {
-            Favorite: '',
-            Underdog: '',
-            Over: '',
-            Under: '',
-            Lock: ''
-            }
+                Favorite: '',
+                Underdog: '',
+                Over: '',
+                Under: '',
+                Lock: ''
+            },
+            used_picks: []
        } 
     },
     methods: {        
@@ -79,7 +79,32 @@ export default {
                 this.msg = error.response.data.message
             }
 
-        }
+        },
+        getValidPicks(picks, pick_type) { 
+            var filtered_picks;     
+            if (pick_type === "Favorite") {
+                filtered_picks = picks.filter(item => item.render_value.includes('-') || item.render_value === 'pk');
+                return filtered_picks;
+            }
+            if (pick_type === "Underdog") {
+                filtered_picks = picks.filter(item => item.render_value.includes('+') || item.render_value === 'pk');
+                return filtered_picks;
+            }
+            else if (pick_type === "Over") {
+                filtered_picks = picks.filter(item => /^(o\d{2}\.\d{1})|(o\d{2})|(o\d{1})/.test(item.render_value))
+                return filtered_picks;
+            }
+            else if (pick_type === "Under") {
+                filtered_picks = picks.filter(item => /^(u\d{2}\.\d{1})|(u\d{2})|(u\d{1})/.test(item.render_value))
+                return filtered_picks;
+            }
+            else {
+                return picks;
+            }
+        },
+        // updatePicksList(index, pick) {
+
+        // }
     }
     , computed: {
         // Passes values from showpicks to selectedpicks page
