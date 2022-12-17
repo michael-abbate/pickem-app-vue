@@ -9,11 +9,11 @@
                     {{ type }}
                 </td> -->
                 <td>
-                    <select v-model="picks_form[type]">
-                        <option value="" disabled selected>Select {{ type }}</option>
-                        <option v-for="(pick,index) in picks"
+                    <select v-model="picks_form[type]" v-on:change = "updatePicksList(type)">
+                        <option value="" selected disabled>Select {{ type }}</option>
+                        <option  v-for="(pick,index) in getValidPicks(originalPicks, type)"
                             :key = "index"
-                            :id="pick+'submitted-picks'"
+                            :id="pick.gameID+'-'+type+'-submitted-picks'"
                             :value ="pick">
                             {{ pick.render_value }}
                         </option>
@@ -31,6 +31,8 @@
 <script>
 // import store from '../store';
 import PicksService from '@/services/PicksService';
+// import { ref } from 'vue'
+
 
 // import axios from 'axios';
 // import { defineComponent } from '@vue/composition-api'
@@ -42,19 +44,20 @@ export default {
     data() {
        return {            
             msg: '',
-            submitpicks: [],
             picks_form: {
-            Favorite: '',
-            Underdog: '',
-            Over: '',
-            Under: '',
-            Lock: ''
-            }
+                Favorite: '',
+                Underdog: '',
+                Over: '',
+                Under: '',
+                Lock: ''
+            },
+            originalPicks: []
        } 
     },
     methods: {        
         async submitPicks(nflweek) {
             console.log("submit button")
+            console.log(this.picks_form)
             try {       
                 console.log(`${nflweek} PICK FOR USER: ${this.$store.state.user.username}`)
                 console.log(`Attempting to submit picks for user: ${this.$store.state.user.username}`)
@@ -79,7 +82,40 @@ export default {
                 this.msg = error.response.data.message
             }
 
-        }
+        },
+        getValidPicks(picks, pick_type) { 
+            var filtered_picks;     
+            if (pick_type === "Favorite") {
+                filtered_picks = picks.filter(item => item.render_value.includes('-') || item.render_value === 'pk');
+                return filtered_picks;
+            }
+            if (pick_type === "Underdog") {
+                filtered_picks = picks.filter(item => item.render_value.includes('+') || item.render_value === 'pk');
+                return filtered_picks;
+            }
+            else if (pick_type === "Over") {
+                filtered_picks = picks.filter(item => /^(o\d{2}\.\d{1})|(o\d{2})|(o\d{1})/.test(item.render_value))
+                return filtered_picks;
+            }
+            else if (pick_type === "Under") {
+                filtered_picks = picks.filter(item => /^(u\d{2}\.\d{1})|(u\d{2})|(u\d{1})/.test(item.render_value))
+                return filtered_picks;
+            }
+            else {
+                return picks;
+            }
+        },
+        updatePicksList(pick_type) {
+            // if (selectField.target.value !== '') {
+            //     console.log('picks updated')
+            //     console.log('value',selectField.target.getAttribute('value'), 'index', this.originalPicks.indexOf(selectField.target.value))
+            //     this.originalPicks.splice(this.originalPicks.indexOf(selectField.target.value),1)
+            // }
+            // console.log(JSON.stringify(selectField.target.value), 'index', this.originalPicks.indexOf(selectField.target.value))
+            console.log(JSON.stringify(this.picks_form[pick_type]), 'index', this.originalPicks.indexOf(this.picks_form[pick_type]))
+            // this.selectedPicks.push(selectField.target.value)
+        }        
+
     }
     , computed: {
         // Passes values from showpicks to selectedpicks page
@@ -89,6 +125,11 @@ export default {
          nflweek() {
             return this.$store.state.picks.nflweek;
          }
+     }
+     , created() {
+        // Need to clone original array from Vuex store or else we will mutate original array which we do not want.
+        this.originalPicks = [...this.picks]
+        // this.originalPicks = ref(this.picks)
      }
 
 };
