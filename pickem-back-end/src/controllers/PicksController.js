@@ -4,11 +4,10 @@ const Op = db.Sequelize.Op;
 
 // Create and Save a new Tutorial
 exports.create = (req, res) => {
-    console.log('got to create')
     // Validate request
     if (!req.body.username) {
       res.status(400).send({
-        message: "Content can not be empty!"
+        message: "Please log in to submit picks!"
       });
       return;
     }
@@ -24,6 +23,25 @@ exports.create = (req, res) => {
       lock: req.body.lock
       };
     
+    var picks_arr = [];
+    for (const [pick_type, pick_value] of Object.entries(group_pick)) {
+        picks_arr.push(pick_value);        
+    }
+
+    const picks_set = new Set(picks_arr);
+    if (picks_set.has('""')) {      
+      res.status(400).send({        
+        message: "Please fill out all pick types!"
+      });
+      return;
+    }
+    if (picks_set.size !== 5) {      
+      res.status(400).send({        
+        message: "Duplicate picks found!"
+      });
+      return;
+    }
+
     GroupPicks.findOrCreate({
       where: {username: req.body.username, nfl_week: req.body.nflweek},
       defaults: group_pick

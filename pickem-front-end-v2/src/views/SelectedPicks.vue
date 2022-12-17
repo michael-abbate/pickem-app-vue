@@ -9,11 +9,11 @@
                     {{ type }}
                 </td> -->
                 <td>
-                    <select v-model="picks_form[type]">
-                        <option value="" disabled selected>Select {{ type }}</option>
-                        <option v-for="(pick,index) in getValidPicks(picks, type)"
+                    <select v-model="picks_form[type]" v-on:change = "updatePicksList(type)">
+                        <option value="" selected disabled>Select {{ type }}</option>
+                        <option  v-for="(pick,index) in getValidPicks(originalPicks, type)"
                             :key = "index"
-                            :id="pick+'submitted-picks'"
+                            :id="pick.gameID+'-'+type+'-submitted-picks'"
                             :value ="pick">
                             {{ pick.render_value }}
                         </option>
@@ -31,6 +31,8 @@
 <script>
 // import store from '../store';
 import PicksService from '@/services/PicksService';
+// import { ref } from 'vue'
+
 
 // import axios from 'axios';
 // import { defineComponent } from '@vue/composition-api'
@@ -49,12 +51,13 @@ export default {
                 Under: '',
                 Lock: ''
             },
-            used_picks: []
+            originalPicks: []
        } 
     },
     methods: {        
         async submitPicks(nflweek) {
             console.log("submit button")
+            console.log(this.picks_form)
             try {       
                 console.log(`${nflweek} PICK FOR USER: ${this.$store.state.user.username}`)
                 console.log(`Attempting to submit picks for user: ${this.$store.state.user.username}`)
@@ -102,9 +105,17 @@ export default {
                 return picks;
             }
         },
-        // updatePicksList(index, pick) {
+        updatePicksList(pick_type) {
+            // if (selectField.target.value !== '') {
+            //     console.log('picks updated')
+            //     console.log('value',selectField.target.getAttribute('value'), 'index', this.originalPicks.indexOf(selectField.target.value))
+            //     this.originalPicks.splice(this.originalPicks.indexOf(selectField.target.value),1)
+            // }
+            // console.log(JSON.stringify(selectField.target.value), 'index', this.originalPicks.indexOf(selectField.target.value))
+            console.log(JSON.stringify(this.picks_form[pick_type]), 'index', this.originalPicks.indexOf(this.picks_form[pick_type]))
+            // this.selectedPicks.push(selectField.target.value)
+        }        
 
-        // }
     }
     , computed: {
         // Passes values from showpicks to selectedpicks page
@@ -114,6 +125,11 @@ export default {
          nflweek() {
             return this.$store.state.picks.nflweek;
          }
+     }
+     , created() {
+        // Need to clone original array from Vuex store or else we will mutate original array which we do not want.
+        this.originalPicks = [...this.picks]
+        // this.originalPicks = ref(this.picks)
      }
 
 };
