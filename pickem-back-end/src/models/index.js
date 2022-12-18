@@ -59,6 +59,9 @@ else {
 db.nfl_teams = require("./nflteams.model.js")(sequelize, Sequelize);
 db.pickemuser = require("./pickemuser.model.js")(sequelize,Sequelize);
 db.group_picks = require("./grouppicks.model.js")(sequelize,Sequelize);
+db.grade_picks = require("./gradepicks.model.js")(sequelize,Sequelize);
+
+
 
 // fs
 //   .readdirSync(__dirname)

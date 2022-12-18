@@ -1,8 +1,11 @@
 import express from 'express';
 import path from 'path';
 import history from 'connect-history-api-fallback';
+import { graderTask } from './cronjobs/gradepicks';
 const cookieparser = require('cookie-parser');
 require('dotenv').config()
+// const graderTask = require('./cronjobs/gradepicks')
+
 const sample_odds_json = require('../sample_odds_results.json');
 
 
@@ -41,6 +44,7 @@ db.sequelize.sync();
 
 require('./routes')(app, env, livelines, sample_odds_json);
 
+graderTask.start();
 
 app.listen(port, () => {
     console.log(`Hello! Pickem-app server is running on port ${port}.`);

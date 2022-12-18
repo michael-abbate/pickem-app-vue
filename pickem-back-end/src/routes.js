@@ -6,7 +6,9 @@ const AuthenticationController = require('./controllers/AuthenticationController
 const AuthenticationControllerPolicy = require('./policies/AuthenticationControllerPolicy')
 const LeaderboardController = require('./controllers/LeaderboardController')
 const PicksController = require('./controllers/PicksController')
+// const GradeController = require('./controllers/GradeController')
 
+// const graderTask = require('./cronjobs/gradepicks')
 
 module.exports = (app, env, livelines, sample_odds_json) => {
     // App Routes
@@ -95,6 +97,9 @@ module.exports = (app, env, livelines, sample_odds_json) => {
     app.post('/api/selected/submit', 
         PicksController.create);
 
+    // app.get('*', async (req, res) => {
+    //     await graderTask.start();
+    // })
 
     app.get('*', (req, res)=> {
         res.sendFile(path.join(__dirname,"../dist/index.html"));

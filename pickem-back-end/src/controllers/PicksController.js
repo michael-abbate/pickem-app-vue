@@ -1,6 +1,9 @@
 const db = require("../models");
 const GroupPicks = db.group_picks;
+const GradePicks = db.grade_picks;
 const Op = db.Sequelize.Op;
+const cron = require('node-cron');
+
 
 // Create and Save a new Tutorial
 exports.create = (req, res) => {
@@ -60,6 +63,24 @@ exports.create = (req, res) => {
             message: 'Picks already submitted for this week!'
           })
       } 
+      });
+
+    const grade_pick = {
+        favorite: null,
+        underdog: null,
+        over: null,
+        under: null,
+        lock: null,
+        is_graded: 0
+    };    
+    
+    GradePicks.findOrCreate({
+        where: {username: req.body.username, nfl_week: req.body.nflweek},
+        defaults: grade_pick
+      }).then(([pickRow, isCreated]) => {
+        if(isCreated) {
+            console.log("Row for future grading submitted successfully");
+          }
       });
     
 };  

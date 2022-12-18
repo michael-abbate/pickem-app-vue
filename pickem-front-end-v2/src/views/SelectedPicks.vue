@@ -62,6 +62,7 @@ export default {
                 console.log(`${nflweek} PICK FOR USER: ${this.$store.state.user.username}`)
                 console.log(`Attempting to submit picks for user: ${this.$store.state.user.username}`)
                 
+                // will submit a row in GroupPicks and GradePicks for future grading
                 const response = await PicksService.submitPicks({
                     nflweek: nflweek,
                     username: this.$store.state.user.username,
