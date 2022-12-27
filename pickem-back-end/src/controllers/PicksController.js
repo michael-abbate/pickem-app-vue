@@ -3,6 +3,7 @@ const GroupPicks = db.group_picks;
 const GradePicks = db.grade_picks;
 const Op = db.Sequelize.Op;
 const cron = require('node-cron');
+var crypto = require('crypto');
 
 
 // Create and Save a new Tutorial
@@ -14,6 +15,8 @@ exports.create = (req, res) => {
       });
       return;
     }
+    
+
 
     // Create picks JSON
     const group_pick = {
@@ -23,12 +26,15 @@ exports.create = (req, res) => {
       underdog: req.body.underdog,
       over: req.body.over,
       under: req.body.under,
-      lock: req.body.lock
+      lock: req.body.lock,
+      pick_id: crypto.createHash('sha256').update(req.body.pick_id).digest('hex')
       };
     
     var picks_arr = [];
     for (const [pick_type, pick_value] of Object.entries(group_pick)) {
-        picks_arr.push(pick_value);        
+      if (pick_type !=="pick_id") {
+        picks_arr.push(pick_value);    
+      }    
     }
 
     const picks_set = new Set(picks_arr);
@@ -70,8 +76,9 @@ exports.create = (req, res) => {
         underdog: null,
         over: null,
         under: null,
-        lock: null,
-        is_graded: 0
+        lock: null,        
+        is_graded: 0,
+        pick_id: crypto.createHash('sha256').update(req.body.pick_id).digest('hex')
     };    
     
     GradePicks.findOrCreate({
@@ -99,9 +106,9 @@ exports.findWeeksPicks = (req, res) => {
         ['max', 'DESC'] //sequelize renames the col max instead of createdAt, so have to order by "max"
       ]
     }).then((mostRecentCreationDate) => {
-      if (mostRecentCreationDate) {
+      if (mostRecentCreationDate.length>0) {
         console.log(mostRecentCreationDate)
-        var nflweek = mostRecentCreationDate[0].dataValues.nfl_week
+        var nflweek = mostRecentCreationDate[0].dataValues.nfl_week 
         console.log(`Gathering picks for ${nflweek} games...`)
         var condition = nflweek ? { nfl_week: { [Op.iLike]: `%${nflweek}%` } } : null;
 

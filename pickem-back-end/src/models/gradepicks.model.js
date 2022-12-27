@@ -23,6 +23,10 @@ module.exports = (sequelize, Sequelize) => {
       },
       is_graded: {
         type: Sequelize.INTEGER
+      },
+      pick_id: {
+        type: Sequelize.STRING(100),
+        foreignKey: true
       }
     });
   

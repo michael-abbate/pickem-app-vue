@@ -20,6 +20,10 @@ module.exports = (sequelize, Sequelize) => {
       },
       lock: {
         type: Sequelize.STRING(1000)
+      },
+      pick_id: {
+        type: Sequelize.STRING(100),
+        primaryKey: true
       }
     });
   
