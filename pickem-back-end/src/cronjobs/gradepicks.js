@@ -17,6 +17,7 @@ var graderTask = cron.schedule('* * * * *', function() {
 });
 
 function gradePick(pick_type, pick, results) {
+    // console.log(pick.team_selected)
     if (pick.team_selected) {
         // try {        
             var team_selected_score = pick['team_selected'].includes('1') ? results['team1Score'] : results['team2Score'];
@@ -93,13 +94,31 @@ function gradePick(pick_type, pick, results) {
     }
 
 }
-async function hitOddsAPI(gameID) {
-    
-    const response = await axios.get(`https://areyouwatchingthis.com/api/odds.json?sport=nfl&gameID=${gameID}`);
-    // if (response.status === 200) {
-        return response.data
+async function hitOddsAPI(pick_entries) {
+    // console.log('inside ODDS API', gameID)
+    // try {
+    //     const response = await axios.get(`https://areyouwatchingthis.com/api/odds.json?sport=nfl&gameID=${gameID}`);
+    //     return response.data;
+    //     // if (response.status === 200) {
+    //     // return await response.data
     // }
+    // catch (err) {
+    //     console.log(err);
+    // }
+    // }
+    let game_result_arr = {};
+    await Promise.all(pick_entries.map(([pick_type,raw_game]) =>      
+        axios.get(`https://areyouwatchingthis.com/api/odds.json?sport=nfl&gameID=${JSON.parse(raw_game).gameID}`)
+            .then(res => {
+                game_result_arr[pick_type] = res.data.results[0];
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        ));
+    return game_result_arr;
 }
+
 
 function grader() {
     console.log('running a task every minute');
@@ -171,9 +190,43 @@ function grader() {
         picks.forEach(function (item, index) {
             // var pick = JSON.parse(item);
             // console.log(item)
-            for (const [pick_type, pick_raw] of Object.entries(item)) { 
-                if (pick_type!=='pick_id') {                       
-                    var pick = JSON.parse(pick_raw);
+            delete item['pick_id'];
+ 
+            hitOddsAPI(Object.entries(item))
+                .then(res => {
+                    // console.log('going');
+                    // var pick = res;
+                    for (const [pick_type, game_result] of Object.entries(res)) {
+                        // console.log(pick_type, game_result)
+                        var pick = JSON.parse(item[pick_type]);
+                        // console.log(pick);
+                        var grade = gradePick(pick_type, pick, game_result);
+                        // console.log(grade);
+                        var score = {'pick_type':pick_type, 'team_selected':pick.team_selected, 'team1Score':game_result.team1Score, 'team2Score':game_result.team2Score,'val':pick.spread||pick.overUnder, 'grade':grade}
+                        console.log(score)
+                        };
+                });
+            // for (const [pick_type, pick] of Object.entries(game_result_dict)) {
+            //     // console.log(pick_type, pick);
+            //     var grade = gradePick(pick_type, pick, game_result)
+            //         // // console.log(pick);
+            //     var score = {'pick_type':pick_type, 'team_selected':pick.team_selected, 'team1Score':game_result.team1Score, 'team2Score':game_result.team2Score,'val':pick.spread||pick.overUnder, 'grade':grade}
+            //     console.log(score)
+            // }
+            //         // let game_result = res.results[0];
+            //         // var grade = gradePick(pick_type, pick, game_result)
+            //         // // console.log(pick);
+            //         // var score = {'pick_type':pick_type, 'team_selected':pick.team_selected, 'team1Score':game_result.team1Score, 'team2Score':game_result.team2Score,'val':pick.spread||pick.overUnder, 'grade':grade}
+            //         // console.log(score)
+            //     })
+            //     .catch(err => {
+            //         console.log(err);
+            //     });
+            // for (const [pick_type, pick_raw] of Object.entries(item)) { 
+            //     if (pick_type!=='pick_id') {  
+
+            //         var pick = JSON.parse(pick_raw);
+            //         console.log("RETRIEVING:", pick.gameID);
                     // console.log(pick_type,pick_raw)
                     // console.log(`https://areyouwatchingthis.com/api/odds.json?sport=nfl&gameID=${pick.gameID}`)          
                     // var game_result;
@@ -197,25 +250,47 @@ function grader() {
                     // 
                     //     // .then(jsonObject => ))
                     //TODO: only returns the last pick gameID. screws up other fcts
-                    hitOddsAPI(pick.gameID)
-                        .then((res) => {
-                            // console.log(game_results)
-                            var game_result = res.results[0]
-                            var grade = gradePick(pick_type, pick, game_result)
-                            console.log(pick);
-                            var score = {'pick_type':pick_type, 'team_selected':pick.team_selected, 'team1Score':game_result.team1Score, 'team2Score':game_result.team2Score,'val':pick.spread||pick.overUnder, 'grade':grade}
-                            console.log(score)
+                    
+                    // let game_result_promise = async () => {
+                    //     var game_result = await axios.get('http://localhost:4000/app/expenseslist')
+                    //   }
+                    
+                    // hitOddsAPI(pick.gameID)
+                    //     .then(res => {
+                    //         let game_result = res.results[0];
+                    //         var grade = gradePick(pick_type, pick, game_result)
+                    //         // console.log(pick);
+                    //         var score = {'pick_type':pick_type, 'team_selected':pick.team_selected, 'team1Score':game_result.team1Score, 'team2Score':game_result.team2Score,'val':pick.spread||pick.overUnder, 'grade':grade}
+                    //         console.log(score)
+                    //     })
+                    //     .catch(err => {
+                    //         console.log(err);
+                    //     });
+                            // console.log(res.results[0])
+                            // return res.results[0]
                             
-                        })
-                        .catch(err => (console.log('err'))
-                        );
+                            
+                        // })
+                        // .catch(err => (console.log(err))
+                        // );
+                    // let game_result = () => {
+                    //     game_result_promise
+                    //         .then((g) => {
+                    //             return g;
+                    //         });
+                    // };
+                    
+                    // var grade = gradePick(pick_type, pick, game_result())
+                    // // console.log(pick);
+                    // var score = {'pick_type':pick_type, 'team_selected':pick.team_selected, 'team1Score':game_result().team1Score, 'team2Score':game_result().team2Score,'val':pick.spread||pick.overUnder, 'grade':grade}
+                    // console.log(score)
                     //     ).then(result => {
                     //     result
                     // })                    
                     
                     
-                }
-            }
+                // }
+            // }
             
           });
       });
