@@ -4,6 +4,7 @@
             <h2>
                 {{ nflweek }} Picks
             </h2>            
+            
             <select v-model="nflweek" @change = "getWeeksPicks(nflweek)">
                 <option v-for="(distinct_nflweek) in distinct_nflweeks" :key="distinct_nflweek">
                     {{ distinct_nflweek.nfl_week }}
@@ -15,15 +16,15 @@
                         <th colspan = "3" :style="checkForJonny(pick.username)">
                             <span>{{ pick.username }} </span>
                             <br>                        
-                            <span class = "pick-record">{{ generateRecord(pick) }}</span>
+                            <span class = "pick-record">{{ generateRecord(pick) }}</span>                           
                         </th>
                     </tr>
                     <tr>
                         <td>     
-                            <span v-if="pick.grade_pick.favorite_grade === 1"><i  class="fa-solid fa-circle-check"></i></span>
+                            <span v-if="pick.grade_pick.favorite_grade === null"><i  class="fa-regular fa-circle"></i></span>
+                            <span v-else-if="pick.grade_pick.favorite_grade === 1"><i  class="fa-solid fa-circle-check"></i></span>
                             <span v-else-if="pick.grade_pick.favorite_grade === -1"><i  class="fa-solid fa-circle-xmark"></i></span>                 
                             <span v-else-if="pick.grade_pick.favorite_grade === 0"><i  class="fa-solid fa-circle-minus"></i></span>                 
-                            <span v-else><i  class="fa-regular fa-circle"></i></span>
                         </td>
                         <td>
                             Favorite
@@ -34,10 +35,10 @@
                     </tr>
                     <tr>
                         <td>
-                            <span v-if="pick.grade_pick.underdog_grade === 1"><i  class="fa-solid fa-circle-check"></i></span>
+                            <span v-if="pick.grade_pick.underdog_grade === null"><i  class="fa-regular fa-circle"></i></span>                
+                            <span v-else-if="pick.grade_pick.underdog_grade === 1"><i  class="fa-solid fa-circle-check"></i></span>
                             <span v-else-if="pick.grade_pick.underdog_grade === -1"><i  class="fa-solid fa-circle-xmark"></i></span>                 
                             <span v-else-if="pick.grade_pick.underdog_grade === 0"><i  class="fa-solid fa-circle-minus"></i></span>                 
-                            <span v-else><i  class="fa-regular fa-circle"></i></span>                
                         </td>
                         <td>
                             Underdog
@@ -48,10 +49,10 @@
                     </tr>
                     <tr>
                         <td>
-                            <span v-if="pick.grade_pick.over_grade === 1"><i  class="fa-solid fa-circle-check"></i></span>
+                            <span v-if="pick.grade_pick.over_grade === null"><i  class="fa-regular fa-circle"></i></span>                               
+                            <span v-else-if="pick.grade_pick.over_grade === 1"><i  class="fa-solid fa-circle-check"></i></span>
                             <span v-else-if="pick.grade_pick.over_grade === -1"><i  class="fa-solid fa-circle-xmark"></i></span>                 
-                            <span v-else-if="pick.grade_pick.over_grade === 0"><i  class="fa-solid fa-circle-minus"></i></span>                 
-                            <span v-else><i  class="fa-regular fa-circle"></i></span>                               
+                            <span v-else-if="pick.grade_pick.over_grade === 0"><i  class="fa-solid fa-circle-minus"></i></span>                                             
                         </td>
                         <td>
                             Over
@@ -62,10 +63,10 @@
                     </tr>
                     <tr>
                         <td>                            
-                            <span v-if="pick.grade_pick.under_grade === 1"><i  class="fa-solid fa-circle-check"></i></span>
+                            <span v-if="pick.grade_pick.under_grade === null"><i  class="fa-regular fa-circle"></i></span>
+                            <span v-else-if="pick.grade_pick.under_grade === 1"><i  class="fa-solid fa-circle-check"></i></span>
                             <span v-else-if="pick.grade_pick.under_grade === -1"><i  class="fa-solid fa-circle-xmark"></i></span>                 
                             <span v-else-if="pick.grade_pick.under_grade === 0"><i  class="fa-solid fa-circle-minus"></i></span>                 
-                            <span v-else><i  class="fa-regular fa-circle"></i></span>
                         </td>
                         <td>
                             Under
@@ -76,10 +77,10 @@
                     </tr>
                     <tr>
                         <td>
-                            <span v-if="pick.grade_pick.lock_grade === 1"><i  class="fa-solid fa-circle-check"></i></span>
+                            <span v-if="pick.grade_pick.lock_grade === null"><i  class="fa-regular fa-circle"></i></span>
+                            <span v-else-if="pick.grade_pick.lock_grade === 1"><i  class="fa-solid fa-circle-check"></i></span>
                             <span v-else-if="pick.grade_pick.lock_grade === -1"><i  class="fa-solid fa-circle-xmark"></i></span>                 
                             <span v-else-if="pick.grade_pick.lock_grade === 0"><i  class="fa-solid fa-circle-minus"></i></span>                 
-                            <span v-else><i  class="fa-regular fa-circle"></i></span>
                         </td>
                         <td>
                             Lock
@@ -166,8 +167,10 @@ export default {
             var grade_json = pick.grade_pick;
             var grades = [];            
             for (let key in grade_json) {
-                var grade = grade_json[key];                
-                grades.push(grade);
+                var grade = grade_json[key];  
+                if (grade) {       
+                    grades.push(grade);
+                }
             }            
             var wins = grades.filter(obj => obj === 1).length
             var losses = grades.filter(obj => obj === -1).length
