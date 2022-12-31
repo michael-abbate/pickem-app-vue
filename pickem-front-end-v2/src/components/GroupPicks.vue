@@ -6,7 +6,7 @@
             </h2>            
             
             <select v-model="nflweek" @change = "getWeeksPicks(nflweek)">
-                <option v-for="(distinct_nflweek) in distinct_nflweeks" :key="distinct_nflweek">
+                <option v-for="(distinct_nflweek) in distinct_nflweeks.sort()" :key="distinct_nflweek">
                     {{ distinct_nflweek.nfl_week }}
                 </option>
             </select>
