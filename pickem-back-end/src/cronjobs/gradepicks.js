@@ -92,15 +92,23 @@ function gradePick(pick_type, pick, results) {
 async function hitOddsAPI(pick_id, pick_entries) {
     let grades = [];
     await Promise.all(pick_entries.map(([pick_type,raw_pick]) =>      
-        axios.get(`https://areyouwatchingthis.com/api/odds.json?sport=nfl&gameID=${JSON.parse(raw_pick).gameID}`)
+        axios.get(`https://areyouwatchingthis.com/api/games.json?sport=nfl&gameID=${JSON.parse(raw_pick).gameID}`)
             .then(res => {
                 var game_result = res.data.results[0];
                 var pick = JSON.parse(raw_pick);
                 // Make sure the game is over before grading
-                if (game_result['timeLeft'] === 'Final') {
-                    var grade = gradePick(pick_type, pick, game_result);
-                    var grade_json = {'pick_id':pick_id, 'pick_type':pick_type, 'team_selected':pick.team_selected, 'team1Score':game_result.team1Score, 'team2Score':game_result.team2Score,'val':pick.spread||pick.overUnder, 'grade':grade}                    
-                    grades.push(grade_json);
+                try {
+                    if (game_result['timeLeft'].includes('Final')) {
+                        var grade = gradePick(pick_type, pick, game_result);
+                        var grade_json = {'pick_id':pick_id, 'pick_type':pick_type, 'team_selected':pick.team_selected, 'team1Score':game_result.team1Score, 'team2Score':game_result.team2Score,'val':pick.spread||pick.overUnder, 'grade':grade}                    
+                        grades.push(grade_json);
+                    }
+                    else {
+                        console.log("Game is in progress.")
+                    }
+                }
+                catch {
+                    console.log("Skipping game... game hasn't started.")
                 }
             })
             .catch(err => {
