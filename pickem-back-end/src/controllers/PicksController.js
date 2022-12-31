@@ -94,6 +94,10 @@ exports.create = (req, res) => {
 
  // Retrieve all Users' Picks from the database.
 exports.findWeeksPicks = (req, res) => {
+
+  GroupPicks.hasOne(GradePicks, {foreignKey:"pick_id"});
+  GradePicks.belongsTo(GroupPicks, {foreignKey: "pick_id"});
+
   // console.log(req)
   if (!req.body.nflweek) {
     console.log('inside no nfl week part')
@@ -112,7 +116,27 @@ exports.findWeeksPicks = (req, res) => {
         console.log(`Gathering picks for ${nflweek} games...`)
         var condition = nflweek ? { nfl_week: { [Op.iLike]: `%${nflweek}%` } } : null;
 
-        GroupPicks.findAll({ where: condition })
+        GroupPicks.findAll(
+          { where: condition ,
+          include: {
+            model: GradePicks,
+            // as: 'GradePicks',
+            // where: {
+            //   is_graded: {
+            //     [Op.eq]: 0
+            //   }
+            // },
+            attributes:[
+                          ['favorite', 'favorite_grade'],
+                          ['underdog', 'underdog_grade'],
+                          ['over', 'over_grade'],
+                          ['under', 'under_grade'],
+                          ['lock', 'lock_grade']
+                      ]
+
+            }
+          }
+          )
           .then(data => {
             res.send(data);
           })

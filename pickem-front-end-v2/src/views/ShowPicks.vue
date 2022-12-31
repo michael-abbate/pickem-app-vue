@@ -208,7 +208,10 @@ export default {
         favOrDog(game_odds) {
             // renders clean spread in UI depending on data passed
             let spread = new String(game_odds.spread);
-            if (spread.includes("-")) {
+            if (spread === 'pk') {
+                return ['pk','pk']
+            }
+            else if (spread.includes("-")) {
                 return [spread.replace("-","+"),spread]
             }
             else {
@@ -236,16 +239,16 @@ export default {
             let nflweek = game.round;
 
             if (label === 'away') {
-                return {"render_value": team1_name + " " + away_sp, "gameID":game_id, "team1Name": team1_name, "team2Name":team2_name, "spread": away_sp, "team_selected": "team1", "week": nflweek, "grade": "" }
+                return {"render_value": team1_name + " " + away_sp, "gameID":game_id, "team1Name": team1_name, "team2Name":team2_name, "spread": away_sp, "team_selected": "team1", "week": nflweek}
             }
             else if (label === 'home') {
-                return {"render_value": team2_name + " " + home_sp, "gameID":game_id, "team1Name": team1_name, "team2Name":team2_name, "spread": home_sp, "team_selected": "team2", "week": nflweek, "grade": ""}
+                return {"render_value": team2_name + " " + home_sp, "gameID":game_id, "team1Name": team1_name, "team2Name":team2_name, "spread": home_sp, "team_selected": "team2", "week": nflweek}
             }
             else if (label === 'over') {
-                return {"render_value": team1_name + " vs. " + team2_name + " o" + over_under, "gameID":game_id, "team1Name": team1_name, "team2Name":team2_name, "overUnder": over_under, "week": nflweek, "grade": ""}
+                return {"render_value": team1_name + " vs. " + team2_name + " o" + over_under, "gameID":game_id, "team1Name": team1_name, "team2Name":team2_name, "overUnder": over_under, "week": nflweek}
             }
             else if (label === 'under') {
-                return {"render_value": team1_name + " vs. " + team2_name + " u" + over_under, "gameID":game_id, "team1Name": team1_name, "team2Name":team2_name, "overUnder": over_under, "week": nflweek, "grade": ""}
+                return {"render_value": team1_name + " vs. " + team2_name + " u" + over_under, "gameID":game_id, "team1Name": team1_name, "team2Name":team2_name, "overUnder": over_under, "week": nflweek}
             }
         }
 

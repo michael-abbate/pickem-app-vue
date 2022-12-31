@@ -3,7 +3,7 @@
         <div>
             <h2>
                 {{ nflweek }} Picks
-            </h2>
+            </h2>            
             <select v-model="nflweek" @change = "getWeeksPicks(nflweek)">
                 <option v-for="(distinct_nflweek) in distinct_nflweeks" :key="distinct_nflweek">
                     {{ distinct_nflweek.nfl_week }}
@@ -15,8 +15,11 @@
                         <th colspan = "3" :style="checkForJonny(pick.username)">{{ pick.username }}</th>
                     </tr>
                     <tr>
-                        <td>
-                            &#9711;
+                        <td>     
+                            <span v-if="pick.grade_pick.favorite_grade === 1"><i  class="fa-solid fa-circle-check"></i></span>
+                            <span v-else-if="pick.grade_pick.favorite_grade === -1"><i  class="fa-solid fa-circle-xmark"></i></span>                 
+                            <span v-else-if="pick.grade_pick.favorite_grade === 0"><i  class="fa-solid fa-circle-minus"></i></span>                 
+                            <span v-else><i  class="fa-solid fa-circle"></i></span>
                         </td>
                         <td>
                             Favorite
@@ -27,7 +30,10 @@
                     </tr>
                     <tr>
                         <td>
-                            &#9711;
+                            <span v-if="pick.grade_pick.underdog_grade === 1"><i  class="fa-solid fa-circle-check"></i></span>
+                            <span v-else-if="pick.grade_pick.underdog_grade === -1"><i  class="fa-solid fa-circle-xmark"></i></span>                 
+                            <span v-else-if="pick.grade_pick.underdog_grade === 0"><i  class="fa-solid fa-circle-minus"></i></span>                 
+                            <span v-else><i  class="fa-solid fa-circle"></i></span>                
                         </td>
                         <td>
                             Underdog
@@ -38,7 +44,10 @@
                     </tr>
                     <tr>
                         <td>
-                            &#9711;
+                            <span v-if="pick.grade_pick.over_grade === 1"><i  class="fa-solid fa-circle-check"></i></span>
+                            <span v-else-if="pick.grade_pick.over_grade === -1"><i  class="fa-solid fa-circle-xmark"></i></span>                 
+                            <span v-else-if="pick.grade_pick.over_grade === 0"><i  class="fa-solid fa-circle-minus"></i></span>                 
+                            <span v-else><i  class="fa-solid fa-circle"></i></span>                               
                         </td>
                         <td>
                             Over
@@ -48,8 +57,11 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            &#9711;
+                        <td>                            
+                            <span v-if="pick.grade_pick.under_grade === 1"><i  class="fa-solid fa-circle-check"></i></span>
+                            <span v-else-if="pick.grade_pick.under_grade === -1"><i  class="fa-solid fa-circle-xmark"></i></span>                 
+                            <span v-else-if="pick.grade_pick.under_grade === 0"><i  class="fa-solid fa-circle-minus"></i></span>                 
+                            <span v-else><i  class="fa-solid fa-circle"></i></span>
                         </td>
                         <td>
                             Under
@@ -60,13 +72,15 @@
                     </tr>
                     <tr>
                         <td>
-                            &#9711;
+                            <span v-if="pick.grade_pick.lock_grade === 1"><i  class="fa-solid fa-circle-check"></i></span>
+                            <span v-else-if="pick.grade_pick.lock_grade === -1"><i  class="fa-solid fa-circle-xmark"></i></span>                 
+                            <span v-else-if="pick.grade_pick.lock_grade === 0"><i  class="fa-solid fa-circle-minus"></i></span>                 
+                            <span v-else><i  class="fa-regular fa-circle"></i></span>
                         </td>
                         <td>
                             Lock
                         </td>
-                        <td>
-                            {{ parsePick(pick.lock).render_value }}
+                        <td v-html="parsePick(pick.lock).render_value">            
                         </td>
                     </tr>
                 </table>
@@ -80,6 +94,9 @@
 
 // import axios from 'axios';
 import PicksService from '@/services/PicksService';
+import { dom } from '@fortawesome/fontawesome-svg-core'
+
+dom.watch() 
 
 export default {
     name: "GroupPicks",
@@ -140,6 +157,9 @@ export default {
             }
             return { color };
         }
+        // , generateRecord(grade_json) {
+            // for each value in grade_json generate the record. show under user name.
+        // }
         
     }
 }
@@ -193,6 +213,13 @@ export default {
     select:hover {
         cursor: pointer;
     }
+    .fa-circle-check{
+        color:#39FF14;
+    }
+    .fa-circle-xmark {
+        color:red;
+    }
+    
 }
 @media (pointer:coarse) {
     #group-picks {
