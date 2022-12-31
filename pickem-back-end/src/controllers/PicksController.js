@@ -122,8 +122,20 @@ exports.findWeeksPicks = (req, res) => {
             model: GradePicks,
             // as: 'GradePicks',
             // where: {
-            //   is_graded: {
-            //     [Op.eq]: 0
+            //   favorite: {
+            //     [Op.not]: null
+            //   },
+            //   underdog: {
+            //     [Op.not]: null
+            //   },
+            //   over: {
+            //     [Op.not]: null
+            //   },
+            //   under: {
+            //     [Op.not]: null
+            //   },
+            //   lock: {
+            //     [Op.not]: null
             //   }
             // },
             attributes:[
@@ -158,7 +170,39 @@ exports.findWeeksPicks = (req, res) => {
     console.log(`Gathering picks for ${nflweek} games...`)
     var condition = nflweek ? { nfl_week: { [Op.iLike]: `%${nflweek}%` } } : null;
 
-    GroupPicks.findAll({ where: condition })
+    GroupPicks.findAll(
+      { where: condition ,
+      include: {
+        model: GradePicks,
+        // as: 'GradePicks',
+        // where: {
+        //   favorite: {
+        //     [Op.not]: null
+        //   },
+        //   underdog: {
+        //     [Op.not]: null
+        //   },
+        //   over: {
+        //     [Op.not]: null
+        //   },
+        //   under: {
+        //     [Op.not]: null
+        //   },
+        //   lock: {
+        //     [Op.not]: null
+        //   }
+        // },
+        attributes:[
+                      ['favorite', 'favorite_grade'],
+                      ['underdog', 'underdog_grade'],
+                      ['over', 'over_grade'],
+                      ['under', 'under_grade'],
+                      ['lock', 'lock_grade']
+                  ]
+
+        }
+      }
+      )
       .then(data => {
         res.send(data);
       })
