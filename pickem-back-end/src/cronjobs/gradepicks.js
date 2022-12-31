@@ -5,14 +5,10 @@ const db = require("../models");
 const GroupPicks = db.group_picks;
 const GradePicks = db.grade_picks;
 const Op = db.Sequelize.Op;
-// import request from 'request';
 const axios = require('axios');
-// import fetch from 'node-fetch'
 
-
-
-// Schedule tasks to be run on the server.
-var graderTask = cron.schedule('* * * * *', function() {
+// Schedule tasks to be run on the server every 10 minutes
+var graderTask = cron.schedule('*/10 * * * *', function() {
     grader();
 });
 
@@ -135,12 +131,11 @@ async function updateGrade(grade_json) {
 
 
 function grader() {
-    console.log('running a task every minute');
+    console.log('running grader...');
     GroupPicks.hasOne(GradePicks, {foreignKey:"pick_id"});
     GradePicks.belongsTo(GroupPicks, {foreignKey: "pick_id"});
     console.log("GRADING...");
-    GroupPicks.findAll({
-        // where: {name: "Sunshine"},
+    GroupPicks.findAll({        
         raw: true,
         include: {
             model: GradePicks,
