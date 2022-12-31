@@ -3,7 +3,7 @@
         <div>
             <h2>
                 {{ nflweek }} Picks
-            </h2>
+            </h2>            
             <select v-model="nflweek" @change = "getWeeksPicks(nflweek)">
                 <option v-for="(distinct_nflweek) in distinct_nflweeks" :key="distinct_nflweek">
                     {{ distinct_nflweek.nfl_week }}
@@ -12,11 +12,18 @@
             <div class = "pick-tables-wrapper">
                 <table v-for="pick in picks" :key = "pick.username" class="pick-table">
                     <tr class = "username-row-header">
-                        <th colspan = "3" :style="checkForJonny(pick.username)">{{ pick.username }}</th>
+                        <th colspan = "3" :style="checkForJonny(pick.username)">
+                            <span>{{ pick.username }} </span>
+                            <br>                        
+                            <span class = "pick-record">{{ generateRecord(pick) }}</span>
+                        </th>
                     </tr>
                     <tr>
-                        <td>
-                            &#9711;
+                        <td>     
+                            <span v-if="pick.grade_pick.favorite_grade === 1"><i  class="fa-solid fa-circle-check"></i></span>
+                            <span v-else-if="pick.grade_pick.favorite_grade === -1"><i  class="fa-solid fa-circle-xmark"></i></span>                 
+                            <span v-else-if="pick.grade_pick.favorite_grade === 0"><i  class="fa-solid fa-circle-minus"></i></span>                 
+                            <span v-else><i  class="fa-regular fa-circle"></i></span>
                         </td>
                         <td>
                             Favorite
@@ -27,7 +34,10 @@
                     </tr>
                     <tr>
                         <td>
-                            &#9711;
+                            <span v-if="pick.grade_pick.underdog_grade === 1"><i  class="fa-solid fa-circle-check"></i></span>
+                            <span v-else-if="pick.grade_pick.underdog_grade === -1"><i  class="fa-solid fa-circle-xmark"></i></span>                 
+                            <span v-else-if="pick.grade_pick.underdog_grade === 0"><i  class="fa-solid fa-circle-minus"></i></span>                 
+                            <span v-else><i  class="fa-regular fa-circle"></i></span>                
                         </td>
                         <td>
                             Underdog
@@ -38,7 +48,10 @@
                     </tr>
                     <tr>
                         <td>
-                            &#9711;
+                            <span v-if="pick.grade_pick.over_grade === 1"><i  class="fa-solid fa-circle-check"></i></span>
+                            <span v-else-if="pick.grade_pick.over_grade === -1"><i  class="fa-solid fa-circle-xmark"></i></span>                 
+                            <span v-else-if="pick.grade_pick.over_grade === 0"><i  class="fa-solid fa-circle-minus"></i></span>                 
+                            <span v-else><i  class="fa-regular fa-circle"></i></span>                               
                         </td>
                         <td>
                             Over
@@ -48,8 +61,11 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            &#9711;
+                        <td>                            
+                            <span v-if="pick.grade_pick.under_grade === 1"><i  class="fa-solid fa-circle-check"></i></span>
+                            <span v-else-if="pick.grade_pick.under_grade === -1"><i  class="fa-solid fa-circle-xmark"></i></span>                 
+                            <span v-else-if="pick.grade_pick.under_grade === 0"><i  class="fa-solid fa-circle-minus"></i></span>                 
+                            <span v-else><i  class="fa-regular fa-circle"></i></span>
                         </td>
                         <td>
                             Under
@@ -60,13 +76,15 @@
                     </tr>
                     <tr>
                         <td>
-                            &#9711;
+                            <span v-if="pick.grade_pick.lock_grade === 1"><i  class="fa-solid fa-circle-check"></i></span>
+                            <span v-else-if="pick.grade_pick.lock_grade === -1"><i  class="fa-solid fa-circle-xmark"></i></span>                 
+                            <span v-else-if="pick.grade_pick.lock_grade === 0"><i  class="fa-solid fa-circle-minus"></i></span>                 
+                            <span v-else><i  class="fa-regular fa-circle"></i></span>
                         </td>
                         <td>
                             Lock
                         </td>
-                        <td>
-                            {{ parsePick(pick.lock).render_value }}
+                        <td v-html="parsePick(pick.lock).render_value">            
                         </td>
                     </tr>
                 </table>
@@ -80,6 +98,9 @@
 
 // import axios from 'axios';
 import PicksService from '@/services/PicksService';
+import { dom } from '@fortawesome/fontawesome-svg-core'
+
+dom.watch() 
 
 export default {
     name: "GroupPicks",
@@ -90,6 +111,7 @@ export default {
             picks: [],     
             error: null,
             color:'white'
+            // grades:[]
         }
     },
     async created() {
@@ -140,6 +162,18 @@ export default {
             }
             return { color };
         }
+        , generateRecord(pick) {
+            var grade_json = pick.grade_pick;
+            var grades = [];            
+            for (let key in grade_json) {
+                var grade = grade_json[key];                
+                grades.push(grade);
+            }            
+            var wins = grades.filter(obj => obj === 1).length
+            var losses = grades.filter(obj => obj === -1).length
+            var pushes = grades.filter(obj => obj === 0).length
+            return wins+"-"+losses+"-"+pushes;
+        }
         
     }
 }
@@ -170,7 +204,6 @@ export default {
         padding:10px;
         color:white;
         font-size:1.30vw;
-        
     }
     td {
         padding:10px;
@@ -193,6 +226,17 @@ export default {
     select:hover {
         cursor: pointer;
     }
+
+    .pick-record {
+        font-size:.8vw;
+    }
+    .fa-circle-check{
+        color:#39FF14;
+    }
+    .fa-circle-xmark {
+        color:red;
+    }
+    
 }
 @media (pointer:coarse) {
     #group-picks {
@@ -233,6 +277,15 @@ export default {
         height:8vw;
         width:25vw;
         text-align: center;
+    }
+    .pick-record {
+        font-size:3vw;
+    }
+    .fa-circle-check{
+        color:#39FF14;
+    }
+    .fa-circle-xmark {
+        color:red;
     }
 }
 

@@ -31,6 +31,8 @@
 <script>
 // import store from '../store';
 import PicksService from '@/services/PicksService';
+
+
 // import { ref } from 'vue'
 
 
@@ -61,7 +63,12 @@ export default {
             try {       
                 console.log(`${nflweek} PICK FOR USER: ${this.$store.state.user.username}`)
                 console.log(`Attempting to submit picks for user: ${this.$store.state.user.username}`)
-                
+                const d = new Date();
+                let year = d.getFullYear();                
+                var pick_id_unhashed = year.toString().concat(nflweek,this.$store.state.user.username);
+                console.log('UNHASHED',pick_id_unhashed)
+
+                // will submit a row in GroupPicks and GradePicks for future grading
                 const response = await PicksService.submitPicks({
                     nflweek: nflweek,
                     username: this.$store.state.user.username,
@@ -69,7 +76,8 @@ export default {
                     underdog: JSON.stringify(this.picks_form.Underdog),
                     over: JSON.stringify(this.picks_form.Over),
                     under: JSON.stringify(this.picks_form.Under),
-                    lock: JSON.stringify(this.picks_form.Lock)                    
+                    lock: JSON.stringify(this.picks_form.Lock),
+                    pick_id: pick_id_unhashed           
                 });
  
                 console.log(`Submitted picks for user: ${this.$store.state.user.username}`)
@@ -82,7 +90,7 @@ export default {
                 this.msg = error.response.data.message
             }
 
-        },
+        },                
         getValidPicks(picks, pick_type) { 
             var filtered_picks;     
             if (pick_type === "Favorite") {
