@@ -98,6 +98,9 @@
 
 // import axios from 'axios';
 import PicksService from '@/services/PicksService';
+import { dom } from '@fortawesome/fontawesome-svg-core'
+
+dom.watch() 
 
 export default {
     name: "GroupPicks",
