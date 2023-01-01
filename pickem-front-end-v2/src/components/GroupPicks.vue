@@ -4,9 +4,8 @@
             <h2>
                 {{ nflweek }} Picks
             </h2>            
-            
             <select v-model="nflweek" @change = "getWeeksPicks(nflweek)">
-                <option v-for="(distinct_nflweek) in distinct_nflweeks.sort()" :key="distinct_nflweek">
+                <option v-for="(distinct_nflweek) in distinct_nflweeks" :key="distinct_nflweek">
                     {{ distinct_nflweek.nfl_week }}
                 </option>
             </select>
@@ -99,9 +98,6 @@
 
 // import axios from 'axios';
 import PicksService from '@/services/PicksService';
-import { dom } from '@fortawesome/fontawesome-svg-core'
-
-dom.watch() 
 
 export default {
     name: "GroupPicks",
@@ -118,8 +114,7 @@ export default {
     async created() {
         try {       
             const weeksresult = await PicksService.getDistinctWeeks();
-            this.distinct_nflweeks = weeksresult.data;
-            // var nflweek_json = {nflweek: false}
+            this.distinct_nflweeks = weeksresult.data;                
             const picksresult = await PicksService.getGroupPicks();
             const picks = picksresult.data;
             this.picks = picks;

@@ -26,7 +26,7 @@ module.exports = (sequelize, Sequelize) => {
       },
       pick_id: {
         type: Sequelize.STRING(100),
-        foreignKey: true
+        primaryKey: true
       }
     });
   

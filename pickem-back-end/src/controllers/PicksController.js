@@ -219,6 +219,9 @@ exports.findWeeksPicks = (req, res) => {
 
 exports.findDistinctWeeks = (req, res) => {
   GroupPicks.findAll({
+      order: [
+        ['nfl_week', 'ASC']
+      ],
       attributes: [
           // specify an array where the first element is the SQL function and the second is the alias
           [db.Sequelize.fn('DISTINCT', db.Sequelize.col('nfl_week')) ,'nfl_week']
