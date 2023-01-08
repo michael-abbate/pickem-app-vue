@@ -88,7 +88,10 @@ exports.create = (req, res) => {
         if(isCreated) {
             console.log("Row for future grading submitted successfully");
           }
-      });
+      })
+        .catch(err => {
+          console.log(`ERROR WHEN SUBMITTING GRADES for ${req.body.username}:`, err)
+        });
     
 };  
 
