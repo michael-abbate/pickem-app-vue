@@ -219,7 +219,7 @@ export default {
         border-color:white;
         color:#1f1f1f;
         height:2vw;
-        width:10vw;
+        width:12vw;
         text-align: center;
         margin-bottom:10px;
     }
@@ -271,12 +271,12 @@ export default {
     select {
         background-color: #fff;
         font-weight: bold;
-        font-size: 4vw;
+        font-size: 3vw;
         border-radius: 8px;
         border-color:white;
         color:#1f1f1f;
         height:8vw;
-        width:25vw;
+        width:36vw;
         text-align: center;
     }
     .pick-record {

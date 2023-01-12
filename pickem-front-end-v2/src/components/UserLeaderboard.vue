@@ -69,4 +69,10 @@ export default {
 table {
     margin: 0 auto;
 }
+th {
+    padding: 5px;
+}
+td {
+    padding:3px;
+}
 </style>
