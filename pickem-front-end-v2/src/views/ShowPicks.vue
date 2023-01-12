@@ -144,6 +144,7 @@ export default {
         console.log(games);
         this.games = games;
         this.nflweek = games[0].round;
+        this.nflweek = this.nflweek.includes("Week") ? this.nflweek: this.nflweek.split(" ").slice(1,).join(" ")
         this.env = result.data.env;
         this.use_live_lines = result.data.use_live_lines;
         console.log(`Front-end ENV fetched from back-end env: ${this.env}`);
