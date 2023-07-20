@@ -56,7 +56,7 @@ module.exports = (app, env, livelines, sample_odds_json) => {
                 { url: 'https://areyouwatchingthis.com/api/odds.json?sport=nfl' },
                 (error, response, body) => {
                 if (error || response.statusCode !== 200) {
-                    return res.status(500).json({ type: 'error', message: err.message });
+                    return res.status(500).json({ type: 'error', message: error.message });
                 }
                 let res_json = JSON.parse(body);
                 res_json['env'] = env;
