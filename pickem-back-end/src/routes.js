@@ -53,10 +53,11 @@ module.exports = (app, env, livelines, sample_odds_json) => {
         if (env==='prod' || livelines === 'prod') {
             console.log("requesting odds from express server side.")
             request(
-                { url: 'https://areyouwatchingthis.com/api/odds.json?sport=nfl' },
+                { url: 'https://metabet.static.api.areyouwatchingthis.com/api/odds.json?apiKey=219f64094f67ed781035f5f7a08840fc&sport=nfl' },
                 (error, response, body) => {
                 if (error || response.statusCode !== 200) {
-                    return res.status(500).json({ type: 'error', message: error.message });
+                    // return res.status(500).json({ type: 'error', message: error.message });
+                    return {"meta":{"code":200,"count":0,"description":"MANUAL RETURN BY MICHAEL. API FAILING. "},"results":[]}
                 }
                 let res_json = JSON.parse(body);
                 res_json['env'] = env;

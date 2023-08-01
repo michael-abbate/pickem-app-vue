@@ -95,6 +95,9 @@ exports.create = (req, res) => {
     
 };  
 
+// Using static dates for now for 2023-2024 season
+const startedDate = new Date("2023-07-12 00:00:00");
+const endDate = new Date();
  // Retrieve all Users' Picks from the database.
 exports.findWeeksPicks = (req, res) => {
 
@@ -117,8 +120,7 @@ exports.findWeeksPicks = (req, res) => {
         console.log(mostRecentCreationDate)
         var nflweek = mostRecentCreationDate[0].dataValues.nfl_week 
         console.log(`Gathering picks for ${nflweek} games...`)
-        var condition = nflweek ? { nfl_week: { [Op.iLike]: `%${nflweek}%` } } : null;
-
+        var condition = nflweek ? { nfl_week: { [Op.iLike]: `%${nflweek}%` }, createdAt: {[Op.between]:  [startedDate, endDate]}} : null;
         GroupPicks.findAll(
           { where: condition ,
           include: {
@@ -171,7 +173,7 @@ exports.findWeeksPicks = (req, res) => {
     console.log('inside other part')
     var nflweek = req.body.nflweek
     console.log(`Gathering picks for ${nflweek} games...`)
-    var condition = nflweek ? { nfl_week: { [Op.iLike]: `%${nflweek}%` } } : null;
+    var condition = nflweek ? { nfl_week: { [Op.iLike]: `%${nflweek}%` }, createdAt: {[Op.between]:  [startedDate, endDate]}} : null;
 
     GroupPicks.findAll(
       { where: condition ,
