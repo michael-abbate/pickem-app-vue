@@ -8,7 +8,7 @@
             </h2>
             <div v-if = "Object.keys(games).length > 0" id="all-game-tables">                
                 <div v-cloak v-for="(game,index) in games" :key = "game.gameID" :class="game.gameID+'game-table'">
-                    <table v-if="validGame(game.date)" :class="game.gameID+'game-table'">                    
+                    <table v-if="validGame(game.date, game.round)" :class="game.gameID+'game-table'">                    
                         <tr :class="'away-row-'+index+'-'+game.gameID">
                             <td rowspan = "2" class="date-cell">  
                                 {{ epochToDate(game.date) }}                                  
@@ -143,8 +143,14 @@ export default {
         console.log('Here are the games!');
         console.log(games);
         this.games = games;
-        this.nflweek = games[0].round;
-        this.nflweek = this.nflweek.includes("Week") ? this.nflweek: this.nflweek.split(" ").slice(1,).join(" ")
+        this.nflweek = games[0].round;        
+        // Have to put in check for "Hall of Fame Game" which showed up as first game of Week 1 (HoF game was like 3 weeks before Game 1 of the season)
+        if (games[1].round && games[1].round.includes("Week") && !this.nflweek.includes("Week")) {
+            this.nflweek = games[1].round;
+        }
+        else {
+            this.nflweek = this.nflweek.includes("Week") ? this.nflweek: this.nflweek.split(" ").slice(1,).join(" ")
+        }
         this.env = result.data.env;
         this.use_live_lines = result.data.use_live_lines;
         console.log(`Front-end ENV fetched from back-end env: ${this.env}`);
@@ -173,7 +179,12 @@ export default {
             }
         
         },
-        validGame(game_date) {
+        validGame(game_date, game_round) {
+            if (this.nflweek === "Week 1") {
+                if (game_round === "Week 1") {
+                    return true
+                }
+            }
             // Checks if the game is valid to be shown
             if (this.env === 'prod' || this.use_live_lines === true) {            
                 let today = new Date();

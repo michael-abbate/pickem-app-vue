@@ -92,7 +92,7 @@ function gradePick(pick_type, pick, results) {
 async function hitOddsAPI(pick_id, pick_entries) {
     let grades = [];
     await Promise.all(pick_entries.map(([pick_type,raw_pick]) =>      
-        axios.get(`https://areyouwatchingthis.com/api/games.json?sport=nfl&gameID=${JSON.parse(raw_pick).gameID}`)
+        axios.get(`https://metabet.static.api.areyouwatchingthis.com/api/games.json?apiKey=219f64094f67ed781035f5f7a08840fc&sport=nfl&gameID=${JSON.parse(raw_pick).gameID}`)
             .then(res => {
                 var game_result = res.data.results[0];
                 var pick = JSON.parse(raw_pick);
