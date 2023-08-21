@@ -38,6 +38,9 @@ module.exports = (app, env, livelines, sample_odds_json) => {
 
     app.get('/api/leaderboard', 
         LeaderboardController.findAll);
+    
+    app.post('/api/leaderboard', 
+        LeaderboardController.findAll);
 
     app.get('/api/group/picks', 
         PicksController.findWeeksPicks);
@@ -45,7 +48,7 @@ module.exports = (app, env, livelines, sample_odds_json) => {
     app.post('/api/group/picks', 
         PicksController.findWeeksPicks);
 
-    app.get('/api/nflweeks', 
+    app.post('/api/nflweeks', 
         PicksController.findDistinctWeeks);
 
     app.get('/api/showpicks', (req, res) => {

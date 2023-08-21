@@ -5,14 +5,14 @@ export default {
     submitPicks (picks) {
         return axios.post('/api/selected/submit', picks)
     },
-    getGroupPicks () {
-        return axios.get('/api/group/picks')
+    // getGroupPicks () {
+    //     return axios.get('/api/group/picks')
+    // },
+    postGroupPicks (nflweek, selected_season) {
+        return axios.post('/api/group/picks', nflweek, selected_season)
     },
-    postGroupPicks (nflweek) {
-        return axios.post('/api/group/picks', nflweek)
-    },
-    getDistinctWeeks() {
-        return axios.get('/api/nflweeks')
+    postDistinctWeeks(selected_season) {
+        return axios.post('/api/nflweeks', selected_season)
     }
 }
 
