@@ -96,10 +96,18 @@ exports.create = (req, res) => {
 };  
 
 // Using static dates for now for 2023-2024 season
-const startedDate = new Date("2023-07-12 00:00:00");
-const endDate = new Date();
+// const startDate = new Date("2023-07-12 00:00:00");
+// const endDate = new Date();
  // Retrieve all Users' Picks from the database.
-exports.findWeeksPicks = (req, res) => {
+exports.findWeeksPicks = async (req, res) => {
+  var selected_season = req.body.selected_season
+  var date_range = await db.sequelize.query(`SELECT * FROM nfl_seasons WHERE nfl_season = '${selected_season}'`, {   
+    type: db.sequelize.QueryTypes.SELECT
+  });
+
+  var startDate = date_range[0]['start_date'].toISOString().split('T')[0]
+  var endDate = date_range[0]['end_date'].toISOString().split('T')[0]
+  console.log('Retrieving leaderboard for', startDate, 'to', endDate)
 
   GroupPicks.hasOne(GradePicks, {foreignKey:"pick_id"});
   GradePicks.belongsTo(GroupPicks, {foreignKey: "pick_id"});
@@ -120,7 +128,7 @@ exports.findWeeksPicks = (req, res) => {
         console.log(mostRecentCreationDate)
         var nflweek = mostRecentCreationDate[0].dataValues.nfl_week 
         console.log(`Gathering picks for ${nflweek} games...`)
-        var condition = nflweek ? { nfl_week: { [Op.iLike]: `%${nflweek}%` }, createdAt: {[Op.between]:  [startedDate, endDate]}} : null;
+        var condition = nflweek ? { nfl_week: { [Op.iLike]: `%${nflweek}%` }, createdAt: {[Op.between]:  [startDate, endDate]}} : null;
         GroupPicks.findAll(
           { where: condition ,
           include: {
@@ -173,7 +181,7 @@ exports.findWeeksPicks = (req, res) => {
     console.log('inside other part')
     var nflweek = req.body.nflweek
     console.log(`Gathering picks for ${nflweek} games...`)
-    var condition = nflweek ? { nfl_week: { [Op.iLike]: `%${nflweek}%` }, createdAt: {[Op.between]:  [startedDate, endDate]}} : null;
+    var condition = nflweek ? { nfl_week: { [Op.iLike]: `%${nflweek}%` }, createdAt: {[Op.between]:  [startDate, endDate]}} : null;
 
     GroupPicks.findAll(
       { where: condition ,
@@ -222,8 +230,18 @@ exports.findWeeksPicks = (req, res) => {
 
 }
 
-exports.findDistinctWeeks = (req, res) => {
+exports.findDistinctWeeks = async (req, res) => {
+  var selected_season = req.body.selected_season
+  var date_range = await db.sequelize.query(`SELECT * FROM nfl_seasons WHERE nfl_season = '${selected_season}'`, {   
+    type: db.sequelize.QueryTypes.SELECT
+  });
+
+  var startDate = date_range[0]['start_date'].toISOString().split('T')[0]
+  var endDate = date_range[0]['end_date'].toISOString().split('T')[0]
+  console.log('Retrieving leaderboard for', startDate, 'to', endDate)
+  
   GroupPicks.findAll({
+      where: { createdAt: {[Op.between]:  [startDate, endDate]} },
       order: [
         ['nfl_week', 'ASC']
       ],

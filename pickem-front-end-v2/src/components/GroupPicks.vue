@@ -3,8 +3,13 @@
         <div>
             <h2>
                 {{ nflweek }} Picks
-            </h2>            
-            <select v-model="nflweek" @change = "getWeeksPicks(nflweek)">
+            </h2>    
+            <select v-model="selected_season" @change = "getWeeksPicks(nfl_week, selected_season); getSeasonsWeeks(selected_season)">
+                <option v-for="(season) in nflseasons" :key="season">
+                    {{ season }}
+                </option>
+            </select>        
+            <select v-model="nflweek" @change = "getWeeksPicks(nflweek, selected_season)">
                 <option v-for="(distinct_nflweek) in distinct_nflweeks" :key="distinct_nflweek">
                     {{ distinct_nflweek.nfl_week }}
                 </option>
@@ -110,15 +115,17 @@ export default {
             distinct_nflweeks: [],          
             picks: [],     
             error: null,
-            color:'white'
+            color:'white',
+            nflseasons: ["2022-2023", "2023-2024"],
+            selected_season: '2023-2024'
             // grades:[]
         }
     },
     async created() {
         try {       
-            const weeksresult = await PicksService.getDistinctWeeks();
+            const weeksresult = await PicksService.postDistinctWeeks({selected_season: this.selected_season});
             this.distinct_nflweeks = weeksresult.data;                
-            const picksresult = await PicksService.getGroupPicks();
+            const picksresult = await PicksService.postGroupPicks({nflweek: null, selected_season: this.selected_season});
             const picks = picksresult.data;
             this.picks = picks;
             this.nflweek = picks[0].nfl_week;
@@ -132,16 +139,32 @@ export default {
             return JSON.parse(pick)        
         }
         ,
-        getWeeksPicks(nflweek) {
+        getWeeksPicks(nflweek, selected_season) {
             console.log("getWeeksPicks fct")
             try {                       
-                var nflweek_json = {nflweek: nflweek}
+                var nflweek_json = {nflweek: nflweek, selected_season: selected_season}
                 PicksService.postGroupPicks(nflweek_json)
                     .then((picksresult) => {
                         var picks = picksresult.data;
-                        this.picks = picks;                        
+                        this.picks = picks;    
+                        this.nflweek = picks[0].nfl_week;                    
                     }).catch(err => {                        
                         console.log("Some error occurred while retrieving group picks.")
+                        this.error = err.response.data.error
+                    });
+            } catch(error) {
+                this.error = error.response.data.error
+            }
+        }
+        , getSeasonsWeeks(selected_season) {
+            try {                       
+                var season_json = {selected_season:selected_season}
+                PicksService.postDistinctWeeks(season_json)
+                    .then((weeksResult) => {
+                        var weeks = weeksResult.data;
+                        this.distinct_nflweeks = weeks;                        
+                    }).catch(err => {                        
+                        console.log(`Some error occurred while retrieving NFL weeks for selected season ${selected_season}.`)
                         this.error = err.response.data.error
                     });
             } catch(error) {
@@ -222,6 +245,7 @@ export default {
         width:12vw;
         text-align: center;
         margin-bottom:10px;
+        margin: 10px;
     }
 
     select:hover {
@@ -276,8 +300,9 @@ export default {
         border-color:white;
         color:#1f1f1f;
         height:8vw;
-        width:36vw;
-        text-align: center;
+        width:32vw;
+        text-align-last:center;
+        margin: 10px;
     }
     .pick-record {
         font-size:3vw;

@@ -2,8 +2,11 @@
 import axios from 'axios'
 
 export default {
-    leaderboard () {
-        return axios.get('/api/leaderboard')
+    // leaderboard () {
+    //     return axios.get('/api/leaderboard')
+    // },
+    postLeaderboard (selected_season) {
+        return axios.post('/api/leaderboard', selected_season)
     }
 }
 
