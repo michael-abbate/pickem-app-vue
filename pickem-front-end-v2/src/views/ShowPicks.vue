@@ -8,7 +8,7 @@
             </h2>
             <div v-if = "Object.keys(games).length > 0" id="all-game-tables">                
                 <div v-cloak v-for="(game,index) in games" :key = "game.gameID" :class="game.gameID+'game-table'">
-                    <table v-if="validGame(game.date, game.round)" :class="game.gameID+'game-table'">                    
+                    <table v-if="validGame(game.date)" :class="game.gameID+'game-table'">                    
                         <tr :class="'away-row-'+index+'-'+game.gameID">
                             <td rowspan = "2" class="date-cell">  
                                 {{ epochToDate(game.date) }}                                  
@@ -179,7 +179,7 @@ export default {
             }
         
         },
-        validGame(game_date, game_round) {
+        validGame(game_date) {
             // if (this.nflweek === "Week 1") {
             //     if (game_round === "Week 1") {
             //         return true
