@@ -180,11 +180,11 @@ export default {
         
         },
         validGame(game_date, game_round) {
-            if (this.nflweek === "Week 1") {
-                if (game_round === "Week 1") {
-                    return true
-                }
-            }
+            // if (this.nflweek === "Week 1") {
+            //     if (game_round === "Week 1") {
+            //         return true
+            //     }
+            // }
             // Checks if the game is valid to be shown
             if (this.env === 'prod' || this.use_live_lines === true) {            
                 let today = new Date();
