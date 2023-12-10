@@ -32,7 +32,7 @@ exports.create = (req, res) => {
     
     var picks_arr = [];
     for (const [pick_type, pick_value] of Object.entries(group_pick)) {
-      if (pick_type !=="pick_id") {
+      if (pick_type !=="pick_id" || pick_type!='nfl_week') {
         picks_arr.push(pick_value);    
       }    
     }
