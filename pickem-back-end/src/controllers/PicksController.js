@@ -82,7 +82,7 @@ exports.create = (req, res) => {
     };    
     
     GradePicks.findOrCreate({
-        where: {username: req.body.username, nfl_week: req.body.nflweek},
+        where: {username: req.body.username, pick_id: group_pick.pick_id},
         defaults: grade_pick
       }).then(([pickRow, isCreated]) => {
         if(isCreated) {
