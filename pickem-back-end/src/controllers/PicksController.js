@@ -52,7 +52,7 @@ exports.create = (req, res) => {
     }
 
     GroupPicks.findOrCreate({
-      where: {username: req.body.username, nfl_week: req.body.nflweek},
+      where: {username: req.body.username, pick_id: group_pick.pick_id},
       defaults: group_pick
     }).then(([pickRow, isCreated]) => {
       // console.log('Created:', isCreated)
