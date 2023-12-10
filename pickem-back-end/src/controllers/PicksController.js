@@ -20,7 +20,7 @@ exports.create = (req, res) => {
 
     // Create picks JSON
     const group_pick = {
-      // nfl_week: req.body.nfl_week,
+      nfl_week: req.body.nflweek,
       // username: req.body.username,
       favorite: req.body.favorite,
       underdog: req.body.underdog,
@@ -72,6 +72,7 @@ exports.create = (req, res) => {
       });
 
     const grade_pick = {
+        nfl_week: req.body.nflweek,
         favorite: null,
         underdog: null,
         over: null,
