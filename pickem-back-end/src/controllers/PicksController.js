@@ -32,12 +32,13 @@ exports.create = (req, res) => {
     
     var picks_arr = [];
     for (const [pick_type, pick_value] of Object.entries(group_pick)) {
-      if (pick_type !=="pick_id" || pick_type!='nfl_week') {
+      if (pick_type !=="pick_id" & pick_type!='nfl_week') {
         picks_arr.push(pick_value);    
       }    
     }
 
     const picks_set = new Set(picks_arr);
+    console.log("PICKS SET:", picks_set)
     if (picks_set.has('""')) {      
       res.status(400).send({        
         message: "Please fill out all pick types!"
