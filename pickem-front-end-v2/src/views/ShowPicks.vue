@@ -180,7 +180,7 @@ export default {
         
         },
         validGame(game_round, game_date) {                        
-            if (this.nflweek==game_round) {
+            if (this.nflweek===game_round) {
                     return true
                 }
             // Checks if the game is valid to be shown
