@@ -41,8 +41,8 @@ export default {
     data() {
         return {            
             users: [],    
-            nflseasons: ["2022-2023", "2023-2024"],
-            selected_season: '2023-2024',
+            nflseasons: ["2022-2023", "2023-2024", "2024-2025"],
+            selected_season: '2024-2025',
             error: null 
         }
     },
@@ -123,6 +123,18 @@ table {
     }
 }
 @media (pointer:coarse){
+    /* th {
+        padding: 5px;
+        color: black;
+        background-color: rgb(198, 195, 195);
+        border-radius: 5px;
+    }
+    td {
+        padding:3px;
+        background-color: dodgerblue;
+        border-radius: 5px;
+
+    } */
     
     select {
         background-color: #fff;

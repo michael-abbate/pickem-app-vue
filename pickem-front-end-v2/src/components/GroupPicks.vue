@@ -116,8 +116,8 @@ export default {
             picks: [],     
             error: null,
             color:'white',
-            nflseasons: ["2022-2023", "2023-2024"],
-            selected_season: '2023-2024'
+            nflseasons: ["2022-2023", "2023-2024", "2024-2025"],
+            selected_season: '2024-2025'
             // grades:[]
         }
     },

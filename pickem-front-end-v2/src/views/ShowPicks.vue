@@ -7,9 +7,9 @@
                 {{ nflweek }} Games
             </h2>
             <div v-if = "Object.keys(games).length > 0" id="all-game-tables">                
-                <div v-cloak v-for="(game,index) in games" :key = "game.gameID" :class="game.gameID+'game-table'">
-                    <table v-if="validGame(game.date)" :class="game.gameID+'game-table'">                    
-                        <tr :class="'away-row-'+index+'-'+game.gameID">
+                <div v-cloak v-for="(game,index) in games" :key = "game.gameID" :class="game.gameID+'game-table'">                    
+                    <table v-if="validGame(game.round, game.date)" :class="game.gameID+'game-table'">                        
+                        <tr :class="'away-row-'+index+'-'+game.gameID">                            
                             <td rowspan = "2" class="date-cell">  
                                 {{ epochToDate(game.date) }}                                  
                             </td>
@@ -179,12 +179,10 @@ export default {
             }
         
         },
-        validGame(game_date) {
-            // if (this.nflweek === "Week 1") {
-            //     if (game_round === "Week 1") {
-            //         return true
-            //     }
-            // }
+        validGame(game_round, game_date) {                        
+            if (this.nflweek==game_round) {
+                    return true
+                }
             // Checks if the game is valid to be shown
             if (this.env === 'prod' || this.use_live_lines === true) {            
                 let today = new Date();
@@ -198,7 +196,7 @@ export default {
                 }
                 else {
                     return true
-                }
+                }                
             }
             else {
                 return true
